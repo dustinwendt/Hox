@@ -1,4 +1,4 @@
-module Basics where
+module Basics.Basics where
 
 import Card
 import Types
@@ -17,3 +17,4 @@ mountain = defaultCard { cardName = "Mountain"
 
 forest = defaultCard { cardName = "Forest"
                      , typeLine = TypeLine [Basic] [Land] [LType Forest]}
+ 

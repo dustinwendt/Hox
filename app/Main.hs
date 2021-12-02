@@ -3,8 +3,34 @@ module Main where
 import Control.Monad
 import Data.Maybe
 import Lib
+import Card
+import Player
 
-data GameState = A
+type Spell = Card
+
+data Phase = Untap | Upkeep | Draw | Main1 | Combat | Main2 | End
+
+data GameState = GameState
+                 { zones     :: [Player]
+                 , stack     :: [Spell]
+                 , turn      :: Int
+                 , phase     :: Phase
+                 , turnOrder :: [Int]
+                 , priority  :: Int
+                 }
+
+nextPhase :: Phase -> Phase
+nextPhase Untap = Upkeep
+nextPhase Upkeep = Draw
+nextPhase Draw = Main1
+nextPhase Main1 = Combat
+nextPhase Combat = Main2
+nextPhase Main2 = End
+nextPhase End = Untap
+
+pass :: GameState -> GameState
+pass s = case s of
+  GameState {} = GameState 
 
 data TurnstileState = Locked | Unlocked
   deriving (Eq, Show)

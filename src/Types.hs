@@ -1,10 +1,5 @@
 module Types where
 
--- 202.2a
-data Color = White | Blue | Black | Red | Green
-data ManaColor = Colored Color | Colorless
-data Pip = ColPip ManaColor | VarPip | PhyPip ManaColor | SnowPip | HyPip Pip Pip | Generic Int
-
 -- 205.2 Card Types
 -- 205.2a
 data CardType = Artifact | Conspiracy | Creature | Dungeon

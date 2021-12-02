@@ -28,7 +28,9 @@ library
       AncestralRecall
       Basics.Basics
       Card
+      Colors
       Lib
+      Player
       Types
       Util
       Zones

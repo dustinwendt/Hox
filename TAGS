@@ -1,0 +1,573 @@
+
+./Setup.hs,15
+main main1,2
+
+./src/Types.hs,50123
+module Types Types0,1
+data CardType CardType4,5
+data CardType = Artifact Artifact4,5
+data CardType = Artifact | Conspiracy Conspiracy4,5
+data CardType = Artifact | Conspiracy | Creature Creature4,5
+data CardType = Artifact | Conspiracy | Creature | DungeonDungeon4,5
+              | Enchantment Enchantment5,6
+              | Enchantment | Instant Instant5,6
+              | Enchantment | Instant | Land Land5,6
+              | Enchantment | Instant | Land | PhenomenonPhenomenon5,6
+              | Plane Plane6,7
+              | Plane | Planeswalker Planeswalker6,7
+              | Plane | Planeswalker  | Scheme Scheme6,7
+              | Plane | Planeswalker  | Scheme | Sorcery Sorcery6,7
+              | Plane | Planeswalker  | Scheme | Sorcery | Tribal Tribal6,7
+              | Plane | Planeswalker  | Scheme | Sorcery | Tribal | VanguardVanguard6,7
+data ArtifactType ArtifactType10,11
+data ArtifactType = Clue Clue10,11
+data ArtifactType = Clue | Contraption Contraption10,11
+data ArtifactType = Clue | Contraption | Equipment Equipment10,11
+data ArtifactType = Clue | Contraption | Equipment | Food Food10,11
+data ArtifactType = Clue | Contraption | Equipment | Food | Fortification Fortification10,11
+data ArtifactType = Clue | Contraption | Equipment | Food | Fortification | Gold Gold10,11
+data ArtifactType = Clue | Contraption | Equipment | Food | Fortification | Gold | Treasure Treasure10,11
+data ArtifactType = Clue | Contraption | Equipment | Food | Fortification | Gold | Treasure | VehicleVehicle10,11
+data EnchantmentType EnchantmentType13,14
+data EnchantmentType = Aura Aura13,14
+data EnchantmentType = Aura | Cartouche Cartouche13,14
+data EnchantmentType = Aura | Cartouche | Class Class13,14
+data EnchantmentType = Aura | Cartouche | Class | Curse Curse13,14
+data EnchantmentType = Aura | Cartouche | Class | Curse | Rune Rune13,14
+data EnchantmentType = Aura | Cartouche | Class | Curse | Rune | Saga Saga13,14
+data EnchantmentType = Aura | Cartouche | Class | Curse | Rune | Saga | Shard Shard13,14
+data EnchantmentType = Aura | Cartouche | Class | Curse | Rune | Saga | Shard | ShrineShrine13,14
+data LandType LandType16,17
+data LandType = Desert Desert16,17
+data LandType = Desert | Forest Forest16,17
+data LandType = Desert | Forest | Gate Gate16,17
+data LandType = Desert | Forest | Gate | Island Island16,17
+data LandType = Desert | Forest | Gate | Island | Lair Lair16,17
+data LandType = Desert | Forest | Gate | Island | Lair | Locus Locus16,17
+data LandType = Desert | Forest | Gate | Island | Lair | Locus | Mine Mine16,17
+data LandType = Desert | Forest | Gate | Island | Lair | Locus | Mine | Mountain Mountain16,17
+data LandType = Desert | Forest | Gate | Island | Lair | Locus | Mine | Mountain | PlainsPlains16,17
+              | PowerPlant PowerPlant17,18
+              | PowerPlant | Swamp Swamp17,18
+              | PowerPlant | Swamp | Tower Tower17,18
+              | PowerPlant | Swamp | Tower | UrzasUrzas17,18
+data PlaneswalkerType PlaneswalkerType20,21
+data PlaneswalkerType = Ajani Ajani20,21
+data PlaneswalkerType = Ajani | Aminatou Aminatou20,21
+data PlaneswalkerType = Ajani | Aminatou | Angrath Angrath20,21
+data PlaneswalkerType = Ajani | Aminatou | Angrath | Arlinn Arlinn20,21
+data PlaneswalkerType = Ajani | Aminatou | Angrath | Arlinn | Ashiok Ashiok20,21
+data PlaneswalkerType = Ajani | Aminatou | Angrath | Arlinn | Ashiok | Bahamut Bahamut20,21
+data PlaneswalkerType = Ajani | Aminatou | Angrath | Arlinn | Ashiok | Bahamut | BasriBasri20,21
+  | Bolas Bolas21,22
+  | Bolas | Calix Calix21,22
+  | Bolas | Calix | Chandra Chandra21,22
+  | Bolas | Calix | Chandra | Dack Dack21,22
+  | Bolas | Calix | Chandra | Dack | Dakkon Dakkon21,22
+  | Bolas | Calix | Chandra | Dack | Dakkon | Daretti Daretti21,22
+  | Bolas | Calix | Chandra | Dack | Dakkon | Daretti | Davriel Davriel21,22
+  | Bolas | Calix | Chandra | Dack | Dakkon | Daretti | Davriel | Dihada Dihada21,22
+  | Bolas | Calix | Chandra | Dack | Dakkon | Daretti | Davriel | Dihada | Domri Domri21,22
+  | Bolas | Calix | Chandra | Dack | Dakkon | Daretti | Davriel | Dihada | Domri | Dovin Dovin21,22
+  | Bolas | Calix | Chandra | Dack | Dakkon | Daretti | Davriel | Dihada | Domri | Dovin | EllywickEllywick21,22
+  | Elspeth Elspeth22,23
+  | Elspeth | Estrid Estrid22,23
+  | Elspeth | Estrid | Freyalise Freyalise22,23
+  | Elspeth | Estrid | Freyalise | Garruk Garruk22,23
+  | Elspeth | Estrid | Freyalise | Garruk | Gideon Gideon22,23
+  | Elspeth | Estrid | Freyalise | Garruk | Gideon | Grist Grist22,23
+  | Elspeth | Estrid | Freyalise | Garruk | Gideon | Grist | Huatli Huatli22,23
+  | Elspeth | Estrid | Freyalise | Garruk | Gideon | Grist | Huatli | Jace Jace22,23
+  | Elspeth | Estrid | Freyalise | Garruk | Gideon | Grist | Huatli | Jace | Jaya Jaya22,23
+  | Elspeth | Estrid | Freyalise | Garruk | Gideon | Grist | Huatli | Jace | Jaya | Jeska Jeska22,23
+  | Elspeth | Estrid | Freyalise | Garruk | Gideon | Grist | Huatli | Jace | Jaya | Jeska | Karn Karn22,23
+  | Elspeth | Estrid | Freyalise | Garruk | Gideon | Grist | Huatli | Jace | Jaya | Jeska | Karn | KasminaKasmina22,23
+  | Kaya Kaya23,24
+  | Kaya | Kiora Kiora23,24
+  | Kaya | Kiora | Koth Koth23,24
+  | Kaya | Kiora | Koth | Liliana Liliana23,24
+  | Kaya | Kiora | Koth | Liliana | Lolth Lolth23,24
+  | Kaya | Kiora | Koth | Liliana | Lolth | Lukka Lukka23,24
+  | Kaya | Kiora | Koth | Liliana | Lolth | Lukka | Mordenkainen Mordenkainen23,24
+  | Kaya | Kiora | Koth | Liliana | Lolth | Lukka | Mordenkainen | Nahiri Nahiri23,24
+  | Kaya | Kiora | Koth | Liliana | Lolth | Lukka | Mordenkainen | Nahiri | Narset Narset23,24
+  | Kaya | Kiora | Koth | Liliana | Lolth | Lukka | Mordenkainen | Nahiri | Narset | Niko Niko23,24
+  | Kaya | Kiora | Koth | Liliana | Lolth | Lukka | Mordenkainen | Nahiri | Narset | Niko | Nissa Nissa23,24
+  | Kaya | Kiora | Koth | Liliana | Lolth | Lukka | Mordenkainen | Nahiri | Narset | Niko | Nissa | NixilisNixilis23,24
+  | Oko Oko24,25
+  | Oko | Ral Ral24,25
+  | Oko | Ral | Rowan Rowan24,25
+  | Oko | Ral | Rowan | Saheeli Saheeli24,25
+  | Oko | Ral | Rowan | Saheeli | Samut Samut24,25
+  | Oko | Ral | Rowan | Saheeli | Samut | Sarkhan Sarkhan24,25
+  | Oko | Ral | Rowan | Saheeli | Samut | Sarkhan | Serra Serra24,25
+  | Oko | Ral | Rowan | Saheeli | Samut | Sarkhan | Serra | Sorin Sorin24,25
+  | Oko | Ral | Rowan | Saheeli | Samut | Sarkhan | Serra | Sorin | Szat Szat24,25
+  | Oko | Ral | Rowan | Saheeli | Samut | Sarkhan | Serra | Sorin | Szat | Tamiyo Tamiyo24,25
+  | Oko | Ral | Rowan | Saheeli | Samut | Sarkhan | Serra | Sorin | Szat | Tamiyo | Teferi Teferi24,25
+  | Oko | Ral | Rowan | Saheeli | Samut | Sarkhan | Serra | Sorin | Szat | Tamiyo | Teferi | Teyo Teyo24,25
+  | Oko | Ral | Rowan | Saheeli | Samut | Sarkhan | Serra | Sorin | Szat | Tamiyo | Teferi | Teyo | TezzeretTezzeret24,25
+  | Tibalt Tibalt25,26
+  | Tibalt | Tyvar Tyvar25,26
+  | Tibalt | Tyvar | Ugin Ugin25,26
+  | Tibalt | Tyvar | Ugin | Venser Venser25,26
+  | Tibalt | Tyvar | Ugin | Venser | Vivien Vivien25,26
+  | Tibalt | Tyvar | Ugin | Venser | Vivien | Vraska Vraska25,26
+  | Tibalt | Tyvar | Ugin | Venser | Vivien | Vraska | Will Will25,26
+  | Tibalt | Tyvar | Ugin | Venser | Vivien | Vraska | Will | Windgrace Windgrace25,26
+  | Tibalt | Tyvar | Ugin | Venser | Vivien | Vraska | Will | Windgrace | Wrenn Wrenn25,26
+  | Tibalt | Tyvar | Ugin | Venser | Vivien | Vraska | Will | Windgrace | Wrenn | Xenagos Xenagos25,26
+  | Tibalt | Tyvar | Ugin | Venser | Vivien | Vraska | Will | Windgrace | Wrenn | Xenagos | Yanggu Yanggu25,26
+  | Tibalt | Tyvar | Ugin | Venser | Vivien | Vraska | Will | Windgrace | Wrenn | Xenagos | Yanggu | Yanling Yanling25,26
+  | Tibalt | Tyvar | Ugin | Venser | Vivien | Vraska | Will | Windgrace | Wrenn | Xenagos | Yanggu | Yanling | ZarielZariel25,26
+data SpellType SpellType28,29
+data SpellType = Adventure Adventure28,29
+data SpellType = Adventure | Arcane Arcane28,29
+data SpellType = Adventure | Arcane | Lesson Lesson28,29
+data SpellType = Adventure | Arcane | Lesson | TrapTrap28,29
+data CreatureType CreatureType31,32
+data CreatureType = Advisor Advisor31,32
+data CreatureType = Advisor | Aetherborn Aetherborn31,32
+data CreatureType = Advisor | Aetherborn | Ally Ally31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel Angel31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope Antelope31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape Ape31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer Archer31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon Archon31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army Army31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army | Artificer Artificer31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army | Artificer | Assassin Assassin31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army | Artificer | Assassin | AssemblyWorker AssemblyWorker31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army | Artificer | Assassin | AssemblyWorker | Atog Atog31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army | Artificer | Assassin | AssemblyWorker | Atog | Aurochs Aurochs31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army | Artificer | Assassin | AssemblyWorker | Atog | Aurochs | Avatar Avatar31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army | Artificer | Assassin | AssemblyWorker | Atog | Aurochs | Avatar | Azra Azra31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army | Artificer | Assassin | AssemblyWorker | Atog | Aurochs | Avatar | Azra | Badger Badger31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army | Artificer | Assassin | AssemblyWorker | Atog | Aurochs | Avatar | Azra | Badger | Barbarian Barbarian31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army | Artificer | Assassin | AssemblyWorker | Atog | Aurochs | Avatar | Azra | Badger | Barbarian | Bard Bard31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army | Artificer | Assassin | AssemblyWorker | Atog | Aurochs | Avatar | Azra | Badger | Barbarian | Bard | Basilisk Basilisk31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army | Artificer | Assassin | AssemblyWorker | Atog | Aurochs | Avatar | Azra | Badger | Barbarian | Bard | Basilisk | Bat Bat31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army | Artificer | Assassin | AssemblyWorker | Atog | Aurochs | Avatar | Azra | Badger | Barbarian | Bard | Basilisk | Bat | Bear Bear31,32
+data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army | Artificer | Assassin | AssemblyWorker | Atog | Aurochs | Avatar | Azra | Badger | Barbarian | Bard | Basilisk | Bat | Bear | BeastBeast31,32
+  | Beeble Beeble32,33
+  | Beeble | Beholder Beholder32,33
+  | Beeble | Beholder | Berserker Berserker32,33
+  | Beeble | Beholder | Berserker | Bird Bird32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth Blinkmoth32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar Boar32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer Bringer32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg Brushwagg32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg | Camarid Camarid32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg | Camarid | Camel Camel32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg | Camarid | Camel | Caribou Caribou32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg | Camarid | Camel | Caribou | Carrier Carrier32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg | Camarid | Camel | Caribou | Carrier | Cat Cat32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg | Camarid | Camel | Caribou | Carrier | Cat | Centaur Centaur32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg | Camarid | Camel | Caribou | Carrier | Cat | Centaur | Cephalid Cephalid32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg | Camarid | Camel | Caribou | Carrier | Cat | Centaur | Cephalid | Chimera Chimera32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg | Camarid | Camel | Caribou | Carrier | Cat | Centaur | Cephalid | Chimera | Citizen Citizen32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg | Camarid | Camel | Caribou | Carrier | Cat | Centaur | Cephalid | Chimera | Citizen | Cleric Cleric32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg | Camarid | Camel | Caribou | Carrier | Cat | Centaur | Cephalid | Chimera | Citizen | Cleric | Cockatrice Cockatrice32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg | Camarid | Camel | Caribou | Carrier | Cat | Centaur | Cephalid | Chimera | Citizen | Cleric | Cockatrice | Construct Construct32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg | Camarid | Camel | Caribou | Carrier | Cat | Centaur | Cephalid | Chimera | Citizen | Cleric | Cockatrice | Construct | Coward Coward32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg | Camarid | Camel | Caribou | Carrier | Cat | Centaur | Cephalid | Chimera | Citizen | Cleric | Cockatrice | Construct | Coward | Crab Crab32,33
+  | Beeble | Beholder | Berserker | Bird | Blinkmoth | Boar | Bringer | Brushwagg | Camarid | Camel | Caribou | Carrier | Cat | Centaur | Cephalid | Chimera | Citizen | Cleric | Cockatrice | Construct | Coward | Crab | CrocodileCrocodile32,33
+  | Cyclops Cyclops33,34
+  | Cyclops | Dauthi Dauthi33,34
+  | Cyclops | Dauthi | Demigod Demigod33,34
+  | Cyclops | Dauthi | Demigod | Demon Demon33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter Deserter33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil Devil33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur Dinosaur33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn Djinn33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog Dog33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon Dragon33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake Drake33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake | Dreadnought Dreadnought33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake | Dreadnought | Drone Drone33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake | Dreadnought | Drone | Druid Druid33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake | Dreadnought | Drone | Druid | Dryad Dryad33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake | Dreadnought | Drone | Druid | Dryad | Dwarf Dwarf33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake | Dreadnought | Drone | Druid | Dryad | Dwarf | Efreet Efreet33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake | Dreadnought | Drone | Druid | Dryad | Dwarf | Efreet | Egg Egg33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake | Dreadnought | Drone | Druid | Dryad | Dwarf | Efreet | Egg | Elder Elder33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake | Dreadnought | Drone | Druid | Dryad | Dwarf | Efreet | Egg | Elder | Eldrazi Eldrazi33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake | Dreadnought | Drone | Druid | Dryad | Dwarf | Efreet | Egg | Elder | Eldrazi | Elemental Elemental33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake | Dreadnought | Drone | Druid | Dryad | Dwarf | Efreet | Egg | Elder | Eldrazi | Elemental | Elephant Elephant33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake | Dreadnought | Drone | Druid | Dryad | Dwarf | Efreet | Egg | Elder | Eldrazi | Elemental | Elephant | Elf Elf33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake | Dreadnought | Drone | Druid | Dryad | Dwarf | Efreet | Egg | Elder | Eldrazi | Elemental | Elephant | Elf | Elk Elk33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake | Dreadnought | Drone | Druid | Dryad | Dwarf | Efreet | Egg | Elder | Eldrazi | Elemental | Elephant | Elf | Elk | Eye Eye33,34
+  | Cyclops | Dauthi | Demigod | Demon | Deserter | Devil | Dinosaur | Djinn | Dog | Dragon | Drake | Dreadnought | Drone | Druid | Dryad | Dwarf | Efreet | Egg | Elder | Eldrazi | Elemental | Elephant | Elf | Elk | Eye | FaerieFaerie33,34
+  | Ferret Ferret34,35
+  | Ferret | Fish Fish34,35
+  | Ferret | Fish | Flagbearer Flagbearer34,35
+  | Ferret | Fish | Flagbearer | Fox Fox34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal Fractal34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog Frog34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus Fungus34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle Gargoyle34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ Germ34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant Giant34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll Gnoll34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll | Gnome Gnome34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll | Gnome | Goat Goat34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll | Gnome | Goat | Goblin Goblin34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll | Gnome | Goat | Goblin | God God34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll | Gnome | Goat | Goblin | God | Golem Golem34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll | Gnome | Goat | Goblin | God | Golem | Gorgon Gorgon34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll | Gnome | Goat | Goblin | God | Golem | Gorgon | Graveborn Graveborn34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll | Gnome | Goat | Goblin | God | Golem | Gorgon | Graveborn | Gremlin Gremlin34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll | Gnome | Goat | Goblin | God | Golem | Gorgon | Graveborn | Gremlin | Griffin Griffin34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll | Gnome | Goat | Goblin | God | Golem | Gorgon | Graveborn | Gremlin | Griffin | Hag Hag34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll | Gnome | Goat | Goblin | God | Golem | Gorgon | Graveborn | Gremlin | Griffin | Hag | Halfling Halfling34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll | Gnome | Goat | Goblin | God | Golem | Gorgon | Graveborn | Gremlin | Griffin | Hag | Halfling | Hamster Hamster34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll | Gnome | Goat | Goblin | God | Golem | Gorgon | Graveborn | Gremlin | Griffin | Hag | Halfling | Hamster | Harpy Harpy34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll | Gnome | Goat | Goblin | God | Golem | Gorgon | Graveborn | Gremlin | Griffin | Hag | Halfling | Hamster | Harpy | Hellion Hellion34,35
+  | Ferret | Fish | Flagbearer | Fox | Fractal | Frog | Fungus | Gargoyle | Germ | Giant | Gnoll | Gnome | Goat | Goblin | God | Golem | Gorgon | Graveborn | Gremlin | Griffin | Hag | Halfling | Hamster | Harpy | Hellion | HippoHippo34,35
+  | Hippogriff Hippogriff35,36
+  | Hippogriff | Homarid Homarid35,36
+  | Hippogriff | Homarid | Homunculus Homunculus35,36
+  | Hippogriff | Homarid | Homunculus | Horror Horror35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse Horse35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human Human35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra Hydra35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena Hyena35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion Illusion35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion | Imp Imp35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion | Imp | Incarnation Incarnation35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion | Imp | Incarnation | Inkling Inkling35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion | Imp | Incarnation | Inkling | Insect Insect35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion | Imp | Incarnation | Inkling | Insect | Jackal Jackal35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion | Imp | Incarnation | Inkling | Insect | Jackal | Jellyfish Jellyfish35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion | Imp | Incarnation | Inkling | Insect | Jackal | Jellyfish | Juggernaut Juggernaut35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion | Imp | Incarnation | Inkling | Insect | Jackal | Jellyfish | Juggernaut | Kavu Kavu35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion | Imp | Incarnation | Inkling | Insect | Jackal | Jellyfish | Juggernaut | Kavu | Kirin Kirin35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion | Imp | Incarnation | Inkling | Insect | Jackal | Jellyfish | Juggernaut | Kavu | Kirin | Kithkin Kithkin35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion | Imp | Incarnation | Inkling | Insect | Jackal | Jellyfish | Juggernaut | Kavu | Kirin | Kithkin | Knight Knight35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion | Imp | Incarnation | Inkling | Insect | Jackal | Jellyfish | Juggernaut | Kavu | Kirin | Kithkin | Knight | Kobold Kobold35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion | Imp | Incarnation | Inkling | Insect | Jackal | Jellyfish | Juggernaut | Kavu | Kirin | Kithkin | Knight | Kobold | Kor Kor35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion | Imp | Incarnation | Inkling | Insect | Jackal | Jellyfish | Juggernaut | Kavu | Kirin | Kithkin | Knight | Kobold | Kor | Kraken Kraken35,36
+  | Hippogriff | Homarid | Homunculus | Horror | Horse | Human | Hydra | Hyena | Illusion | Imp | Incarnation | Inkling | Insect | Jackal | Jellyfish | Juggernaut | Kavu | Kirin | Kithkin | Knight | Kobold | Kor | Kraken | LamiaLamia35,36
+  | Lammasu Lammasu36,37
+  | Lammasu | Leech Leech36,37
+  | Lammasu | Leech | Leviathan Leviathan36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf Lhurgoyf36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid Licid36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard Lizard36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore Manticore36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore Masticore36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary Mercenary36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary | Merfolk Merfolk36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary | Merfolk | Metathran Metathran36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary | Merfolk | Metathran | Minion Minion36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary | Merfolk | Metathran | Minion | Minotaur Minotaur36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary | Merfolk | Metathran | Minion | Minotaur | Mole Mole36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary | Merfolk | Metathran | Minion | Minotaur | Mole | Monger Monger36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary | Merfolk | Metathran | Minion | Minotaur | Mole | Monger | Mongoose Mongoose36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary | Merfolk | Metathran | Minion | Minotaur | Mole | Monger | Mongoose | Monk Monk36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary | Merfolk | Metathran | Minion | Minotaur | Mole | Monger | Mongoose | Monk | Monkey Monkey36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary | Merfolk | Metathran | Minion | Minotaur | Mole | Monger | Mongoose | Monk | Monkey | Moonfolk Moonfolk36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary | Merfolk | Metathran | Minion | Minotaur | Mole | Monger | Mongoose | Monk | Monkey | Moonfolk | Mouse Mouse36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary | Merfolk | Metathran | Minion | Minotaur | Mole | Monger | Mongoose | Monk | Monkey | Moonfolk | Mouse | Mutant Mutant36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary | Merfolk | Metathran | Minion | Minotaur | Mole | Monger | Mongoose | Monk | Monkey | Moonfolk | Mouse | Mutant | Myr Myr36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary | Merfolk | Metathran | Minion | Minotaur | Mole | Monger | Mongoose | Monk | Monkey | Moonfolk | Mouse | Mutant | Myr | Mystic Mystic36,37
+  | Lammasu | Leech | Leviathan | Lhurgoyf | Licid | Lizard | Manticore | Masticore | Mercenary | Merfolk | Metathran | Minion | Minotaur | Mole | Monger | Mongoose | Monk | Monkey | Moonfolk | Mouse | Mutant | Myr | Mystic | NagaNaga36,37
+  | Nautilus Nautilus37,38
+  | Nautilus | Nephilim Nephilim37,38
+  | Nautilus | Nephilim | Nightmare Nightmare37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker Nightstalker37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja Ninja37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble Noble37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle Noggle37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad Nomad37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph Nymph37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus Octopus37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus | Ogre Ogre37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus | Ogre | Ooze Ooze37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus | Ogre | Ooze | Orb Orb37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus | Ogre | Ooze | Orb | Orc Orc37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus | Ogre | Ooze | Orb | Orc | Orgg Orgg37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus | Ogre | Ooze | Orb | Orc | Orgg | Otter Otter37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus | Ogre | Ooze | Orb | Orc | Orgg | Otter | Ouphe Ouphe37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus | Ogre | Ooze | Orb | Orc | Orgg | Otter | Ouphe | Ox Ox37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus | Ogre | Ooze | Orb | Orc | Orgg | Otter | Ouphe | Ox | Oyster Oyster37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus | Ogre | Ooze | Orb | Orc | Orgg | Otter | Ouphe | Ox | Oyster | Pangolin Pangolin37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus | Ogre | Ooze | Orb | Orc | Orgg | Otter | Ouphe | Ox | Oyster | Pangolin | Peasant Peasant37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus | Ogre | Ooze | Orb | Orc | Orgg | Otter | Ouphe | Ox | Oyster | Pangolin | Peasant | Pegasus Pegasus37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus | Ogre | Ooze | Orb | Orc | Orgg | Otter | Ouphe | Ox | Oyster | Pangolin | Peasant | Pegasus | Pentavite Pentavite37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus | Ogre | Ooze | Orb | Orc | Orgg | Otter | Ouphe | Ox | Oyster | Pangolin | Peasant | Pegasus | Pentavite | Pest Pest37,38
+  | Nautilus | Nephilim | Nightmare | Nightstalker | Ninja | Noble | Noggle | Nomad | Nymph | Octopus | Ogre | Ooze | Orb | Orc | Orgg | Otter | Ouphe | Ox | Oyster | Pangolin | Peasant | Pegasus | Pentavite | Pest | PhelddagrifPhelddagrif37,38
+  | Phoenix Phoenix38,39
+  | Phoenix | Phyrexian Phyrexian38,39
+  | Phoenix | Phyrexian | Pilot Pilot38,39
+  | Phoenix | Phyrexian | Pilot | Pincher Pincher38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate Pirate38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant Plant38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor Praetor38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism Prism38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor Processor38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit Rabbit38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit | Ranger Ranger38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit | Ranger | Rat Rat38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit | Ranger | Rat | Rebel Rebel38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit | Ranger | Rat | Rebel | Reflection Reflection38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit | Ranger | Rat | Rebel | Reflection | Rhino Rhino38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit | Ranger | Rat | Rebel | Reflection | Rhino | Rigger Rigger38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit | Ranger | Rat | Rebel | Reflection | Rhino | Rigger | Rogue Rogue38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit | Ranger | Rat | Rebel | Reflection | Rhino | Rigger | Rogue | Sable Sable38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit | Ranger | Rat | Rebel | Reflection | Rhino | Rigger | Rogue | Sable | Salamander Salamander38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit | Ranger | Rat | Rebel | Reflection | Rhino | Rigger | Rogue | Sable | Salamander | Samurai Samurai38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit | Ranger | Rat | Rebel | Reflection | Rhino | Rigger | Rogue | Sable | Salamander | Samurai | Sand Sand38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit | Ranger | Rat | Rebel | Reflection | Rhino | Rigger | Rogue | Sable | Salamander | Samurai | Sand | Saproling Saproling38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit | Ranger | Rat | Rebel | Reflection | Rhino | Rigger | Rogue | Sable | Salamander | Samurai | Sand | Saproling | Satyr Satyr38,39
+  | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit | Ranger | Rat | Rebel | Reflection | Rhino | Rigger | Rogue | Sable | Salamander | Samurai | Sand | Saproling | Satyr | ScarecrowScarecrow38,39
+  | Scion Scion39,40
+  | Scion | Scorpion Scorpion39,40
+  | Scion | Scorpion | Scout Scout39,40
+  | Scion | Scorpion | Scout | Sculpture Sculpture39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf Serf39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent Serpent39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo Servo39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade Shade39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman Shaman39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter Shapeshifter39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter | Shark Shark39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter | Shark | Sheep Sheep39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter | Shark | Sheep | Siren Siren39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter | Shark | Sheep | Siren | Skeleton Skeleton39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter | Shark | Sheep | Siren | Skeleton | Slith Slith39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter | Shark | Sheep | Siren | Skeleton | Slith | Sliver Sliver39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter | Shark | Sheep | Siren | Skeleton | Slith | Sliver | Slug Slug39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter | Shark | Sheep | Siren | Skeleton | Slith | Sliver | Slug | Snake Snake39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter | Shark | Sheep | Siren | Skeleton | Slith | Sliver | Slug | Snake | Soldier Soldier39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter | Shark | Sheep | Siren | Skeleton | Slith | Sliver | Slug | Snake | Soldier | Soltari Soltari39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter | Shark | Sheep | Siren | Skeleton | Slith | Sliver | Slug | Snake | Soldier | Soltari | Spawn Spawn39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter | Shark | Sheep | Siren | Skeleton | Slith | Sliver | Slug | Snake | Soldier | Soltari | Spawn | Specter Specter39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter | Shark | Sheep | Siren | Skeleton | Slith | Sliver | Slug | Snake | Soldier | Soltari | Spawn | Specter | Spellshaper Spellshaper39,40
+  | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter | Shark | Sheep | Siren | Skeleton | Slith | Sliver | Slug | Snake | Soldier | Soltari | Spawn | Specter | Spellshaper | SphinxSphinx39,40
+  | Spider Spider40,41
+  | Spider | Spike Spike40,41
+  | Spider | Spike | Spirit Spirit40,41
+  | Spider | Spike | Spirit | Splinter Splinter40,41
+  | Spider | Spike | Spirit | Splinter | Sponge Sponge40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid Squid40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel Squirrel40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish Starfish40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish | Surrakar Surrakar40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish | Surrakar | Survivor Survivor40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish | Surrakar | Survivor | Tentacle Tentacle40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish | Surrakar | Survivor | Tentacle | Tetravite Tetravite40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish | Surrakar | Survivor | Tentacle | Tetravite | Thalakos Thalakos40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish | Surrakar | Survivor | Tentacle | Tetravite | Thalakos | Thopter Thopter40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish | Surrakar | Survivor | Tentacle | Tetravite | Thalakos | Thopter | Thrull Thrull40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish | Surrakar | Survivor | Tentacle | Tetravite | Thalakos | Thopter | Thrull | Tiefling Tiefling40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish | Surrakar | Survivor | Tentacle | Tetravite | Thalakos | Thopter | Thrull | Tiefling | Treefolk Treefolk40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish | Surrakar | Survivor | Tentacle | Tetravite | Thalakos | Thopter | Thrull | Tiefling | Treefolk | Trilobite Trilobite40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish | Surrakar | Survivor | Tentacle | Tetravite | Thalakos | Thopter | Thrull | Tiefling | Treefolk | Trilobite | Triskelavite Triskelavite40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish | Surrakar | Survivor | Tentacle | Tetravite | Thalakos | Thopter | Thrull | Tiefling | Treefolk | Trilobite | Triskelavite | Troll Troll40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish | Surrakar | Survivor | Tentacle | Tetravite | Thalakos | Thopter | Thrull | Tiefling | Treefolk | Trilobite | Triskelavite | Troll | Turtle Turtle40,41
+  | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish | Surrakar | Survivor | Tentacle | Tetravite | Thalakos | Thopter | Thrull | Tiefling | Treefolk | Trilobite | Triskelavite | Troll | Turtle | UnicornUnicorn40,41
+  | Vampire Vampire41,42
+  | Vampire  | Vedalken Vedalken41,42
+  | Vampire  | Vedalken | Viashino Viashino41,42
+  | Vampire  | Vedalken | Viashino | Volver Volver41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall Wall41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock Warlock41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior Warrior41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior | Weird Weird41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior | Weird | Werewolf Werewolf41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior | Weird | Werewolf | Whale Whale41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior | Weird | Werewolf | Whale | Wizard Wizard41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior | Weird | Werewolf | Whale | Wizard | Wolf Wolf41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior | Weird | Werewolf | Whale | Wizard | Wolf | Wolverine Wolverine41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior | Weird | Werewolf | Whale | Wizard | Wolf | Wolverine | Wombat Wombat41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior | Weird | Werewolf | Whale | Wizard | Wolf | Wolverine | Wombat | Worm Worm41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior | Weird | Werewolf | Whale | Wizard | Wolf | Wolverine | Wombat | Worm | Wraith Wraith41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior | Weird | Werewolf | Whale | Wizard | Wolf | Wolverine | Wombat | Worm | Wraith | Wurm Wurm41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior | Weird | Werewolf | Whale | Wizard | Wolf | Wolverine | Wombat | Worm | Wraith | Wurm | Yeti Yeti41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior | Weird | Werewolf | Whale | Wizard | Wolf | Wolverine | Wombat | Worm | Wraith | Wurm | Yeti | Zombie Zombie41,42
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior | Weird | Werewolf | Whale | Wizard | Wolf | Wolverine | Wombat | Worm | Wraith | Wurm | Yeti | Zombie | ZuberaZubera41,42
+data PlaneType PlaneType44,45
+data PlaneType = Alara Alara44,45
+data PlaneType = Alara | Arkhos Arkhos44,45
+data PlaneType = Alara | Arkhos | Azgol Azgol44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon Belenon44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm BolasMeditationRealm44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm | Dominaria Dominaria44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm | Dominaria | Equilor Equilor44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm | Dominaria | Equilor | Ergamon Ergamon44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm | Dominaria | Equilor | Ergamon | Fabacin Fabacin44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm | Dominaria | Equilor | Ergamon | Fabacin | Innistrad Innistrad44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm | Dominaria | Equilor | Ergamon | Fabacin | Innistrad | Iquatana Iquatana44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm | Dominaria | Equilor | Ergamon | Fabacin | Innistrad | Iquatana | Ir Ir44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm | Dominaria | Equilor | Ergamon | Fabacin | Innistrad | Iquatana | Ir | Kaldheim Kaldheim44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm | Dominaria | Equilor | Ergamon | Fabacin | Innistrad | Iquatana | Ir | Kaldheim | Kamigawa Kamigawa44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm | Dominaria | Equilor | Ergamon | Fabacin | Innistrad | Iquatana | Ir | Kaldheim | Kamigawa | Karsus Karsus44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm | Dominaria | Equilor | Ergamon | Fabacin | Innistrad | Iquatana | Ir | Kaldheim | Kamigawa | Karsus | Kephalai Kephalai44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm | Dominaria | Equilor | Ergamon | Fabacin | Innistrad | Iquatana | Ir | Kaldheim | Kamigawa | Karsus | Kephalai | Kinshala Kinshala44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm | Dominaria | Equilor | Ergamon | Fabacin | Innistrad | Iquatana | Ir | Kaldheim | Kamigawa | Karsus | Kephalai | Kinshala | Kolbahan Kolbahan44,45
+data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm | Dominaria | Equilor | Ergamon | Fabacin | Innistrad | Iquatana | Ir | Kaldheim | Kamigawa | Karsus | Kephalai | Kinshala | Kolbahan | KynethKyneth44,45
+  | Lorwyn Lorwyn45,46
+  | Lorwyn | Luvion Luvion45,46
+  | Lorwyn | Luvion | Mercadia Mercadia45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin Mirrodin45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag Moag45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng Mongseng45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda Muraganda45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda | NewPhyrexia NewPhyrexia45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda | NewPhyrexia | Phyrexia Phyrexia45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda | NewPhyrexia | Phyrexia | Pyrulea Pyrulea45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda | NewPhyrexia | Phyrexia | Pyrulea | Rabiah Rabiah45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda | NewPhyrexia | Phyrexia | Pyrulea | Rabiah | Rath Rath45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda | NewPhyrexia | Phyrexia | Pyrulea | Rabiah | Rath | Ravnica Ravnica45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda | NewPhyrexia | Phyrexia | Pyrulea | Rabiah | Rath | Ravnica | Regatha Regatha45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda | NewPhyrexia | Phyrexia | Pyrulea | Rabiah | Rath | Ravnica | Regatha | Segovia Segovia45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda | NewPhyrexia | Phyrexia | Pyrulea | Rabiah | Rath | Ravnica | Regatha | Segovia | SerrasRealm SerrasRealm45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda | NewPhyrexia | Phyrexia | Pyrulea | Rabiah | Rath | Ravnica | Regatha | Segovia | SerrasRealm | Shadowmoor Shadowmoor45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda | NewPhyrexia | Phyrexia | Pyrulea | Rabiah | Rath | Ravnica | Regatha | Segovia | SerrasRealm | Shadowmoor | Shandalar Shandalar45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda | NewPhyrexia | Phyrexia | Pyrulea | Rabiah | Rath | Ravnica | Regatha | Segovia | SerrasRealm | Shadowmoor | Shandalar | Ulgrotha Ulgrotha45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda | NewPhyrexia | Phyrexia | Pyrulea | Rabiah | Rath | Ravnica | Regatha | Segovia | SerrasRealm | Shadowmoor | Shandalar | Ulgrotha | Valla Valla45,46
+  | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda | NewPhyrexia | Phyrexia | Pyrulea | Rabiah | Rath | Ravnica | Regatha | Segovia | SerrasRealm | Shadowmoor | Shandalar | Ulgrotha | Valla | VrynVryn45,46
+  | Wildfire Wildfire46,47
+  | Wildfire | Xerex Xerex46,47
+  | Wildfire | Xerex | ZendikarZendikar46,47
+data SuperType SuperType49,50
+data SuperType = Basic Basic49,50
+data SuperType = Basic | Legendary Legendary49,50
+data SuperType = Basic | Legendary | Ongoing Ongoing49,50
+data SuperType = Basic | Legendary | Ongoing | Snow Snow49,50
+data SuperType = Basic | Legendary | Ongoing | Snow | WorldWorld49,50
+type TribalType TribalType52,53
+data SubType SubType54,55
+data SubType = AType AType54,55
+data SubType = AType ArtifactType | EType EType54,55
+data SubType = AType ArtifactType | EType EnchantmentType | LType LType54,55
+data SubType = AType ArtifactType | EType EnchantmentType | LType LandType | WType WType54,55
+data SubType = AType ArtifactType | EType EnchantmentType | LType LandType | WType PlaneswalkerType | SType SType54,55
+data SubType = AType ArtifactType | EType EnchantmentType | LType LandType | WType PlaneswalkerType | SType SpellType | CType CType54,55
+data SubType = AType ArtifactType | EType EnchantmentType | LType LandType | WType PlaneswalkerType | SType SpellType | CType CreatureType | PType PType54,55
+data TypeLine TypeLine56,57
+data TypeLine = TypeLine TypeLine56,57
+
+./src/Basics/Basics.hs,129
+module Basics Basics0,1
+plains plains5,6
+island island8,9
+swamp swamp11,12
+mountain mountain14,15
+forest forest17,18
+
+./src/AncestralRecall.hs,81
+module AncestralRecall AncestralRecall0,1
+ancestralRecall ancestralRecall7,8
+
+./src/Colors.hs,754
+module Colors Colors0,1
+data Color Color3,4
+data Color = White White3,4
+data Color = White | Blue Blue3,4
+data Color = White | Blue | Black Black3,4
+data Color = White | Blue | Black | Red Red3,4
+data Color = White | Blue | Black | Red | GreenGreen3,4
+data ManaColor ManaColor4,5
+data ManaColor = Colored Colored4,5
+data ManaColor = Colored Color | ColorlessColorless4,5
+data Pip Pip5,6
+data Pip = CSym CSym5,6
+data Pip = CSym ManaColor | XSym XSym5,6
+data Pip = CSym ManaColor | XSym | PhySym PhySym5,6
+data Pip = CSym ManaColor | XSym | PhySym | SnowSym SnowSym5,6
+data Pip = CSym ManaColor | XSym | PhySym | SnowSym | GenSym GenSym5,6
+data Pip = CSym ManaColor | XSym | PhySym | SnowSym | GenSym Int | HyPip HyPip5,6
+
+./src/Lib.hs,42
+module LibLib0,1
+someFunc someFunc4,5
+
+./src/Card.hs,694
+data PT PT7,8
+data PT = Star Star7,8
+data PT = Star | StarPlus StarPlus7,8
+data PT = Star | StarPlus Int | PT PT7,8
+data Card Card11,12
+data Card = Card Card11,12
+data Card = Card { cardName cardName11,12
+                 , manaCost manaCost12,13
+                 , color color13,14
+                 , typeLine typeLine14,15
+                 , textBox textBox15,16
+                 , power power16,17
+                 , toughness toughness17,18
+                 , loyalty loyalty18,19
+type Deck Deck21,22
+defaultCard defaultCard23,24
+pipValue pipValue35,36
+isMonoColored isMonoColored48,49
+isMultiColored isMultiColored52,53
+isColorless isColorless56,57
+
+./src/Util.hs,49
+module Util Util0,1
+parseColor parseColor7,8
+
+./src/Zones.hs,575
+module Zones Zones0,1
+data Zones = Library Library4,5
+data Zones = Library | Hand Hand4,5
+data Zones = Library | Hand | Battlefield Battlefield4,5
+data Zones = Library | Hand | Battlefield | Graveyard Graveyard4,5
+data Zones = Library | Hand | Battlefield | Graveyard | Stack Stack4,5
+data Zones = Library | Hand | Battlefield | Graveyard | Stack | Exile Exile4,5
+data Zones = Library | Hand | Battlefield | Graveyard | Stack | Exile | CommandCommand4,5
+type Library Library6,7
+type Graveyard Graveyard7,8
+type Command Command8,9
+type Exile Exile9,10
+
+./test/Spec.hs,15
+main main0,1
+
+./app/Main.hs,1447
+module Main Main0,1
+data GameState GameState6,7
+data GameState = AA6,7
+data TurnstileState TurnstileState8,9
+data TurnstileState = Locked Locked8,9
+data TurnstileState = Locked | UnlockedUnlocked8,9
+data TurnstileOutput TurnstileOutput11,12
+data TurnstileOutput = Thank Thank11,12
+data TurnstileOutput = Thank | Open Open11,12
+data TurnstileOutput = Thank | Open | TutTut11,12
+newtype State State14,15
+newtype State s a = State { runState runState14,15
+state state16,17
+instance Functor Functor (State s)19,20
+  fmap fmap20,21
+instance Applicative Applicative (State s)22,23
+  pure pure23,24
+  (<(<*>)24,25
+instance Monad Monad (State s)26,27
+  return return27,28
+  p p28,29
+coin, push push32,33
+coin,coin32,33
+coinS, pushS pushS35,36
+coinS,coinS35,36
+pushS pushS37,38
+push push39,40
+monday monday42,43
+mondayS mondayS51,52
+regularPersonS, distractedPersonS, hastyPersonS hastyPersonS54,55
+regularPersonS, distractedPersonS,distractedPersonS54,55
+regularPersonS,regularPersonS54,55
+distractedPersonS distractedPersonS58,59
+hastyPersonS hastyPersonS60,61
+luckyPairS luckyPairS66,67
+regularPerson, distractedPerson, hastyPerson hastyPerson72,73
+regularPerson, distractedPerson,distractedPerson72,73
+regularPerson,regularPerson72,73
+distractedPerson distractedPerson79,80
+hastyPerson hastyPerson83,84
+tuesday tuesday90,91
+luckyPair luckyPair97,98
+main main116,117
