@@ -1,42 +1,41 @@
 module Main where
 
 import Control.Monad
+import Data.Char
 import Data.Maybe
+import Text.Read
 import Lib
 import Card
 import Player
+import Zones
 
-type Spell = Card
+data Phase = Untap | Upkeep | Draw | Main | BegCom | DecAttack | DecBlock | DamCom | EndCom | End | Cleanup deriving (Eq, Show)
 
-data Phase = Untap | Upkeep | Draw | Main1 | Combat | Main2 | End
+combat = [BegCom, DecAttack, DecBlock, DamCom, EndCom]
+phaseOrder = cycle [Untap, Upkeep, Draw, Main] ++ combat  ++ [Main, End, Cleanup]
 
 data GameState = GameState
                  { zones     :: [Player]
-                 , stack     :: [Spell]
-                 , turn      :: Int
+                 , stack     :: Stack
+                 , turn      :: PId
                  , phase     :: Phase
+                 , nextPhases :: [Phase]
                  , turnOrder :: [Int]
                  , priority  :: Int
+                 , precombat :: Bool
+                 , landPlayed :: Bool
                  }
 
-nextPhase :: Phase -> Phase
-nextPhase Untap = Upkeep
-nextPhase Upkeep = Draw
-nextPhase Draw = Main1
-nextPhase Main1 = Combat
-nextPhase Combat = Main2
-nextPhase Main2 = End
-nextPhase End = Untap
+-- initialGameState = GameState
+--   { stack = []
+--   , nextPhases = phaseOrder
+--   , precombat  = True
+--   , landPlayed = False
+--   }
 
-pass :: GameState -> GameState
-pass s = case s of
-  GameState {} = GameState 
-
-data TurnstileState = Locked | Unlocked
-  deriving (Eq, Show)
-
-data TurnstileOutput = Thank | Open | Tut
-  deriving (Eq, Show)
+-- pass :: GameState -> GameState
+-- pass s = case s of
+--   GameState {} -> GameState {}
 
 newtype State s a = State { runState :: s -> (a, s) }
 
@@ -56,89 +55,46 @@ instance Monad (State s) where
     let (x, s1) = runState p s0
     in runState (k x) s1
 
-coin, push :: TurnstileState -> (TurnstileOutput, TurnstileState)
-coin _ = (Thank, Unlocked)
+play :: GameState -> GameState
+play _ = undefined
 
-coinS, pushS :: State TurnstileState TurnstileOutput
-coinS = state coin
-pushS = state push
+data Format = Standard | Modern | Legacy | Vintage deriving Show
 
-push Unlocked = (Open, Locked)
-push Locked = (Tut, Locked)
+instance Read Format where
+  readsPrec _ s =
+    case s of
+      "standard" -> [(Standard, "")]
+      "s"        -> [(Standard, "")]
+      "modern"   -> [(Modern, "")]
+      "m"        -> [(Modern, "")]
+      "legacy"   -> [(Legacy, "")]
+      "l"        -> [(Legacy, "")]
+      "vintage"  -> [(Vintage, "")]
+      "v"        -> [(Vintage, "")]
+      _          -> []
 
-monday :: TurnstileState -> ([TurnstileOutput], TurnstileState)
-monday s0 =
-  let (a1, s1) = coin s0
-      (a2, s2) = push s1
-      (a3, s3) = push s2
-      (a4, s4) = coin s3
-      (a5, s5) = push s4
-   in ([a1, a2, a3, a4, a5], s5)
+formatPrompt :: IO Format
+formatPrompt = do
+  putStr "Format (s/m/l/v): "
+  x <- readMaybe <$> getLine
+  case x of
+    Just x -> return x
+    Nothing -> formatPrompt
 
-mondayS :: State TurnstileState [TurnstileOutput]
-mondayS = sequence [coinS, pushS, pushS, coinS, pushS]
-
-regularPersonS, distractedPersonS, hastyPersonS :: State TurnstileState [TurnstileOutput]
-
-regularPersonS = sequence [coinS, pushS]
-
-distractedPersonS = sequence [coinS]
-
-hastyPersonS = do a1 <- pushS
-                  case a1 of
-                    Open -> return [a1]
-                    _     -> do as <- sequence [coinS, pushS]
-                                return (a1:as)
-
-luckyPairS :: Bool -> State TurnstileState Bool
-luckyPairS b = do
-  if b then distractedPersonS else regularPersonS
-  o <- pushS
-  return (o == Open)
-
-regularPerson, distractedPerson, hastyPerson :: TurnstileState -> ([TurnstileOutput], TurnstileState)
-
-regularPerson s0 =
-  let (a1, s1) = coin s0
-      (a2, s2) = push s1
-  in ([a1, a2], s2)
-
-distractedPerson s0 =
-  let (a1, s1) = coin s0
-  in ([a1], s1)
-
-hastyPerson Unlocked = let (a1, s1) = push Unlocked in
-                         ([a1], s1)
-hastyPerson Locked   = let (a1, s1) = push Locked
-                           (a2, s2) = coin s1
-                           (a3, s3) = push s2 in
-                         ([a1,a2,a3], s3)
-
-tuesday :: TurnstileState -> ([TurnstileOutput], TurnstileState)
-tuesday s0 = let (a, s1) = regularPerson s0
-                 (b, s2) = hastyPerson s1
-                 (c, s3) = distractedPerson s2
-                 (d, s4) = hastyPerson s3
-             in (a ++ b ++ c ++ d, s4)
-
-luckyPair :: Bool -> TurnstileState -> (Bool, TurnstileState)
-luckyPair True s0 = let (a, s1) = distractedPerson s0
-                        (b, s2) = push s1 in
-                      (True, s2)
-luckyPair False s0 = let (a, s1) = regularPerson s0
-                         (b, s2) = push s1 in
-                       (False, s2)
-
-
--- turn : Monad Magic
--- turn = do
---   untap
---   upkeep
---   draw
---   main
---   combat
---   main
---   end
+playersPrompt :: IO Int
+playersPrompt = do
+  putStr "Number of Players: "
+  x <- readMaybe <$> getLine
+  case x of
+    Just x -> if x >= 2 && x <= 8
+              then return x
+              else do
+                  putStrLn "Please enter a number between 2 and 8"
+                  playersPrompt
+    Nothing -> playersPrompt
 
 main :: IO ()
-main = putStrLn "Here"
+main = do
+  f <- formatPrompt
+  numPlayers <- playersPrompt
+  putStrLn "Done"

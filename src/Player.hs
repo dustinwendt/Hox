@@ -2,13 +2,16 @@ module Player where
 
 import Card
 import Colors
+import Zones
 
-data Player = Player { playerId :: Int
+type PId = Int
+
+data Player = Player { playerId :: PId
                      , life :: Int
-                     , library :: [Card]
-                     , hand :: [Card]
-                     , graveyard :: [Card]
-                     , exile :: [Card]
-                     , battlefield :: [Card]
+                     , library :: Library
+                     , hand :: Hand
+                     , graveyard :: Graveyard
+                     , exile :: Exile
+                     , battlefield :: Battlefield
                      , manaPool :: [ManaColor]
                      }
