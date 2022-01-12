@@ -6,6 +6,7 @@ import Data.Maybe
 import Text.Read
 import Lib
 import Card
+import Colors
 import Player
 import Zones
 
@@ -19,19 +20,23 @@ data GameState = GameState
                  , stack     :: Stack
                  , turn      :: PId
                  , phase     :: Phase
+                 , exile     :: Exile
+                 , battlefield :: Battlefield
                  , nextPhases :: [Phase]
-                 , turnOrder :: [Int]
-                 , priority  :: Int
+                 , turnOrder :: [PId]
+                 , priority  :: PId
                  , precombat :: Bool
                  , landPlayed :: Bool
                  }
 
--- initialGameState = GameState
---   { stack = []
---   , nextPhases = phaseOrder
---   , precombat  = True
---   , landPlayed = False
---   }
+initGameState = GameState
+  { zones = []
+  , stack = []
+  , exile = []
+  , battlefield = []
+  , precombat = True
+  , landPlayed = False
+  }
 
 -- pass :: GameState -> GameState
 -- pass s = case s of

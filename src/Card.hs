@@ -8,6 +8,12 @@ import Types
 
 -- 208 Power/Toughness
 data PT = Star | StarPlus Int | PT Int deriving (Eq)
+
+instance Show PT where
+  show Star         = "*"
+  show (StarPlus i) = "*+" ++ show i
+  show (PT i)       = show i
+  
 -- data Power = PowStar StarNum | PowNum Int
 -- data Toughness = TouStar StarNum | TouNum Int
 
@@ -19,21 +25,23 @@ data Legality = Legality { standard :: Bool
 
 $(makeLenses ''Legality)
 
+-- 110.5
 data Status =
   Status { _tapped :: Bool
          , _flipped :: Bool
          , _faceUp :: Bool
-         , _phased :: Bool} deriving Eq
+         , _phased :: Bool} deriving (Eq, Show)
 
 $(makeLenses ''Status)
 
+-- 110.5b
 defaultStatus =
   Status { _tapped = False
          , _flipped = False
          , _faceUp = True
          , _phased = False}
 
-
+-- 109.3
 data Properties = Properties
   { _name :: String
   , _manaCost :: [Pip]
@@ -45,29 +53,47 @@ data Properties = Properties
   , _toughness :: Maybe PT
   , _loyalty :: Maybe Int
   , _legality :: Legality
-  , _owner :: Int
-  , _controller :: Int
-  } deriving Eq
+  , _owner :: PId
+  , _controller :: PId
+  } deriving (Eq)
 
 $(makeLenses ''Properties)
 
-data ObjectType = Ability | Card | Copy | Token | Spell (Maybe Object) | Permanent (Maybe Object) Status | Emblem deriving (Eq)
+instance Show Properties where
+  show p = show (p^.name) ++ " " ++ g (p^.manaCost) ++ "\n" ++
+           show (p^.typeLine) ++ "\n" ++
+           show (p^.textBox) ++ "\n" ++
+           f (p^.power, p^.toughness)
+   where f (Just x, Just y) = show x ++ "/" ++ show y ++ "\n"
+         f _ = ""
+         g [] = ""
+         g (x:xs) = "{" ++ show x ++ "}" ++ g xs
+-- 109.1
+-- Token | Copy are represented by Nothing being passed to Permanent and Spell respectively
+data ObjectType = Ability | Card | Spell (Maybe Object) | Permanent (Maybe Object) Status | Emblem deriving (Eq)
 
 data Object =
   Object { _properties :: Properties
-         , _object :: ObjectType} deriving (Eq)
+         , _object :: ObjectType} deriving Eq
 
 $(makeLenses ''Object)
 
-isSpell :: Object -> Bool
+instance Show Object where
+  show o = show $ o^.properties
+
+isCard o = o^.object == Card
+
 isSpell o = let t = o^.object in
-  t == Card || t == Copy
+  case t of
+    Spell _ -> True
+    _       -> False
 
-copySpell s = assert (isSpell s) $ object .~ Copy $ s
+copySpell :: Object -> Object
+copySpell s = assert (isSpell s) $ object .~ Spell Nothing $ s
 
-isPermanent :: Object -> Bool
-isPermanent p = let t = p ^. object in
-  t == Card || t == Token
+-- isPermanent :: Object -> Bool
+-- isPermanent p = let t = p ^. object in
+--   t == Card || t == Token
 
 defaultLegality = Legality { standard = True
                            , modern   = True
