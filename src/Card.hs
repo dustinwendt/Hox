@@ -13,7 +13,7 @@ instance Show PT where
   show Star         = "*"
   show (StarPlus i) = "*+" ++ show i
   show (PT i)       = show i
-  
+
 -- data Power = PowStar StarNum | PowNum Int
 -- data Toughness = TouStar StarNum | TouNum Int
 
@@ -30,7 +30,8 @@ data Status =
   Status { _tapped :: Bool
          , _flipped :: Bool
          , _faceUp :: Bool
-         , _phased :: Bool} deriving (Eq, Show)
+         , _phased :: Bool
+         , _sick :: Bool} deriving (Eq, Show)
 
 $(makeLenses ''Status)
 
@@ -39,12 +40,13 @@ defaultStatus =
   Status { _tapped = False
          , _flipped = False
          , _faceUp = True
-         , _phased = False}
+         , _phased = False
+         , _sick = True }
 
 -- 109.3
 data Properties = Properties
   { _name :: String
-  , _manaCost :: [Pip]
+  , _manaCost :: Maybe [Pip]
   , _color :: [Color]
   , _identity :: [Color]
   , _typeLine :: TypeLine
@@ -60,14 +62,21 @@ data Properties = Properties
 $(makeLenses ''Properties)
 
 instance Show Properties where
-  show p = show (p^.name) ++ " " ++ g (p^.manaCost) ++ "\n" ++
-           show (p^.typeLine) ++ "\n" ++
-           show (p^.textBox) ++ "\n" ++
+  show p = show (p^.name) ++ " " ++ mc (p^.manaCost) ++ "\n" ++
+           tl (p^.typeLine) ++
+           tb (p^.textBox) ++
            f (p^.power, p^.toughness)
    where f (Just x, Just y) = show x ++ "/" ++ show y ++ "\n"
          f _ = ""
          g [] = ""
          g (x:xs) = "{" ++ show x ++ "}" ++ g xs
+         tl (TypeLine [] [] []) = ""
+         tl typeline            = show typeline ++ "\n"
+         tb textbox = if null textbox then "" else textbox ++ "\n"
+         mc Nothing = ""
+         mc (Just p) = g p
+
+
 -- 109.1
 -- Token | Copy are represented by Nothing being passed to Permanent and Spell respectively
 data ObjectType = Ability | Card | Spell (Maybe Object) | Permanent (Maybe Object) Status | Emblem deriving (Eq)
@@ -104,7 +113,7 @@ defaultLegality = Legality { standard = True
 defaultProperties :: Properties
 defaultProperties = Properties
   { _name = "DefaultCard"
-  , _manaCost = []
+  , _manaCost = Nothing
   , _color = []
   , _identity = []
   , _typeLine = TypeLine [] [] []
@@ -131,7 +140,8 @@ pipValue x = case x of
                  v _          = 1
 
 manaValue :: Object -> Int
-manaValue o = foldr ((+) . pipValue) 0 (o^.properties.manaCost)
+manaValue o = case o^.properties.manaCost of
+  Just pips -> foldr ((+) . pipValue) 0 pips
 
 isMonoColored :: Object -> Bool
 isMonoColored o = length (o^.properties.color) == 1

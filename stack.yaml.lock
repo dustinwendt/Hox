@@ -3,7 +3,49 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    hackage: monoidal-containers-0.6.0.1@sha256:f56ea8fe91ff93da140e38b8dab4b94437b901818c13ba72fc7fc802290323ee,2583
+    pantry-tree:
+      size: 569
+      sha256: 3a43dbbb1839521aae37a2baa3fb3ad0cc61a0a8fc4e3aec1f7dda15b92a0279
+  original:
+    hackage: monoidal-containers-0.6.0.1
+- completed:
+    hackage: patch-0.0.5.2@sha256:0840a9f4f2ef620869975574834d9661157df59927bb3f2b0644c21210c75f47,2905
+    pantry-tree:
+      size: 1103
+      sha256: 38ddb6b9db91c5ae158cc0f3041ecc2712b363ae7d3006f4e2587d4be5a7d8e9
+  original:
+    hackage: patch-0.0.5.2@sha256:0840a9f4f2ef620869975574834d9661157df59927bb3f2b0644c21210c75f47,2905
+- completed:
+    hackage: random-1.1@sha256:7b67624fd76ddf97c206de0801dc7e888097e9d572974be9b9ea6551d76965df,1777
+    pantry-tree:
+      size: 637
+      sha256: 14a1b01728c5584e87c9fa00746a66e28ffd89dd2c0eabd334c8463953496e1b
+  original:
+    hackage: random-1.1@sha256:7b67624fd76ddf97c206de0801dc7e888097e9d572974be9b9ea6551d76965df,1777
+- completed:
+    hackage: ref-tf-0.4.0.2@sha256:69de3550250e0cd69f45d080359cb314a9487c915024349c75b78732bbee9332,1134
+    pantry-tree:
+      size: 211
+      sha256: fc5a4a35b4c782a33f452c1dc66ffa8ddbf321e2db369bd8823c796f0d4d8c7f
+  original:
+    hackage: ref-tf-0.4.0.2@sha256:69de3550250e0cd69f45d080359cb314a9487c915024349c75b78732bbee9332,1134
+- completed:
+    hackage: reflex-0.8.2.0@sha256:2ea3db2ed15b83eed6b15f7c1aaceeda9e783b611ac530032f6aeaf0d33b8ef0,11974
+    pantry-tree:
+      size: 4587
+      sha256: e748409809abe4aefda0c6f4feeb55024b1eb75c948c9724c8a6129c79390377
+  original:
+    hackage: reflex-0.8.2.0@sha256:2ea3db2ed15b83eed6b15f7c1aaceeda9e783b611ac530032f6aeaf0d33b8ef0,11974
+- completed:
+    hackage: witherable-0.3.1@sha256:336ce2a5b9b0d633da4b4fb365a2cddea7b0c3654dcf5c2b08ce519aad1f3e73,1315
+    pantry-tree:
+      size: 271
+      sha256: e4241d578139b8dd394a457f36f9d668dccc9e175643cb07fe2717d2c689c70c
+  original:
+    hackage: witherable-0.3.1
 snapshots:
 - completed:
     size: 586286

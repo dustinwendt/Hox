@@ -20,6 +20,10 @@
 resolver:
   url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/16.yaml
 
+nix:
+  enable: true
+  packages: [glpk, pcre]
+
 # User packages to be built.
 # Various formats can be used as shown in the example below.
 #
@@ -31,6 +35,7 @@ resolver:
 #   - wai
 packages:
 - .
+
 # Dependency packages to be pulled from upstream that are not in the resolver.
 # These entries can reference officially published versions as well as
 # forks / in-progress versions pinned to a git hash. For example:
@@ -41,6 +46,14 @@ packages:
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
 #
 # extra-deps: []
+extra-deps:
+- monoidal-containers-0.6.0.1
+- patch-0.0.5.2@sha256:0840a9f4f2ef620869975574834d9661157df59927bb3f2b0644c21210c75f47,2905
+- random-1.1@sha256:7b67624fd76ddf97c206de0801dc7e888097e9d572974be9b9ea6551d76965df,1777
+- ref-tf-0.4.0.2@sha256:69de3550250e0cd69f45d080359cb314a9487c915024349c75b78732bbee9332,1134
+- reflex-0.8.2.0@sha256:2ea3db2ed15b83eed6b15f7c1aaceeda9e783b611ac530032f6aeaf0d33b8ef0,11974
+- witherable-0.3.1  
+  #- witherable-class-0.0.1@sha256:6ec78f157f715098eecc08dff177064abfc783ee2151a95f5aecff5c4c7d2d95,847
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
