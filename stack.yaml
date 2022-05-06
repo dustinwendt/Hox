@@ -22,8 +22,8 @@ resolver:
 
 nix:
   enable: true
-  packages: [glpk, pcre]
-
+  pure: true
+  packages: [atk, cairo, gdk-pixbuf, glpk, gobject-introspection, harfbuzz, pcre, pkg-config, libsoup, zlib]
 # User packages to be built.
 # Various formats can be used as shown in the example below.
 #
@@ -47,13 +47,30 @@ packages:
 #
 # extra-deps: []
 extra-deps:
+- cairo-0.13.8.2@sha256:ef1709c3c4d2c6d68a9a51d9f220dccc0745f6468d2d0868c15a7ecdf8f325a1,4078
+- constraints-0.12@sha256:7edf1e72a92d0a6761da634f08be9123dfcc0dcec11c269cbf465a09721c3481,2322
+- ghcjs-dom-0.9.5.0@sha256:99c51bff259623fdf285120f38d0ac1291d64717d4f77ad107ec6533532cc7e8,32211
+- ghcjs-dom-jsaddle-0.9.5.0@sha256:7a903b5d8e2b6ef94174def9bf70e3f870ea96c2f68275069d278c6dcdf2f418,39629
+- gi-javascriptcore-4.0.23
+- gi-soup-2.4.24
+- gi-webkit2-4.0.27
+- glib-0.13.8.2@sha256:f44b829e741b3c3244d523f60b058701dfc067ff64c2ba61d43be4cccfc2663d,3156
+- gtk2hs-buildtools-0.13.8.3@sha256:207229eee7abff12aba2740b32131522086275e46f2e72a0f5bbc3cb781e9d4d,5304
+- haskell-gi-0.25.0@sha256:9731d9d8fb214ff803e2fbd42b4d1187448975ca263a33ddcd873218de2cdda1,5184
+  #- haskell-gi-base-0.25.0@sha256:39bd0f4e6a295b60d626935157286efda5b905df520893ab9b7b5bdde4af82de,2513
+- jsaddle-0.9.8.2@sha256:e8c003801eb9364fcd6b1e0cda34f072a537bcfa767e6eb8c626836dae77ba04,4419
+- jsaddle-dom-0.9.5.0@sha256:5a60ba628928ccc03c69118e9f2050805e795684a7a63d77bc9737a3ab86322e,75700
+- jsaddle-webkit2gtk-0.9.8.2@sha256:9bf7076f325c6d0808a6de11cdcface9ac57fdc8283af4ba88af7207601b880b,1483
 - monoidal-containers-0.6.0.1
 - patch-0.0.5.2@sha256:0840a9f4f2ef620869975574834d9661157df59927bb3f2b0644c21210c75f47,2905
 - random-1.1@sha256:7b67624fd76ddf97c206de0801dc7e888097e9d572974be9b9ea6551d76965df,1777
+- reflex-dom-core-0.7.0.1@sha256:4e21d96f1599df47e04c99dc76223ee4c420ed185a20db110c09c0af82fc1be8,7834
 - ref-tf-0.4.0.2@sha256:69de3550250e0cd69f45d080359cb314a9487c915024349c75b78732bbee9332,1134
 - reflex-0.8.2.0@sha256:2ea3db2ed15b83eed6b15f7c1aaceeda9e783b611ac530032f6aeaf0d33b8ef0,11974
-- witherable-0.3.1  
-  #- witherable-class-0.0.1@sha256:6ec78f157f715098eecc08dff177064abfc783ee2151a95f5aecff5c4c7d2d95,847
+- reflex-dom-0.6.1.1@sha256:37d33c69b07b8c899bc01ea22cd7b8fb3868106c014e377135bfada851802c3d,6535
+- webkit2gtk3-javascriptcore-0.14.4.3@sha256:bb1d205ef29e0230643e95f56f9a86edb76d3c6f83d3ec29207761131d67d508,2124
+- witherable-0.3.1
+- zenc-0.1.2@sha256:2b32c40a3c11f07f466604526aacad2a535309da11b203334dbf586333c13534,1350
 
 # Override default flag values for local packages and extra-deps
 # flags: {}

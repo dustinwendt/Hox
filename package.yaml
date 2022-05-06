@@ -25,6 +25,7 @@ dependencies:
 - lens >= 4.7 && < 5
 - mtl
 - reflex
+- reflex-dom-core
 
 library:
   source-dirs: src
