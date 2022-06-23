@@ -20,12 +20,27 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/githubuser/Hox#readme>
 
 dependencies:
+- aeson
 - base >= 4.7 && < 5
+- bytestring
 - containers >= 0.6 && < 0.7
+- dates
+- http-client
+- http-client-tls
+- http-conduit
 - lens >= 4.7 && < 5
 - mtl
+- network-uri
+- parsec
 - reflex
-- reflex-dom-core
+  # - reflex-gi-gtk
+- reflex-vty
+- text
+- uri-encode
+- uuid
+- vector
+- yaml
+  # - reflex-dom-core
 
 library:
   source-dirs: src

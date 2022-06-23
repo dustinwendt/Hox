@@ -19,6 +19,13 @@ packages:
   original:
     hackage: constraints-0.12@sha256:7edf1e72a92d0a6761da634f08be9123dfcc0dcec11c269cbf465a09721c3481,2322
 - completed:
+    hackage: dates-0.2.3.2@sha256:ba1534b90fa24e11becec3b3d8564198144591ddff6f4a472c8b153bc665309f,2311
+    pantry-tree:
+      size: 443
+      sha256: 66742a11fd1eb1b1c287a0d82630db2bb23716b19203b0d4fb4bf69dee35e39f
+  original:
+    hackage: dates-0.2.3.2@sha256:ba1534b90fa24e11becec3b3d8564198144591ddff6f4a472c8b153bc665309f,2311
+- completed:
     hackage: ghcjs-dom-0.9.5.0@sha256:99c51bff259623fdf285120f38d0ac1291d64717d4f77ad107ec6533532cc7e8,32211
     pantry-tree:
       size: 357
@@ -96,6 +103,13 @@ packages:
   original:
     hackage: jsaddle-webkit2gtk-0.9.8.2@sha256:9bf7076f325c6d0808a6de11cdcface9ac57fdc8283af4ba88af7207601b880b,1483
 - completed:
+    hackage: microlens-0.4.11.2@sha256:765ec5cdd12a459e65161f0e3cdbce84652bf634d62af3911ba24e4bf8d4d944,4455
+    pantry-tree:
+      size: 461
+      sha256: 98fdc52fe386eca8994832f7ce6daba584fcc6ccf4859b5e33b004ce25ddba11
+  original:
+    hackage: microlens-0.4.11.2@sha256:765ec5cdd12a459e65161f0e3cdbce84652bf634d62af3911ba24e4bf8d4d944,4455
+- completed:
     hackage: monoidal-containers-0.6.0.1@sha256:f56ea8fe91ff93da140e38b8dab4b94437b901818c13ba72fc7fc802290323ee,2583
     pantry-tree:
       size: 569
@@ -124,6 +138,13 @@ packages:
   original:
     hackage: reflex-dom-core-0.7.0.1@sha256:4e21d96f1599df47e04c99dc76223ee4c420ed185a20db110c09c0af82fc1be8,7834
 - completed:
+    hackage: reflex-gi-gtk-0.2.0.0@sha256:bf7217d3e5923ba97e85c98287c2fe7006d4b139851298df3772687d79b50b4c,2908
+    pantry-tree:
+      size: 1312
+      sha256: 89511fe8103236bf99f53227cacd8523d040948f07d78881d0e9329f2ed52eeb
+  original:
+    hackage: reflex-gi-gtk-0.2.0.0@sha256:bf7217d3e5923ba97e85c98287c2fe7006d4b139851298df3772687d79b50b4c,2908
+- completed:
     hackage: ref-tf-0.4.0.2@sha256:69de3550250e0cd69f45d080359cb314a9487c915024349c75b78732bbee9332,1134
     pantry-tree:
       size: 211
@@ -144,6 +165,20 @@ packages:
       sha256: c8ebe3af077a9e86385ac4b4cdaf9d2833e61344d76cd65f8ff5302510822b52
   original:
     hackage: reflex-dom-0.6.1.1@sha256:37d33c69b07b8c899bc01ea22cd7b8fb3868106c014e377135bfada851802c3d,6535
+- completed:
+    hackage: reflex-vty-0.2.0.0@sha256:2a136962687d7066ba8b826147adb22eb4936c57c3bacec15cec0d93cf5265e2,3586
+    pantry-tree:
+      size: 1449
+      sha256: bb2f458a993117d3dd5fd8e3793ae1e97a30f650553f39e166514501188bf00e
+  original:
+    hackage: reflex-vty-0.2.0.0@sha256:2a136962687d7066ba8b826147adb22eb4936c57c3bacec15cec0d93cf5265e2,3586
+- completed:
+    hackage: vty-5.28.2@sha256:8cffce1f4f92eec70b5c3763bb6437852fd3fa7546869496f7667a5abc3f07d7,20859
+    pantry-tree:
+      size: 5330
+      sha256: 3dcf266377fc2a0265b4b60ef2370020ac3354208f0630e06741857ab70cfb83
+  original:
+    hackage: vty-5.28.2@sha256:8cffce1f4f92eec70b5c3763bb6437852fd3fa7546869496f7667a5abc3f07d7,20859
 - completed:
     hackage: webkit2gtk3-javascriptcore-0.14.4.3@sha256:bb1d205ef29e0230643e95f56f9a86edb76d3c6f83d3ec29207761131d67d508,2124
     pantry-tree:

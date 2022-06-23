@@ -1,11 +1,14 @@
+{-# LANGUAGE DeriveGeneric #-}
 module Colors where
 
-import Data.Map hiding (foldl)
+import Data.Aeson
+import Data.Map hiding (foldl, foldr, map)
+import GHC.Generics
 
 -- 202.2a
-data Color = White | Blue | Black | Red | Green deriving (Eq, Ord)
+data Color = White | Blue | Black | Red | Green deriving (Eq, Generic, Ord)
 data Mana = Colored Color | Colorless deriving (Eq, Ord)
-data Pip = CSym Mana | XSym | PhySym | SnowSym | GenSym Int | HyPip Pip Pip deriving (Eq)
+data Pip = CSym Mana | XSym | PhySym | SnowSym | GenSym Int | HyPip Pip Pip deriving (Eq, Generic)
 
 pools :: [Mana]
 pools = Colorless : [ Colored c | c <- colors]
@@ -18,6 +21,14 @@ instance Show Color where
     Black -> "B"
     Red   -> "R"
     Green -> "G"
+
+colorString :: String -> Color
+colorString s = case s of
+  "W" -> White
+  "U" -> Blue
+  "B" -> Black
+  "R" -> Red
+  "G" -> Green
 
 instance Show Mana where
   show mc = case mc of

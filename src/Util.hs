@@ -1,5 +1,7 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Util where
 
+import Data.Aeson
 import Data.Char
 import Card
 import Colors
@@ -11,6 +13,22 @@ parseColor 'U' = Blue
 parseColor 'B' = Black
 parseColor 'R' = Red
 parseColor 'G' = Green
+
+-- simpleGet :: IO ()
+-- simpleGet = do
+--   response <- httpLbs "http://httpbin.org/get"
+--   print (getResponseBody response)
+-- 
+-- 
+-- request = setRequestMethod "GET"
+--   $ setRequestHost "httpbin.org"
+--   $ setRequestPath "/get"
+--   $ defaultRequest
+-- 
+-- customRequest :: IO ()
+-- customRequest = do
+--   response <- httpLbs request
+--   print (getResponseBody response)
 
 -- pMC :: String -> [Pip]
 -- pMC ('{':'X':'}':xs) = VarPip : pMC xs

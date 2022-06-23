@@ -20,8 +20,16 @@
 resolver:
   url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/16.yaml
 
+# compiler: ghcjs-0.2.0.20160414_ghc-7.10.3
+# compiler-check: match-exact
+# setup-info:
+#  ghcjs:
+#    source:
+#      ghcjs-0.2.0.20160414_ghc-7.10.3:
+#        url: https://s3.amazonaws.com/ghcjs/ghcjs-0.2.0.20160414_ghc-7.10.3.tar.gz
+#        sha1: 6d6f307503be9e94e0c96ef1308c7cf224d06be3
 nix:
-  enable: true
+  enable: false
   pure: true
   packages: [atk, cairo, gdk-pixbuf, glpk, gobject-introspection, harfbuzz, pcre, pkg-config, libsoup, zlib]
 # User packages to be built.
@@ -49,6 +57,7 @@ packages:
 extra-deps:
 - cairo-0.13.8.2@sha256:ef1709c3c4d2c6d68a9a51d9f220dccc0745f6468d2d0868c15a7ecdf8f325a1,4078
 - constraints-0.12@sha256:7edf1e72a92d0a6761da634f08be9123dfcc0dcec11c269cbf465a09721c3481,2322
+- dates-0.2.3.2@sha256:ba1534b90fa24e11becec3b3d8564198144591ddff6f4a472c8b153bc665309f,2311
 - ghcjs-dom-0.9.5.0@sha256:99c51bff259623fdf285120f38d0ac1291d64717d4f77ad107ec6533532cc7e8,32211
 - ghcjs-dom-jsaddle-0.9.5.0@sha256:7a903b5d8e2b6ef94174def9bf70e3f870ea96c2f68275069d278c6dcdf2f418,39629
 - gi-javascriptcore-4.0.23
@@ -61,13 +70,17 @@ extra-deps:
 - jsaddle-0.9.8.2@sha256:e8c003801eb9364fcd6b1e0cda34f072a537bcfa767e6eb8c626836dae77ba04,4419
 - jsaddle-dom-0.9.5.0@sha256:5a60ba628928ccc03c69118e9f2050805e795684a7a63d77bc9737a3ab86322e,75700
 - jsaddle-webkit2gtk-0.9.8.2@sha256:9bf7076f325c6d0808a6de11cdcface9ac57fdc8283af4ba88af7207601b880b,1483
+- microlens-0.4.11.2@sha256:765ec5cdd12a459e65161f0e3cdbce84652bf634d62af3911ba24e4bf8d4d944,4455
 - monoidal-containers-0.6.0.1
 - patch-0.0.5.2@sha256:0840a9f4f2ef620869975574834d9661157df59927bb3f2b0644c21210c75f47,2905
 - random-1.1@sha256:7b67624fd76ddf97c206de0801dc7e888097e9d572974be9b9ea6551d76965df,1777
 - reflex-dom-core-0.7.0.1@sha256:4e21d96f1599df47e04c99dc76223ee4c420ed185a20db110c09c0af82fc1be8,7834
+- reflex-gi-gtk-0.2.0.0@sha256:bf7217d3e5923ba97e85c98287c2fe7006d4b139851298df3772687d79b50b4c,2908
 - ref-tf-0.4.0.2@sha256:69de3550250e0cd69f45d080359cb314a9487c915024349c75b78732bbee9332,1134
 - reflex-0.8.2.0@sha256:2ea3db2ed15b83eed6b15f7c1aaceeda9e783b611ac530032f6aeaf0d33b8ef0,11974
 - reflex-dom-0.6.1.1@sha256:37d33c69b07b8c899bc01ea22cd7b8fb3868106c014e377135bfada851802c3d,6535
+- reflex-vty-0.2.0.0@sha256:2a136962687d7066ba8b826147adb22eb4936c57c3bacec15cec0d93cf5265e2,3586
+- vty-5.28.2@sha256:8cffce1f4f92eec70b5c3763bb6437852fd3fa7546869496f7667a5abc3f07d7,20859
 - webkit2gtk3-javascriptcore-0.14.4.3@sha256:bb1d205ef29e0230643e95f56f9a86edb76d3c6f83d3ec29207761131d67d508,2124
 - witherable-0.3.1
 - zenc-0.1.2@sha256:2b32c40a3c11f07f466604526aacad2a535309da11b203334dbf586333c13534,1350

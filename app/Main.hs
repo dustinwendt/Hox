@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 module Main where
 
@@ -12,17 +13,16 @@ import           Player
 -- import           Supply
 -- import           System.Random
 import Reflex
--- import Reflex.Dom
+-- import Reflex.Dom.Main
+-- import Reflex.Dom.Widget.Basic
 import           Text.Read hiding (get)
 import           Zones
 
 type SId = String
 type Id = String
 
+initIds :: [Id]
 initIds = concat [ replicateM k (['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9']) | k <- [1..]]
-
--- runSupplyVars x = runSupply x vars
---     where vars = [replicate k ['a'..'z'] | k <- [1..]] >>= sequence
 
 type Attack = [(Id, PId)]
 type Defend = [(Id, Id)]
@@ -101,10 +101,6 @@ freshId = do
   let x = head $ g ^. ids
   modify $ over ids tail
   return x
-  -- return $ head $ g ^. ids
-  -- let xs = g ^. ids in
-  --   modify $ over ids xs
-  --   return $ head xs
 
 -- type Game = State GameState GameOutput
 -- pass :: GameState -> GameState
@@ -276,8 +272,7 @@ playersPrompt = do
                   playersPrompt
     Nothing -> playersPrompt
 
-main :: IO ()
-main = do
-  f <- formatPrompt
-  numPlayers <- playersPrompt
-  putStrLn "Done"
+main = do putStrLn "Back in Time" 
+  -- f <- formatPrompt
+  -- numPlayers <- playersPrompt
+  -- putStrLn "Done"
