@@ -1,21 +1,21 @@
-module Types where
+module Types (CardType (..), ArtifactType (..), LandType (..), EnchantmentType (..), PlaneswalkerType (..), SpellType (..), CreatureType (..), PlaneType (..), SuperType (..), TribalType, SubType (..), TypeLine (..)) where
 
 -- 205.2 Card Types
 -- 205.2a
 data CardType = Artifact | Conspiracy | Creature | Dungeon
               | Enchantment | Instant | Land | Phenomenon
-              | Plane | Planeswalker  | Scheme | Sorcery | Tribal | Vanguard deriving (Eq, Show)
+              | Plane | Planeswalker  | Scheme | Sorcery | Tribal | Vanguard deriving (Enum, Eq, Show)
 
 -- 205.3 Subtypes
 -- 205.3g
-data ArtifactType = Clue | Contraption | Equipment | Food | Fortification | Gold | Treasure | Vehicle deriving (Eq, Show)
+data ArtifactType = Clue | Contraption | Equipment | Food | Fortification | Gold | Treasure | Vehicle deriving (Enum, Eq, Show)
 
 -- 205.3h
-data EnchantmentType = Aura | Cartouche | Class | Curse | Rune | Saga | Shard | Shrine deriving (Eq, Show)
+data EnchantmentType = Aura | Cartouche | Class | Curse | Rune | Saga | Shard | Shrine deriving (Enum, Eq, Show)
 
 -- 205.3i
 data LandType = Desert | Forest | Gate | Island | Lair | Locus | Mine | Mountain | Plains
-              | PowerPlant | Swamp | Tower | Urzas deriving (Eq, Show)
+              | PowerPlant | Swamp | Tower | Urzas deriving (Enum, Eq, Show)
 
 -- 205.3j
 data PlaneswalkerType = Ajani | Aminatou | Angrath | Arlinn | Ashiok | Bahamut | Basri
@@ -23,10 +23,10 @@ data PlaneswalkerType = Ajani | Aminatou | Angrath | Arlinn | Ashiok | Bahamut |
   | Elspeth | Estrid | Freyalise | Garruk | Gideon | Grist | Huatli | Jace | Jaya | Jeska | Karn | Kasmina
   | Kaya | Kiora | Koth | Liliana | Lolth | Lukka | Mordenkainen | Nahiri | Narset | Niko | Nissa | Nixilis
   | Oko | Ral | Rowan | Saheeli | Samut | Sarkhan | Serra | Sorin | Szat | Tamiyo | Teferi | Teyo | Tezzeret
-  | Tibalt | Tyvar | Ugin | Venser | Vivien | Vraska | Will | Windgrace | Wrenn | Xenagos | Yanggu | Yanling | Zariel deriving (Eq, Show)
+  | Tibalt | Tyvar | Ugin | Venser | Vivien | Vraska | Will | Windgrace | Wrenn | Xenagos | Yanggu | Yanling | Zariel deriving (Enum, Eq, Show)
 
 -- 205.3k
-data SpellType = Adventure | Arcane | Lesson | Trap deriving (Eq, Show)
+data SpellType = Adventure | Arcane | Lesson | Trap deriving (Enum, Eq, Show)
 
 -- 205.3l
 data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Archer | Archon | Army | Artificer | Assassin | AssemblyWorker | Atog | Aurochs | Avatar | Azra | Badger | Barbarian | Bard | Basilisk | Bat | Bear | Beast
@@ -39,15 +39,15 @@ data CreatureType = Advisor | Aetherborn | Ally | Angel | Antelope | Ape | Arche
   | Phoenix | Phyrexian | Pilot | Pincher | Pirate | Plant | Praetor | Prism | Processor | Rabbit | Ranger | Rat | Rebel | Reflection | Rhino | Rigger | Rogue | Sable | Salamander | Samurai | Sand | Saproling | Satyr | Scarecrow
   | Scion | Scorpion | Scout | Sculpture | Serf | Serpent | Servo | Shade | Shaman | Shapeshifter | Shark | Sheep | Siren | Skeleton | Slith | Sliver | Slug | Snake | Soldier | Soltari | Spawn | Specter | Spellshaper | Sphinx
   | Spider | Spike | Spirit | Splinter | Sponge | Squid | Squirrel | Starfish | Surrakar | Survivor | Tentacle | Tetravite | Thalakos | Thopter | Thrull | Tiefling | Treefolk | Trilobite | Triskelavite | Troll | Turtle | Unicorn
-  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior | Weird | Werewolf | Whale | Wizard | Wolf | Wolverine | Wombat | Worm | Wraith | Wurm | Yeti | Zombie | Zubera deriving (Eq, Show)
+  | Vampire  | Vedalken | Viashino | Volver | Wall | Warlock | Warrior | Weird | Werewolf | Whale | Wizard | Wolf | Wolverine | Wombat | Worm | Wraith | Wurm | Yeti | Zombie | Zubera deriving (Enum, Eq, Show)
 
 -- 205.3m
 data PlaneType = Alara | Arkhos | Azgol | Belenon | BolasMeditationRealm | Dominaria | Equilor | Ergamon | Fabacin | Innistrad | Iquatana | Ir | Kaldheim | Kamigawa | Karsus | Kephalai | Kinshala | Kolbahan | Kyneth
   | Lorwyn | Luvion | Mercadia | Mirrodin | Moag | Mongseng | Muraganda | NewPhyrexia | Phyrexia | Pyrulea | Rabiah | Rath | Ravnica | Regatha | Segovia | SerrasRealm | Shadowmoor | Shandalar | Ulgrotha | Valla | Vryn
-  | Wildfire | Xerex | Zendikar deriving (Eq, Show)
+  | Wildfire | Xerex | Zendikar deriving (Enum, Eq, Show)
 
 -- 205.4a
-data SuperType = Basic | Legendary | Ongoing | Snow | World deriving (Eq, Show)
+data SuperType = Basic | Legendary | Ongoing | Snow | World deriving (Enum, Eq, Show)
 
 -- 205.3m
 type TribalType = CreatureType

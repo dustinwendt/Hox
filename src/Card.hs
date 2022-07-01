@@ -1,14 +1,14 @@
-{-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DeriveGeneric     #-}
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TemplateHaskell   #-}
 module Card where
 
-import Colors
-import Control.Lens hiding (flipped)
-import Control.Exception
-import Data.Aeson
-import GHC.Generics
-import Types
+import           Colors
+import           Control.Exception
+import           Control.Lens      hiding (flipped)
+import           Data.Aeson
+import           GHC.Generics
+import           Types
 
 -- 208 Power/Toughness
 data PT = Star | StarPlus Int | PT Int deriving (Eq)
@@ -20,21 +20,21 @@ instance Show PT where
   show (StarPlus i) = "*+" ++ show i
   show (PT i)       = show i
 
-data Legality = Legality { standard :: Bool
-                         , modern :: Bool
-                         , legacy :: Bool
-                         , vintage :: Bool
-                         } deriving (Eq)
+-- data Legality = Legality { standard :: Bool
+--                          , modern :: Bool
+--                          , legacy :: Bool
+--                          , vintage :: Bool
+--                          } deriving (Eq)
 
-$(makeLenses ''Legality)
+-- $(makeLenses ''Legality)
 
 -- 110.5
 data Status =
-  Status { _tapped :: Bool
+  Status { _tapped  :: Bool
          , _flipped :: Bool
-         , _faceUp :: Bool
-         , _phased :: Bool
-         , _sick :: Bool} deriving (Eq, Show)
+         , _faceUp  :: Bool
+         , _phased  :: Bool
+         , _sick    :: Bool} deriving (Eq, Show)
 
 $(makeLenses ''Status)
 
@@ -48,18 +48,18 @@ defaultStatus =
 
 -- 109.3
 data Properties = Properties
-  { _name :: String
-  , _manaCost :: Maybe [Pip]
-  , _color :: [Color]
-  , _identity :: [Color]
-  , _keywords :: [Keyword]
-  , _typeLine :: TypeLine
+  { _name       :: String
+  , _manaCost   :: Maybe [Pip]
+  , _color      :: [Color]
+  , _identity   :: [Color]
+  , _keywords   :: [Keyword]
+  , _typeLine   :: TypeLine
   , _oracleText :: String
-  , _power :: Maybe PT
-  , _toughness :: Maybe PT
-  , _loyalty :: Maybe Int
-  , _legality :: Legality
-  , _owner :: PId
+  , _power      :: Maybe PT
+  , _toughness  :: Maybe PT
+  , _loyalty    :: Maybe Int
+  -- , _legality   :: Legality
+  , _owner      :: PId
   , _controller :: PId
   } deriving (Eq)
 
@@ -71,13 +71,13 @@ instance Show Properties where
            tb (p^.oracleText) ++
            f (p^.power, p^.toughness)
    where f (Just x, Just y) = show x ++ "/" ++ show y ++ "\n"
-         f _ = ""
-         g [] = ""
+         f _                = ""
+         g []     = ""
          g (x:xs) = "{" ++ show x ++ "}" ++ g xs
          tl (TypeLine [] [] []) = ""
          tl typeline            = show typeline ++ "\n"
          tb textbox = if null textbox then "" else textbox ++ "\n"
-         mc Nothing = ""
+         mc Nothing  = ""
          mc (Just p) = g p
 
 
@@ -87,7 +87,7 @@ data ObjectType = Ability | Card | Spell (Maybe Object) | Permanent (Maybe Objec
 
 data GameObject =
   GameObject { _properties :: Properties
-             , _objType :: ObjectType} deriving Eq
+             , _objType    :: ObjectType} deriving Eq
 
 $(makeLenses ''GameObject)
 
@@ -103,11 +103,11 @@ isSpell o = case o^.objType of
 copySpell :: GameObject -> GameObject
 copySpell s = assert (isSpell s) $ objType .~ Spell Nothing $ s
 
-defaultLegality = Legality { standard = True
-                           , modern   = True
-                           , legacy   = True
-                           , vintage  = True
-                           }
+-- defaultLegality = Legality { standard = True
+--                            , modern   = True
+--                            , legacy   = True
+--                            , vintage  = True
+--                            }
 
 defaultProperties :: Properties
 defaultProperties = Properties
@@ -121,7 +121,7 @@ defaultProperties = Properties
   , _power = Nothing
   , _toughness = Nothing
   , _loyalty = Nothing
-  , _legality = defaultLegality
+  -- , _legality = defaultLegality
   , _owner = -1
   , _controller = -1
   }
@@ -134,7 +134,7 @@ defaultCard =
 pipValue :: Pip -> Int
 pipValue x = case x of
               HyPip a b -> if v a > v b then v a else v b
-              p -> v p
+              p         -> v p
            where v XSym       = 0
                  v (GenSym i) = i
                  v _          = 1

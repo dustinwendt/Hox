@@ -1,5 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE TemplateHaskell   #-}
 module Main where
 
 import           Card
@@ -7,15 +7,15 @@ import           Colors
 import           Control.Lens
 import           Control.Monad
 import           Control.Monad.State
-import           Data.Map      hiding (drop, map, null, take)
+import           Data.Map            hiding (drop, map, null, take)
 import           Lib
 import           Player
 -- import           Supply
 -- import           System.Random
-import Reflex
+import           Reflex
 -- import Reflex.Dom.Main
 -- import Reflex.Dom.Widget.Basic
-import           Text.Read hiding (get)
+import           Text.Read           hiding (get)
 import           Zones
 
 type SId = String
@@ -256,9 +256,7 @@ formatPrompt :: IO Format
 formatPrompt = do
   putStr "Format (s/m/l/v): "
   x <- readMaybe <$> getLine
-  case x of
-    Just x  -> return x
-    Nothing -> formatPrompt
+  maybe formatPrompt return x
 
 playersPrompt :: IO Int
 playersPrompt = do
@@ -272,7 +270,7 @@ playersPrompt = do
                   playersPrompt
     Nothing -> playersPrompt
 
-main = do putStrLn "Back in Time" 
+main = do putStrLn "Back in Time"
   -- f <- formatPrompt
   -- numPlayers <- playersPrompt
   -- putStrLn "Done"
