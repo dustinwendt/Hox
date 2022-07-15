@@ -4,7 +4,7 @@ module ScryfallParser where
 
 import           Card
 import           Colors
-import           Control.Lens
+import           Control.Lens            hiding ((.=))
 import           Data.Aeson              hiding (encode)
 -- import           Data.Aeson.BetterErrors
 import           Data.Text               (pack, unpack)
@@ -25,7 +25,7 @@ import           Types
 data ErrorObject = ErrorObject
   {_status :: Int, _code :: String, _details :: String, _errtype :: Maybe String, _warnings :: Maybe [String]}
 
-data Legalities = Legal | NotLegal | Restricted | Banned
+data Legalities = Legal | NotLegal | Restricted | Banned deriving Show
 
 data LegalObject = LegalObject {
   _standard          :: Legalities
@@ -46,7 +46,7 @@ data LegalObject = LegalObject {
   , _paupercommander :: Legalities
   , _duel            :: Legalities
   , _oldschool       :: Legalities
-  , _premodern       :: Legalities }
+  , _premodern       :: Legalities } deriving Show
 
 data ListObject = ListObject {
     _cardData      :: [CardObject]
@@ -74,9 +74,9 @@ data CardObject = CardObject {
   , _c_all_parts           :: Maybe [CardObject]
   , _c_card_faces          :: Maybe [CardFaceObject]
   , _c_cmc                 :: Double
-  , _c_color_identity      :: [Color]
-  , _c_color_indicator     :: Maybe [Color]
-  , _c_colors              :: Maybe [Color]
+  , _c_color_identity      :: [String]
+  , _c_color_indicator     :: Maybe [String]
+  , _c_colors              :: Maybe [String]
   , _c_edhrec_rank         :: Maybe Int
   , _c_hand_modifier       :: Maybe String
   , _c_keywords            :: [String]
@@ -90,15 +90,15 @@ data CardObject = CardObject {
   , _c_oversized           :: Bool
   , _c_penny_rank          :: Maybe Int
   , _c_power               :: Maybe String
-  , _c_produced_mana       :: Maybe [Color]
+  , _c_produced_mana       :: Maybe [String]
   , _c_reserved            :: Bool
-  , _c_type_line           :: String}
+  , _c_type_line           :: String} deriving Show
 
 data CardFaceObject = CardFaceObject {
     _cf_artist            :: Maybe String
   , _cf_cmc               :: Maybe Int
-  , _cf_color_indicator   :: Maybe Color
-  , _cf_colors            :: Maybe Color
+  , _cf_color_indicator   :: Maybe String
+  , _cf_colors            :: Maybe String
   , _cf_flavor_text       :: Maybe String
   , _cf_illustration_id   :: Maybe UUID
   , _cf_image_uris        :: Maybe [CardFaceObject]
@@ -115,7 +115,7 @@ data CardFaceObject = CardFaceObject {
   , _cf_printed_type_line :: Maybe String
   , _cf_toughness         :: Maybe String
   , _cf_type_line         :: Maybe String
-  , _cf_watermark         :: Maybe String }
+  , _cf_watermark         :: Maybe String } deriving Show
 
 data SetObject = SetObject {
   _s_id                :: UUID
@@ -165,7 +165,7 @@ scryfallSearch s = do
 test :: String -> IO ()
 test s = do
   lo <- scryfallSearch s
-  print (lo ^. total_cards)
+  print $ head (lo ^. cardData)
 
 -- testing :: String -> String -> IO a
 -- testing s v = do
@@ -184,16 +184,8 @@ arrayToList =
                      (String s) -> unpack s : xs
                      _          -> xs) []
 
-mcString :: String -> [Pip]
-mcString = go "" []
-  where go "" ps "" = ps
-
 instance FromJSON Color where
   parseJSONList (Array a) = return $ map colorString (arrayToList a)
-
--- instance FromJSON Pip where
---   parseJSON = undefined
- --   parseJSONList (String t) = return $ mcString (T.unpack t)
 
 instance FromJSON PT where
   parseJSON (String t) = case unpack t of
@@ -295,7 +287,7 @@ instance FromJSON CardObject where
     rulingsURI <- o .: "rulings_uri"
     scryfallURI <- o .: "scryfall_uri"
     uri <- o .: "uri"
-    -- all_parts <- o .:? "all_parts"
+    all_parts <- o .:? "all_parts"
     card_faces <- o .:? "card_faces"
     cmc <- o .: "cmc"
     color_identity <- o .: "color_identity"
@@ -333,7 +325,7 @@ instance FromJSON CardObject where
       , _c_rulings_uri = rulingsURI
       , _c_scryfall_uri = scryfallURI
       , _c_uri = uri
-      -- , _c_all_parts = all_parts
+      , _c_all_parts = all_parts
       , _c_card_faces = card_faces
       , _c_cmc = cmc
       , _c_color_identity = color_identity
@@ -445,66 +437,45 @@ enumeration = enumFrom (toEnum 0)
 -- assocType :: Enum a =>  CardType -> (a -> SubType, a)
 -- assocType Artifact = (AType, ArtifactType)
 
--- findFirst :: Show a => (a -> Bool) ->  [a] -> Maybe a
--- findFirst _ []     = Nothing
--- findFirst f (x:xs) = if f x then Just x else findFirst f xs
-
 findFirst :: Show a => String -> [a] -> Maybe a
 findFirst _ []     = Nothing
 findFirst s (x:xs) = if show x == s then Just x else findFirst s xs
 
 -- TODO: FIX this somehow
 findAType :: String -> Maybe SubType
-findAType s = case findFirst s (enumFrom (toEnum 0 :: ArtifactType)) of
+findAType s = case findFirst s (enumeration :: [ArtifactType]) of
   Just x  -> Just $ AType x
   Nothing -> Nothing
 
 findEType :: String -> Maybe SubType
-findEType s = case findFirst s (enumFrom (toEnum 0 :: EnchantmentType)) of
+findEType s = case findFirst s (enumeration :: [EnchantmentType]) of
   Just x  -> Just $ EType x
   Nothing -> Nothing
 
 findLType :: String -> Maybe SubType
-findLType s = case findFirst s (enumFrom (toEnum 0 :: LandType)) of
+findLType s = case findFirst s (enumeration :: [LandType]) of
   Just x  -> Just $ LType x
   Nothing -> Nothing
 
 findWType :: String -> Maybe SubType
-findWType s = case findFirst s (enumFrom (toEnum 0 :: PlaneswalkerType)) of
+findWType s = case findFirst s (enumeration :: [PlaneswalkerType]) of
   Just x  -> Just $ WType x
   Nothing -> Nothing
 
 findSType :: String -> Maybe SubType
-findSType s = case findFirst s (enumFrom (toEnum 0 :: SpellType)) of
+findSType s = case findFirst s (enumeration :: [SpellType]) of
   Just x  -> Just $ SType x
   Nothing -> Nothing
 
 findCType :: String -> Maybe SubType
-findCType s = case findFirst s (enumFrom (toEnum 0 :: CreatureType)) of
+findCType s = case findFirst s (enumeration :: [CreatureType]) of
   Just x  -> Just $ CType x
   Nothing -> Nothing
 
 findPType :: String -> Maybe SubType
-findPType s = case findFirst s (enumFrom (toEnum 0 :: PlaneType)) of
+findPType s = case findFirst s (enumeration :: [PlaneType]) of
   Just x  -> Just $ PType x
   Nothing -> Nothing
-
-
--- findSubType :: String -> Maybe SubType
--- findSubType s =
---   case f (enumFrom (toEnum 0 :: ArtifactType)) of
---     Just y -> Just (AType y)
---     Nothing ->
---       case f (enumFrom (toEnum 0 :: EnchantmentType)) of
---         Just y -> Just (EType y)
---         Nothing ->
---           case f (enumFrom (toEnum 0 :: LandType)) of
---             Just y -> Just (LType y)
---             Nothing ->
---               case f (enumFrom (toEnum 0 :: PlaneswalkerType)) of
---                 Just y  -> Just (WType y)
---                 Nothing -> Nothing
---   where f = findFirst (\x -> show x == s)
 
 parseTL :: String -> TypeLine
 parseTL s = go (TypeLine [] [] []) False (words s)
@@ -540,20 +511,43 @@ parseTL s = go (TypeLine [] [] []) False (words s)
                                     Just x  -> go (add x tl) True ss
                                     Nothing -> go tl True ss
 
-instance FromJSON TypeLine where
-  parseJSON (String s) = return $ parseTL (unpack s)
+parseColor s = case s of
+  "W" -> White
+  "U" -> Blue
+  "B" -> Black
+  "R" -> Red
+  "G" -> Green
 
+parsePip :: [String] -> Pip
+parsePip [x] | x `elem` ["W", "U", "B", "R", "G"] = CSym (Colored (parseColor x))
+             | x == "X" = XSym
+             | x == "P" = PhySym
+             | x == "S" = SnowSym
+             | otherwise = GenSym (read x)
+parsePip (x:xs) = HyPip (parsePip [x]) (parsePip xs)
 
--- TODO: FIX Type line parsing
--- TODO:
+parseMC :: String -> Maybe [Pip]
+parseMC "" = Nothing
+parseMC s  = Just $ map (parsePip . sep) (sepPip s)
+
+sep :: String -> [String]
+sep ""       = []
+sep ('/':xs) = takeWhile (/= '/') xs : sep (dropWhile (/= '/') xs)
+sep xs       = takeWhile (/= '/') xs : sep (dropWhile (/= '/') xs)
+
+sepPip :: String -> [String]
+sepPip ""       = []
+sepPip ('{':xs) = takeWhile (/= '}') xs : sepPip (dropWhile (/= '{') xs)
+
+-- TODO: ManaCost FromJSON Instance
 instance FromJSON Properties where
   parseJSON (Object v) = do
     name <- v .: "name"
     color <- v .: "colors"
     identity <- v .: "color_identity"
-    -- manaCost <- v .: "mana_cost"
+    manaCost <- v .: "mana_cost"
     oracleText <- v .: "oracle_text"
-    -- typeline <- (v .: "type_line")
+    typeline <- v .: "type_line"
     power <- v .:? "power"
     toughness <- v .:? "toughness"
     keywords <- v .: "keywords"
@@ -563,9 +557,9 @@ instance FromJSON Properties where
             {_name = name
             ,_color = color
             ,_identity = identity
-            -- ,_manaCost = manaCost
+            ,_manaCost = parseMC manaCost
             ,_oracleText = oracleText
-            -- ,_typeLine = typeLine
+            ,_typeLine = parseTL typeline
             ,_power = power
             ,_toughness = toughness
             ,_keywords = keywords
