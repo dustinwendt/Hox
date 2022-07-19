@@ -47,6 +47,7 @@ library
     , bytestring
     , containers ==0.6.*
     , dates
+    , directory
     , http-client
     , http-client-tls
     , http-conduit
@@ -78,6 +79,7 @@ executable Hox-exe
     , bytestring
     , containers ==0.6.*
     , dates
+    , directory
     , http-client
     , http-client-tls
     , http-conduit
@@ -110,6 +112,7 @@ test-suite Hox-test
     , bytestring
     , containers ==0.6.*
     , dates
+    , directory
     , http-client
     , http-client-tls
     , http-conduit

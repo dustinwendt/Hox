@@ -26,6 +26,7 @@ dependencies:
 - bytestring
 - containers >= 0.6 && < 0.7
 - dates
+- directory
 - http-client
 - http-client-tls
 - http-conduit

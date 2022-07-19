@@ -6,6 +6,7 @@ import           Card
 import           Colors
 import           Control.Lens            hiding ((.=))
 import           Data.Aeson              hiding (encode)
+import           Data.Char               (isAlpha, toLower)
 -- import           Data.Aeson.BetterErrors
 import           Data.Text               (pack, unpack)
 import           Data.UUID
@@ -15,9 +16,10 @@ import           Network.HTTP.Client.TLS
 import           Network.HTTP.Simple
 import           Network.URI
 import           Network.URI.Encode      (encode)
+import           System.Directory
+import           System.IO
 import           Text.Parsec.Char
 import           Types
-
 -- (ArtifactType (..), CardType (..),
 --                                           SubType (..), SuperType (..),
 --                                           TypeLine (..))
@@ -49,7 +51,7 @@ data LegalObject = LegalObject {
   , _premodern       :: Legalities } deriving Show
 
 data ListObject = ListObject {
-    _cardData      :: [CardObject]
+    _cardData      :: [Properties]
   , _has_more      :: Bool
   , _next_page     :: Maybe URI
   , _total_cards   :: Maybe Int
@@ -58,7 +60,7 @@ data ListObject = ListObject {
 data CardObject = CardObject {
     _c_arena_id            :: Maybe Int
   , _c_id                  :: UUID
-  , _c_lang                :: String
+  -- , _c_lang                :: String
   , _c_mtgo_id             :: Maybe Int
   , _c_mtgo_foil_id        :: Maybe Int
   , _c_multiverse_ids      :: Maybe [Int]
@@ -147,36 +149,112 @@ $(makeLenses ''SetObject)
 -- TODO: Switch to using Aeson better errors
 -- TODO: Fix aeson parsing error for queries like t:goblin and t:angel. Error gotten was Expected String
 
-
-importString = ["import " ++ x | x <- imports]
-  where imports = ["Data.Maybe", "Colors", "Control.Lens", "Types", "Card"]
-
 scryfallSearch :: String -> IO ListObject
 scryfallSearch s = do
   manager <- newManager $ managerSetProxy noProxy tlsManagerSettings
   request <- parseRequest $ baseUrl ++ encode s
   response <- httpJSON request
-  -- a <- getResponseBody response
-  -- return a
   print "success"
   return $ getResponseBody response
   where baseUrl = "https://api.scryfall.com/cards/search?q="
 
-test :: String -> IO ()
+test :: String -> IO Properties
 test s = do
   lo <- scryfallSearch s
-  print $ head (lo ^. cardData)
+  return $ head (lo ^. cardData)
 
--- testing :: String -> String -> IO a
--- testing s v = do
---   manager <- newManager $ managerSetProxy noProxy tlsManagerSettings
---   request <- parseRequest $ baseUrl ++ encode s
---   response <- httpJSON request
---   body <- getResponseBody response
---   print "success"
---   return body
---   where baseUrl = "https://api.scryfall.com/cards/search?q="
+test2 :: String -> IO ()
+test2 s = do
+  x <- test s
+  print (x ^. keywords)
 
+addCardToProject :: Properties -> IO ()
+addCardToProject p = do
+  fileExists <- doesFileExist fp
+  if fileExists
+  then print $ "File: " ++ fp ++ "already exists"
+  else do
+       currDir <- getCurrentDirectory
+       writeFile (currDir ++ fp) (moduleString ++ "\n\n" ++ importString ++ "\n\n" ++ cn ++ " = " ++ b ++ " $ defaultCard")
+       -- hClose handle
+  where
+     b = block p
+     fn = filter (isAlpha) (p ^. name)
+     fp = "/src/todo/" ++ fn ++ ".hs"
+     cn = toLower (head fn) : tail fn
+     moduleString = "module " ++ fn ++ " where"
+     importString = unlines ["import " ++ x | x <- imports]
+     imports = ["Card", "Colors", "Control.Lens", "Data.Maybe", "Types"]
+
+intercalate :: [a] -> [[a]] -> [a]
+intercalate _ []     = []
+intercalate _ [x]    = x
+intercalate a (x:xs) = x ++ a ++ intercalate a xs
+
+parens x = "(" ++ x ++ ")"
+
+pName n = "properties.name .~ \"" ++ n ++ "\""
+
+listString :: [String] -> String
+listString x = "[" ++ intercalate "," x ++ "]"
+
+pMana (Colored c) = "Colored " ++ pC c
+pMana Colorless   = "Colorless"
+
+pC :: Color -> String
+pC White = "White"
+pC Blue  = "Blue"
+pC Black = "Black"
+pC Red   = "Red"
+pC Green = "Green"
+
+pColor x = "properties.color .~ " ++ listString (map pC x)
+pId x = "properties.identity .~ " ++ listString (map pC x)
+
+pK x = "properties.keywords .~ " ++ listString (map show x)
+
+pTL (TypeLine a b c) = "properties.typeLine .~ TypeLine " ++ listString (map show a) ++ " " ++ listString (map show b) ++ " " ++ listString (map show c)
+
+pOracle "" = ""
+pOracle x  = "properties.oracleText .~ " ++ x
+
+pPip (CSym m)      = "CSym " ++ parens (pMana m)
+pPip XSym          = "XSym"
+pPip PhySym        = "PhySym"
+pPip SnowSym       = "SnowSym"
+pPip (GenSym i)    = "GenSym " ++ show i
+pPip (HyPip p1 p2) = "Hypip " ++ parens (pPip p1) ++ parens (pPip p2)
+
+pMC :: Maybe [Pip] -> String
+pMC Nothing  = ""
+pMC (Just x) = "properties.manaCost ?~ " ++ listString (map pPip x)
+
+pPT Star         = "Star"
+pPT (StarPlus i) = "StarPlus " ++ show i
+pPT (PT i)       = "PT " ++ show i
+
+pPower Nothing  = ""
+pPower (Just x) = "properties.power .~ " ++ parens ("Just " ++ parens(pPT x))
+
+pToughness Nothing = ""
+pToughness (Just x) = "properties.toughness .~ " ++ parens ("Just " ++ parens(pPT x))
+
+pLoyalty Nothing  = ""
+pLoyalty (Just x) = "properties.loyalty .~ " ++ parens ("Just " ++ show x)
+
+block :: Properties -> String
+block p = do
+  let n = parens $ pName (p ^. name)
+      mc = parens $ pMC (p ^. manaCost)
+      cs = parens $ pColor (p ^. color)
+      id = parens $ pId (p ^. identity)
+      ks = parens $ pK (p ^. keywords)
+      tl = parens $ pTL (p ^. typeLine)
+      ot = parens $ pOracle (p ^. oracleText)
+      po = parens $ pPower (p ^. power)
+      to = parens $ pToughness (p ^. toughness)
+      lo = parens $ pLoyalty (p ^. loyalty) in
+      intercalate " . " $ filter (/= "()")[n, mc, cs, id, ks, tl, ot, po, to, lo]
 
 arrayToList :: Array -> [String]
 arrayToList =
@@ -195,7 +273,7 @@ instance FromJSON PT where
              _          -> return $ PT (read xs)
 
 instance FromJSON Keyword where
-  parseJSONList (Array a) = undefined
+  parseJSONList (Array a) = return [ x | k <- arrayToList a, x <- enumeration :: [Keyword], k == show x]
 
 instance FromJSON Legalities where
   parseJSON (String s) = return $ f (unpack s)
@@ -274,7 +352,7 @@ instance FromJSON CardObject where
   parseJSON (Object o) = do
     c_arena_id <- o .:? "arena_id"
     id <- o .: "id"
-    lang <- o .: "lang"
+    -- lang <- o .: "lang"
     mtgo_id <- o .:? "mtgo_id"
     mtgo_foil_id <- o .:? "mtgo_foil_id"
     multiverse_ids <- o .:? "multiverse_ids"
@@ -312,7 +390,7 @@ instance FromJSON CardObject where
     return CardObject {
         _c_arena_id = c_arena_id
       , _c_id = id
-      , _c_lang = lang
+      -- , _c_lang = lang
       , _c_mtgo_id = mtgo_id
       , _c_mtgo_foil_id = mtgo_foil_id
       , _c_multiverse_ids = multiverse_ids

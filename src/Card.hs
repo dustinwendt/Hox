@@ -13,7 +13,7 @@ import           Types
 -- 208 Power/Toughness
 data PT = Star | StarPlus Int | PT Int deriving (Eq)
 
-data Keyword = Banding | Defender | FirstStrike | Fear | Flying | Haste | Indestructible | LandWalk | Protection | Reach | Regeneration | Trample | Vigilance deriving (Eq, Generic, Show)
+data Keyword = Banding | Defender | FirstStrike | Fear | Flying | Haste | Indestructible | LandWalk | Protection | Reach | Regeneration | Trample | Vigilance deriving (Enum, Eq, Generic, Show)
 
 instance Show PT where
   show Star         = "*"
