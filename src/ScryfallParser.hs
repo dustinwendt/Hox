@@ -53,7 +53,7 @@ data LegalObject = LegalObject {
 data ListObject = ListObject {
     _cardData      :: [Properties]
   , _has_more      :: Bool
-  , _next_page     :: Maybe URI
+  , _next_page     :: Maybe String
   , _total_cards   :: Maybe Int
   , _list_warnings :: Maybe [String]}
 
@@ -154,7 +154,6 @@ scryfallSearch s = do
   manager <- newManager $ managerSetProxy noProxy tlsManagerSettings
   request <- parseRequest $ baseUrl ++ encode s
   response <- httpJSON request
-  print "success"
   return $ getResponseBody response
   where baseUrl = "https://api.scryfall.com/cards/search?q="
 
@@ -163,10 +162,33 @@ test s = do
   lo <- scryfallSearch s
   return $ head (lo ^. cardData)
 
+-- addCards :: String -> IO ()
+addCards s = do
+  lo <- scryfallSearch s
+  mapM addCardToProject (lo ^. cardData)
+
 test2 :: String -> IO ()
 test2 s = do
   x <- test s
   print (x ^. keywords)
+
+-- TODO: Get all pages to work
+-- allPages :: String -> IO [ListObject]
+-- allPages s = do
+--   manager <- newManager $ managerSetProxy noProxy tlsManagerSettings
+--   request <- parseRequest s
+--   response <- httpJSON request
+--   body <- getResponseBody response
+--   if (body ^. has_more)
+--   then
+--     do rest <- case (body ^. next_page) of
+--                 Just x  -> allPages x
+--                 Nothing -> undefined
+--        return (body : rest)
+--   else return [body]
+
+props :: [ListObject] -> [Properties]
+props = concatMap (^. cardData)
 
 addCardToProject :: Properties -> IO ()
 addCardToProject p = do
@@ -175,11 +197,10 @@ addCardToProject p = do
   then print $ "File: " ++ fp ++ "already exists"
   else do
        currDir <- getCurrentDirectory
-       writeFile (currDir ++ fp) (moduleString ++ "\n\n" ++ importString ++ "\n\n" ++ cn ++ " = " ++ b ++ " $ defaultCard")
-       -- hClose handle
+       writeFile (currDir ++ fp) (moduleString ++ "\n\n" ++ importString ++ "\n\n" ++ cn ++ " = " ++ b ++ " $ defaultCard\n")
   where
      b = block p
-     fn = filter (isAlpha) (p ^. name)
+     fn = filter isAlpha (p ^. name)
      fp = "/src/todo/" ++ fn ++ ".hs"
      cn = toLower (head fn) : tail fn
      moduleString = "module " ++ fn ++ " where"
@@ -213,10 +234,18 @@ pId x = "properties.identity .~ " ++ listString (map pC x)
 
 pK x = "properties.keywords .~ " ++ listString (map show x)
 
-pTL (TypeLine a b c) = "properties.typeLine .~ TypeLine " ++ listString (map show a) ++ " " ++ listString (map show b) ++ " " ++ listString (map show c)
+pST (AType x) = "AType " ++ show x
+pST (EType x) = "EType " ++ show x
+pST (LType x) = "LType " ++ show x
+pST (WType x) = "WType " ++ show x
+pST (SType x) = "SType " ++ show x
+pST (CType x) = "CType " ++ show x
+pST (PType x) = "PType " ++ show x
+
+pTL (TypeLine a b c) = "properties.typeLine .~ TypeLine " ++ listString (map show a) ++ " " ++ listString (map show b) ++ " " ++ listString (map pST c)
 
 pOracle "" = ""
-pOracle x  = "properties.oracleText .~ " ++ x
+pOracle x  = "properties.oracleText .~ \"" ++ x ++ "\""
 
 pPip (CSym m)      = "CSym " ++ parens (pMana m)
 pPip XSym          = "XSym"
@@ -641,4 +670,6 @@ instance FromJSON Properties where
             ,_power = power
             ,_toughness = toughness
             ,_keywords = keywords
-            ,_loyalty = loyalty})
+            ,_loyalty = loyalty
+            ,_owner = -1
+            ,_controller = -1})
