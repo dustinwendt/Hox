@@ -29,6 +29,7 @@ library
       Basics.Basics
       Card
       Colors
+      ImportFile
       Lib
       Player
       ScryfallParser
@@ -46,7 +47,6 @@ library
     , base >=4.7 && <5
     , bytestring
     , containers ==0.6.*
-    , dates
     , directory
     , http-client
     , http-client-tls
@@ -78,7 +78,6 @@ executable Hox-exe
     , base >=4.7 && <5
     , bytestring
     , containers ==0.6.*
-    , dates
     , directory
     , http-client
     , http-client-tls
@@ -111,7 +110,6 @@ test-suite Hox-test
     , base >=4.7 && <5
     , bytestring
     , containers ==0.6.*
-    , dates
     , directory
     , http-client
     , http-client-tls
