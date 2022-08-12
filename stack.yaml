@@ -28,6 +28,7 @@ resolver:
 #      ghcjs-0.2.0.20160414_ghc-7.10.3:
 #        url: https://s3.amazonaws.com/ghcjs/ghcjs-0.2.0.20160414_ghc-7.10.3.tar.gz
 #        sha1: 6d6f307503be9e94e0c96ef1308c7cf224d06be3
+
 nix:
   enable: false
   pure: true
@@ -43,6 +44,8 @@ nix:
 #   - wai
 packages:
 - .
+# - subdirs:
+    # - todo
 
 # Dependency packages to be pulled from upstream that are not in the resolver.
 # These entries can reference officially published versions as well as

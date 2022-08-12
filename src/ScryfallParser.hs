@@ -24,6 +24,12 @@ import           Types
 --                                           SubType (..), SuperType (..),
 --                                           TypeLine (..))
 
+f :: Ord a => a -> [a] -> [a]
+f a xs = go ([],[]) a xs
+  where go (a, b) _ [] = a ++ b
+        go (a,b) x (y:ys) | y < x = go (a ++ [y], b) x ys
+                          | otherwise = go (a, b ++ [y]) x ys
+
 data ErrorObject = ErrorObject
   {_status :: Int, _code :: String, _details :: String, _errtype :: Maybe String, _warnings :: Maybe [String]}
 
@@ -157,35 +163,54 @@ scryfallSearch s = do
   return $ getResponseBody response
   where baseUrl = "https://api.scryfall.com/cards/search?q="
 
-test :: String -> IO Properties
+-- test :: String -> IO Properties
 test s = do
   lo <- scryfallSearch s
   return $ head (lo ^. cardData)
 
 -- addCards :: String -> IO ()
 addCards s = do
-  lo <- scryfallSearch s
-  mapM addCardToProject (lo ^. cardData)
+  los <- allPages s
+  mapM addCardToProject (props los)
 
-test2 :: String -> IO ()
-test2 s = do
-  x <- test s
-  print (x ^. keywords)
+writeImportPage :: IO ()
+writeImportPage = do
+  currDir <- getCurrentDirectory
+  contents <- getDirectoryContents (currDir ++ "/src/todo/")
+  -- map (filter (/= '"'))
+  let c' = filter (isAlpha . head) contents
+      imports = [ "import " ++ filter (/= '"') (show (takeWhile (/= '.') x)) | x <- c']
+      fn = "CardList"
+      fp = currDir ++ "/src/" ++ fn ++ ".hs"
+  writeFile fp $ unlines $ ("module " ++ fn ++ " where") : "" : imports
 
--- TODO: Get all pages to work
--- allPages :: String -> IO [ListObject]
--- allPages s = do
---   manager <- newManager $ managerSetProxy noProxy tlsManagerSettings
---   request <- parseRequest s
---   response <- httpJSON request
---   body <- getResponseBody response
---   if (body ^. has_more)
---   then
---     do rest <- case (body ^. next_page) of
---                 Just x  -> allPages x
---                 Nothing -> undefined
---        return (body : rest)
---   else return [body]
+allPages :: String -> IO [ListObject]
+allPages s = do
+  manager <- newManager $ managerSetProxy noProxy tlsManagerSettings
+  request <- parseRequest $ "https://api.scryfall.com/cards/search?q=" ++ encode s
+  response <- httpJSON request
+  let body = getResponseBody response
+  case body ^. next_page of
+    Just np ->
+      do r <- allPages' np
+         return (body : r)
+    Nothing -> return [body]
+
+allPages' :: String -> IO [ListObject]
+allPages' s = do
+  manager <- newManager $ managerSetProxy noProxy tlsManagerSettings
+  request <- parseRequest s
+  response <- httpJSON request
+  let body = getResponseBody response
+  case body ^. next_page of
+    Just np ->
+      do r <- allPages' np
+         return (body : r)
+    Nothing -> return [body]
+
+test' s = do
+  los <- allPages s
+  print $ head los ^. cardData
 
 props :: [ListObject] -> [Properties]
 props = concatMap (^. cardData)

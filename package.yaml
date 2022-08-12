@@ -45,7 +45,9 @@ dependencies:
   # - reflex-dom-core
 
 library:
-  source-dirs: src
+  source-dirs:
+    - src
+    - src/todo
 
 executables:
   Hox-exe:
