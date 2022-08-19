@@ -7,5 +7,4 @@ import Data.Maybe
 import Types
 
 
-unholyStrength = (properties.name .~ "Unholy Strength") . (properties.manaCost ?~ [CSym (Colored Black)]) . (properties.color .~ [Black]) . (properties.identity .~ [Black]) . (properties.keywords .~ []) . (properties.typeLine .~ TypeLine [] [Enchantment] [EType Aura]) . (properties.oracleText .~ "Enchant creature
-Enchanted creature gets +2/+1.") $ defaultCard
+unholyStrength = (properties.name .~ "Unholy Strength") . (properties.manaCost ?~ [CSym (Colored Black)]) . (properties.color .~ [Black]) . (properties.identity .~ [Black]) . (properties.keywords .~ []) . (properties.typeLine .~ TypeLine [] [Enchantment] [EType Aura]) . (properties.oracleText .~ "Enchant creature\nEnchanted creature gets +2/+1.") $ defaultCard

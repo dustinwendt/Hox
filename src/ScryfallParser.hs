@@ -269,8 +269,14 @@ pST (PType x) = "PType " ++ show x
 
 pTL (TypeLine a b c) = "properties.typeLine .~ TypeLine " ++ listString (map show a) ++ " " ++ listString (map show b) ++ " " ++ listString (map pST c)
 
+escapeSpecial []        = []
+escapeSpecial ('\n':xs) = "\\n" ++ escapeSpecial xs
+escapeSpecial ('"':xs)  = "\\\"" ++ escapeSpecial xs
+escapeSpecial (x:xs)    = x : escapeSpecial xs
+                     -- | otherwise = x : escapeSpecial xs
+
 pOracle "" = ""
-pOracle x  = "properties.oracleText .~ \"" ++ x ++ "\""
+pOracle x  = "properties.oracleText .~ \"" ++ escapeSpecial x ++ "\""
 
 pPip (CSym m)      = "CSym " ++ parens (pMana m)
 pPip XSym          = "XSym"
