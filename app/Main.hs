@@ -1,10 +1,10 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell   #-}
+-- # LANGUAGE OverloadedStrings #
+{-# LANGUAGE TemplateHaskell #-}
 module Main where
 
 import           Card
 import           Colors
-import           Control.Lens
+import           Control.Lens        hiding (set)
 import           Control.Monad
 import           Control.Monad.State
 import           Data.Map            hiding (drop, map, null, take)
@@ -12,7 +12,7 @@ import           Lib
 import           Player
 -- import           Supply
 -- import           System.Random
-import           Reflex
+-- import           Reflex              hiding (IsString)
 -- import Reflex.Dom.Main
 -- import Reflex.Dom.Widget.Basic
 import           Graphics.UI.Gtk     hiding (get)
@@ -271,7 +271,16 @@ playersPrompt = do
                   playersPrompt
     Nothing -> playersPrompt
 
-main = do initGUI
+main = do
+  initGUI
+  window <- windowNew
+  on window objectDestroy mainQuit
+  -- set window [ containerBorderWidth := 10 ]
+  button <- buttonNew
+  set button [ buttonLabel := "Validate" ]
+  set window [ containerChild := button ]
+  widgetShowAll window
+  mainGUI
   -- f <- formatPrompt
   -- numPlayers <- playersPrompt
   -- putStrLn "Done"
