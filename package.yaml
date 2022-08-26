@@ -24,9 +24,11 @@ dependencies:
 - aeson-better-errors
 - base >= 4.7 && < 5
 - bytestring
+# - cairo
 - containers >= 0.6 && < 0.7
 # - dates
 - directory
+- gtk
 - http-client
 - http-client-tls
 - http-conduit

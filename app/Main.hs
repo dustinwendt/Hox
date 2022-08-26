@@ -15,6 +15,7 @@ import           Player
 import           Reflex
 -- import Reflex.Dom.Main
 -- import Reflex.Dom.Widget.Basic
+import           Graphics.UI.Gtk     hiding (get)
 import           Text.Read           hiding (get)
 import           Zones
 
@@ -270,7 +271,7 @@ playersPrompt = do
                   playersPrompt
     Nothing -> playersPrompt
 
-main = do putStrLn "Back in Time"
+main = do initGUI
   -- f <- formatPrompt
   -- numPlayers <- playersPrompt
   -- putStrLn "Done"

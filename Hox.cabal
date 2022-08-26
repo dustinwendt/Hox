@@ -1,6 +1,6 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.4.
+-- This file has been generated from package.yaml by hpack version 0.35.0.
 --
 -- see: https://github.com/sol/hpack
 
@@ -32,7 +32,6 @@ library
       Lib
       Player
       ScryfallParser
-      Supply
       Types
       Util
       Zones
@@ -337,6 +336,7 @@ library
     , bytestring
     , containers ==0.6.*
     , directory
+    , gtk
     , http-client
     , http-client-tls
     , http-conduit
@@ -368,6 +368,7 @@ executable Hox-exe
     , bytestring
     , containers ==0.6.*
     , directory
+    , gtk
     , http-client
     , http-client-tls
     , http-conduit
@@ -400,6 +401,7 @@ test-suite Hox-test
     , bytestring
     , containers ==0.6.*
     , directory
+    , gtk
     , http-client
     , http-client-tls
     , http-conduit
