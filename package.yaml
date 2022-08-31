@@ -40,6 +40,7 @@ dependencies:
   # - reflex-gi-gtk
 - reflex-vty
 - text
+- unix
 - uri-encode
 - uuid
 - vector

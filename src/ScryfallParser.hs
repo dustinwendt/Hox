@@ -179,10 +179,12 @@ writeImportPage = do
   contents <- getDirectoryContents (currDir ++ "/src/todo/")
   -- map (filter (/= '"'))
   let c' = filter (isAlpha . head) contents
-      imports = [ "import " ++ filter (/= '"') (show (takeWhile (/= '.') x)) | x <- c']
+      cardNames = map (filter (/= '"') . takeWhile (/= '.') . show) c'
+      imports = [ "import " ++ x | x <- cardNames]
+      modules = intercalate "," [ "module " ++ x | x <- cardNames]
       fn = "CardList"
       fp = currDir ++ "/src/" ++ fn ++ ".hs"
-  writeFile fp $ unlines $ ("module " ++ fn ++ " where") : "" : imports
+  writeFile fp $ unlines $ ("module " ++ fn ++ "( " ++ modules ++ ") where") : "" : imports
 
 allPages :: String -> IO [ListObject]
 allPages s = do
