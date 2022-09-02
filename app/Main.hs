@@ -8,12 +8,13 @@ import           Colors
 import           Control.Lens                hiding (set)
 import           Control.Monad
 import           Control.Monad.State
-import           Data.Map                    hiding (drop, map, null, take)
+import qualified Data.Map                    as M
 import           Graphics.UI.Gtk             hiding (Stack, get)
 import           Graphics.UI.Gtk.Layout.Grid
 -- import           Lib
 import           Player
 import           System.Directory
+import           System.IO
 import           Text.Read                   hiding (get)
 import           Util
 import           Zones
@@ -49,7 +50,7 @@ data Occurrences = DrawFromEmpty PId
 
 data GameState = GameState
  {
-   _players      :: Map PId Player
+   _players      :: M.Map PId Player
  , _stack        :: Stack
  , _activePlayer :: PId
  , _exile        :: Exile
@@ -74,7 +75,7 @@ data PassSignal = NextPhase | Pass | Resolve deriving (Eq, Show)
 type Game a = State GameState a
 
 defaultGameState = GameState
-  { _players      = empty
+  { _players      = M.empty
   , _stack        = []
   , _activePlayer = -1
   , _exile        = []
@@ -178,10 +179,10 @@ pass = do
 draw :: Int -> PId -> Game ()
 draw n p = do
   g <- get
-  let player = (g ^. players) ! p
+  let player = (g ^. players) M.! p
       lib = player ^. library
       updatedPlayer = over library (drop n) . over hand (++ take n lib) $ player
-      u = over players (insert p updatedPlayer) in
+      u = over players (M.insert p updatedPlayer) in
     if n > length lib
     then modify $ u . over occurrences (DrawFromEmpty p :)
     else modify u
@@ -270,11 +271,21 @@ playersPrompt = do
                   playersPrompt
     Nothing -> playersPrompt
 
-validDeck :: Map GameObject Int -> Bool
-validDeck = Data.Map.foldrWithKey f True
-  where f k v False = False
-        f k v b | not (isBasic k) && v > 4 = False
-                | otherwise = b
+isSpace :: Char -> Bool
+isSpace ' ' = True
+isSpace _   = False
+
+deckList :: String -> M.Map GameObject Int
+deckList s = foldr (uncurry (M.insertWith (+)) . pLine) M.empty (lines s)
+  where
+    pLine s = let (a,b) = break isSpace s in
+            (strToCard (stripCard b), read a :: Int)
+
+validDeck :: M.Map GameObject Int -> Bool
+validDeck m = sum (M.elems m) >= 60 && f (M.toList m)
+  where f [] = True
+        f ((k,v):xs) | not (isBasic k) && v > 4 = False
+                     | otherwise = f xs
 
 main = do
   initGUI
@@ -284,7 +295,7 @@ main = do
 
   -- Frames
   frame1 <- frameNew
-  frameSetLabel frame1 "Deck Validator"
+  -- frameSetLabel frame1 "Welcome"
 
   -- Windows
   window1 <- windowNew
@@ -297,18 +308,47 @@ main = do
 
   on window1 objectDestroy mainQuit
 
+  -- Widgets
+  entry <- entryNew
+  fileChooser <- fileChooserButtonNew "Deck" FileChooserActionOpen
+  button <- buttonNew
+  set button [ buttonLabel := "Validate" ]
+  on button buttonActivated $ do
+    fn <- fileChooserGetFilename fileChooser
+    case fn of
+      Just x  -> do
+        putStrLn $ "Validating " ++ x
+        handle <- openFile x ReadMode
+        contents <- hGetContents handle
+        let x = deckList contents
+        -- print x
+        print $ "Deck size: " ++ show (sum (M.elems x))
+        putStrLn $ if validDeck x then "Valid Deck" else "Invalid Deck"
+        hClose handle
+      Nothing -> putStrLn "No file selected"
+
+    -- putStrLn "A \"clicked\"-handler to say \"destroy\""
+    -- widgetDestroy window1
+
+  on fileChooser fileChooserButtonFileSet $ do
+    Just fn <- fileChooserGetFilename fileChooser
+    putStrLn $ "Selected: " ++ fn
+
   -- Grids
   grid1 <- gridNew
   gridSetColumnSpacing grid1 10
   gridSetRowSpacing grid1 10
   gridSetColumnHomogeneous grid1 True
 
-  fileChooser <- fileChooserWidgetNew FileChooserActionOpen
-  button <- buttonNew
-  set button [ buttonLabel := "Validate" ]
-  on button buttonActivated $ do
-    putStrLn "A \"clicked\"-handler to say \"destroy\""
-    widgetDestroy window1
-  set window1 [ windowTitle := "Hox", containerChild := button ]
+  gridAttach grid1 fileChooser 0 0 3 2
+  -- gridAttach grid1 entry 0 0 3 3
+  gridAttach grid1 button 6 0 1 1
+
+  -- Containers
+  containerAdd window1 frame1
+  containerAdd frame1 grid1
+
+  -- set window1 [ windowTitle := "Hox", containerChild := button ]
   widgetShowAll window1
+
   mainGUI

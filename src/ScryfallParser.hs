@@ -20,6 +20,7 @@ import           System.Directory
 import           System.IO
 import           Text.Parsec.Char
 import           Types
+import           Util
 -- (ArtifactType (..), CardType (..),
 --                                           SubType (..), SuperType (..),
 --                                           TypeLine (..))
@@ -180,11 +181,15 @@ writeImportPage = do
   -- map (filter (/= '"'))
   let c' = filter (isAlpha . head) contents
       cardNames = map (filter (/= '"') . takeWhile (/= '.') . show) c'
-      imports = [ "import " ++ x | x <- cardNames]
-      modules = intercalate "," [ "module " ++ x | x <- cardNames]
+      imports = [ "import " ++ x | x <- "Card" : cardNames]
+      modules = intercalate "," ("strToCard" : [ "module " ++ x | x <- cardNames])
+      funName = "strToCard"
+      funDec = funName ++ " :: String -> GameObject"
+      funDef = [ funName ++ " \"" ++ x ++ "\" = " ++ x | x <- map stripCard cardNames] ++ [funName ++ " _ = defaultCard"]
       fn = "CardList"
       fp = currDir ++ "/src/" ++ fn ++ ".hs"
-  writeFile fp $ unlines $ ("module " ++ fn ++ "( " ++ modules ++ ") where") : "" : imports
+  writeFile fp $ unlines $ ["module " ++ fn ++ "( " ++ modules ++ ") where"] ++ [""] ++ imports ++ [""] ++ (funDec : funDef)
+  -- writeFile fp $ unlines $ ["module " ++ fn ++ "( " ++ modules ++ ") where", ""] ++ imports
 
 allPages :: String -> IO [ListObject]
 allPages s = do
@@ -651,12 +656,12 @@ parseTL s = go (TypeLine [] [] []) False (words s)
                                     Just x  -> go (add x tl) True ss
                                     Nothing -> go tl True ss
 
-parseColor s = case s of
-  "W" -> White
-  "U" -> Blue
-  "B" -> Black
-  "R" -> Red
-  "G" -> Green
+-- parseColor s = case s of
+--   "W" -> White
+--   "U" -> Blue
+--   "B" -> Black
+--   "R" -> Red
+--   "G" -> Green
 
 parsePip :: [String] -> Pip
 parsePip [x] | x `elem` ["W", "U", "B", "R", "G"] = CSym (Colored (parseColor x))
@@ -706,3 +711,6 @@ instance FromJSON Properties where
             ,_loyalty = loyalty
             ,_owner = -1
             ,_controller = -1})
+
+
+

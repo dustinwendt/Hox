@@ -3,14 +3,20 @@ module Util where
 import           Card
 import           Colors
 import           Control.Lens
+import           Data.Char
 import           Types
 
-parseColor :: Char -> Color
-parseColor 'W' = White
-parseColor 'U' = Blue
-parseColor 'B' = Black
-parseColor 'R' = Red
-parseColor 'G' = Green
+parseColor :: String -> Color
+parseColor "W" = White
+parseColor "U" = Blue
+parseColor "B" = Black
+parseColor "R" = Red
+parseColor "G" = Green
+
+stripCard :: String -> String
+stripCard s =
+  let x = filter isAlpha s in
+  toLower (head x) : tail x
 
 superTypes go = case go ^. (properties . typeLine) of
   TypeLine x _ _ -> x

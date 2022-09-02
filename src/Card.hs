@@ -6,7 +6,7 @@ module Card where
 import           Colors
 import           Control.Exception
 import           Control.Lens      hiding (flipped)
-import           Data.Aeson
+import           Data.Char
 import           GHC.Generics
 import           Types
 
@@ -83,13 +83,16 @@ instance Show Properties where
 
 -- 109.1
 -- Token | Copy are represented by Nothing being passed to Permanent and Spell respectively
-data ObjectType = Ability | Card | Spell (Maybe Object) | Permanent (Maybe Object) Status | Emblem deriving (Eq)
+data ObjectType = Ability | Card | Spell (Maybe GameObject) | Permanent (Maybe GameObject) Status | Emblem deriving (Eq)
 
 data GameObject =
   GameObject { _properties :: Properties
-             , _objType    :: ObjectType} deriving Eq
+             , _objType    :: ObjectType} deriving (Eq)
 
 $(makeLenses ''GameObject)
+
+instance Ord GameObject where
+  a <= b = a ^. (properties . name) <= b ^. (properties . name)
 
 instance Show GameObject where
   show o = show $ o^.properties
