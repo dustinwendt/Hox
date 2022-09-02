@@ -1,11 +1,9 @@
-{-# LANGUAGE OverloadedStrings #-}
 module Util where
 
-import Data.Aeson
-import Data.Char
-import Card
-import Colors
-import Types
+import           Card
+import           Colors
+import           Control.Lens
+import           Types
 
 parseColor :: Char -> Color
 parseColor 'W' = White
@@ -14,21 +12,17 @@ parseColor 'B' = Black
 parseColor 'R' = Red
 parseColor 'G' = Green
 
--- simpleGet :: IO ()
--- simpleGet = do
---   response <- httpLbs "http://httpbin.org/get"
---   print (getResponseBody response)
--- 
--- 
--- request = setRequestMethod "GET"
---   $ setRequestHost "httpbin.org"
---   $ setRequestPath "/get"
---   $ defaultRequest
--- 
--- customRequest :: IO ()
--- customRequest = do
---   response <- httpLbs request
---   print (getResponseBody response)
+superTypes go = case go ^. (properties . typeLine) of
+  TypeLine x _ _ -> x
+
+cardTypes go = case go ^. (properties . typeLine) of
+  TypeLine _ x _ -> x
+
+subTypes go = case go ^. (properties . typeLine) of
+  TypeLine _ _ x -> x
+
+isBasic :: GameObject -> Bool
+isBasic go = Basic `elem` superTypes go
 
 -- pMC :: String -> [Pip]
 -- pMC ('{':'X':'}':xs) = VarPip : pMC xs

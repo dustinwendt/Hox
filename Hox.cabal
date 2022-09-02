@@ -336,7 +336,7 @@ library
     , bytestring
     , containers ==0.6.*
     , directory
-    , gtk
+    , gtk3
     , http-client
     , http-client-tls
     , http-conduit
@@ -347,6 +347,7 @@ library
     , reflex
     , reflex-vty
     , text
+    , unix
     , uri-encode
     , uuid
     , vector
@@ -368,7 +369,7 @@ executable Hox-exe
     , bytestring
     , containers ==0.6.*
     , directory
-    , gtk
+    , gtk3
     , http-client
     , http-client-tls
     , http-conduit
@@ -379,6 +380,7 @@ executable Hox-exe
     , reflex
     , reflex-vty
     , text
+    , unix
     , uri-encode
     , uuid
     , vector
@@ -401,7 +403,7 @@ test-suite Hox-test
     , bytestring
     , containers ==0.6.*
     , directory
-    , gtk
+    , gtk3
     , http-client
     , http-client-tls
     , http-conduit
@@ -412,6 +414,7 @@ test-suite Hox-test
     , reflex
     , reflex-vty
     , text
+    , unix
     , uri-encode
     , uuid
     , vector

@@ -28,7 +28,7 @@ dependencies:
 - containers >= 0.6 && < 0.7
 # - dates
 - directory
-- gtk
+- gtk3
 - http-client
 - http-client-tls
 - http-conduit

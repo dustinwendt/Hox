@@ -3,20 +3,19 @@
 module Main where
 
 import           Card
+import           CardList
 import           Colors
-import           Control.Lens        hiding (set)
+import           Control.Lens                hiding (set)
 import           Control.Monad
 import           Control.Monad.State
-import           Data.Map            hiding (drop, map, null, take)
-import           Lib
+import           Data.Map                    hiding (drop, map, null, take)
+import           Graphics.UI.Gtk             hiding (Stack, get)
+import           Graphics.UI.Gtk.Layout.Grid
+-- import           Lib
 import           Player
--- import           Supply
--- import           System.Random
--- import           Reflex              hiding (IsString)
--- import Reflex.Dom.Main
--- import Reflex.Dom.Widget.Basic
-import           Graphics.UI.Gtk     hiding (get)
-import           Text.Read           hiding (get)
+import           System.Directory
+import           Text.Read                   hiding (get)
+import           Util
 import           Zones
 
 type SId = String
@@ -271,16 +270,45 @@ playersPrompt = do
                   playersPrompt
     Nothing -> playersPrompt
 
+validDeck :: Map GameObject Int -> Bool
+validDeck = Data.Map.foldrWithKey f True
+  where f k v False = False
+        f k v b | not (isBasic k) && v > 4 = False
+                | otherwise = b
+
 main = do
   initGUI
-  window <- windowNew
-  on window objectDestroy mainQuit
-  -- set window [ containerBorderWidth := 10 ]
+  home <- getHomeDirectory
+
+  window1 <- windowNew
+
+  -- Frames
+  frame1 <- frameNew
+  frameSetLabel frame1 "Deck Validator"
+
+  -- Windows
+  window1 <- windowNew
+  windowSetPosition window1 WinPosCenter
+  set window1 [ containerBorderWidth := 10
+              , windowTitle := "Hox"
+              , windowResizable := True
+              , windowDefaultWidth := 600
+              , windowDefaultHeight := 300]
+
+  on window1 objectDestroy mainQuit
+
+  -- Grids
+  grid1 <- gridNew
+  gridSetColumnSpacing grid1 10
+  gridSetRowSpacing grid1 10
+  gridSetColumnHomogeneous grid1 True
+
+  fileChooser <- fileChooserWidgetNew FileChooserActionOpen
   button <- buttonNew
   set button [ buttonLabel := "Validate" ]
-  set window [ containerChild := button ]
-  widgetShowAll window
+  on button buttonActivated $ do
+    putStrLn "A \"clicked\"-handler to say \"destroy\""
+    widgetDestroy window1
+  set window1 [ windowTitle := "Hox", containerChild := button ]
+  widgetShowAll window1
   mainGUI
-  -- f <- formatPrompt
-  -- numPlayers <- playersPrompt
-  -- putStrLn "Done"
