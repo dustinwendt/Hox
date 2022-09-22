@@ -177,7 +177,7 @@ addCards s = do
 writeImportPage :: IO ()
 writeImportPage = do
   currDir <- getCurrentDirectory
-  contents <- getDirectoryContents (currDir ++ "/src/todo/")
+  contents <- getDirectoryContents (currDir ++ "/src/backend/todo/")
   -- map (filter (/= '"'))
   let c' = filter (isAlpha . head) contents
       cardNames = map (filter (/= '"') . takeWhile (/= '.') . show) c'
@@ -709,8 +709,8 @@ instance FromJSON Properties where
             ,_toughness = toughness
             ,_keywords = keywords
             ,_loyalty = loyalty
-            ,_owner = -1
-            ,_controller = -1})
+            ,_owner = You
+            ,_controller = You})
 
 
 

@@ -50,7 +50,10 @@ dependencies:
 library:
   source-dirs:
     - src
-    - src/todo
+    - src/backend
+    - src/backend/todo
+    - src/common
+    - src/frontend
 
 executables:
   Hox-exe:

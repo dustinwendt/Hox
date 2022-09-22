@@ -125,8 +125,8 @@ defaultProperties = Properties
   , _toughness = Nothing
   , _loyalty = Nothing
   -- , _legality = defaultLegality
-  , _owner = -1
-  , _controller = -1
+  , _owner = You
+  , _controller = You
   }
 
 defaultCard =

@@ -10,8 +10,8 @@ import           Control.Monad
 import           Control.Monad.State
 import qualified Data.Map                    as M
 import           Graphics.UI.Gtk             hiding (Stack, get)
+import           Graphics.UI.Gtk.Builder
 import           Graphics.UI.Gtk.Layout.Grid
--- import           Lib
 import           Player
 import           System.Directory
 import           System.IO
@@ -77,7 +77,7 @@ type Game a = State GameState a
 defaultGameState = GameState
   { _players      = M.empty
   , _stack        = []
-  , _activePlayer = -1
+  , _activePlayer = You
   , _exile        = []
   , _battlefield  = []
   , _phases       = []
@@ -102,11 +102,6 @@ freshId = do
   let x = head $ g ^. ids
   modify $ over ids tail
   return x
-
--- type Game = State GameState GameOutput
--- pass :: GameState -> GameState
--- pass s = case s of
---   GameState {} -> GameState {}
 
 -- newtype State s a = State { runState :: s -> (a, s) }
 
@@ -197,28 +192,6 @@ draw n p = do
 --               else givePriority (nextPlayer x g) g'
 --     Nothing -> advancePhase g
 
--- draw :: Int -> PId -> GameState -> GameState
--- draw n p g =
---       -- Map PId Player
---   let ps = (g ^. players)
---       -- Player
---       player  = ps ! p
---       -- Library
---       l = player ^. library
---       -- Hand
---       h = player ^. hand
---       -- Hand
---       newHand = h ++ take n l
---       -- Library
---       newLib  = drop 3 l
---       -- Player
---       p' = (hand .~ newHand) . (library .~ newLib) $ player
---       ps' = insert p p' ps
---       g'  = (players .~ ps') g in
---     if n <= length l
---     then g'
---     else over occurrences (DrawFromEmpty p:) g'
-
 -- state :: (s -> (a,s)) -> State s a
 -- state = State
 
@@ -295,7 +268,7 @@ main = do
 
   -- Frames
   frame1 <- frameNew
-  -- frameSetLabel frame1 "Welcome"
+  frame2 <- frameNew
 
   -- Windows
   window1 <- windowNew
@@ -306,7 +279,16 @@ main = do
               , windowDefaultWidth := 600
               , windowDefaultHeight := 300]
 
+  sandBoxWindow <- windowNew
+  windowSetPosition sandBoxWindow WinPosCenter
+  set sandBoxWindow [ containerBorderWidth := 10
+              , windowTitle := "Sandbox"
+              , windowResizable := True
+              , windowDefaultWidth := 600
+              , windowDefaultHeight := 300]
+
   on window1 objectDestroy mainQuit
+  on sandBoxWindow objectDestroy mainQuit
 
   -- Widgets
   entry <- entryNew
@@ -320,15 +302,22 @@ main = do
         putStrLn $ "Validating " ++ x
         handle <- openFile x ReadMode
         contents <- hGetContents handle
-        let x = deckList contents
-        -- print x
-        print $ "Deck size: " ++ show (sum (M.elems x))
-        putStrLn $ if validDeck x then "Valid Deck" else "Invalid Deck"
-        hClose handle
-      Nothing -> putStrLn "No file selected"
+        let d = deckList contents
 
-    -- putStrLn "A \"clicked\"-handler to say \"destroy\""
-    -- widgetDestroy window1
+        print $ "Deck size: " ++ show (sum (M.elems d))
+        hClose handle
+        if validDeck d
+        then do
+          widgetHide window1
+          builder <- builderNew
+          currDir <- getCurrentDirectory
+          builderAddFromFile builder (currDir ++ "/src/gameUI.glade")
+          sandBoxWindow <- builderGetObject builder castToWindow "sandbox_window"
+
+          widgetShowAll sandBoxWindow
+        else
+          putStrLn "Invalid Deck"
+      Nothing -> putStrLn "No file selected"
 
   on fileChooser fileChooserButtonFileSet $ do
     Just fn <- fileChooserGetFilename fileChooser
@@ -341,7 +330,6 @@ main = do
   gridSetColumnHomogeneous grid1 True
 
   gridAttach grid1 fileChooser 0 0 3 2
-  -- gridAttach grid1 entry 0 0 3 3
   gridAttach grid1 button 6 0 1 1
 
   -- Containers

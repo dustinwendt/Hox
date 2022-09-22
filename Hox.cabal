@@ -25,15 +25,13 @@ source-repository head
 
 library
   exposed-modules:
-      Basics.Basics
       Card
       CardList
-      Colors
       Lib
+      Colors
       Player
       ScryfallParser
       Types
-      Util
       Zones
       AirElemental
       AncestralRecall
@@ -324,11 +322,15 @@ library
       WordofCommand
       WrathofGod
       ZombieMaster
+      Util
   other-modules:
       Paths_Hox
   hs-source-dirs:
       src
-      src/todo
+      src/backend
+      src/backend/todo
+      src/common
+      src/frontend
   build-depends:
       aeson
     , aeson-better-errors

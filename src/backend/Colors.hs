@@ -1,9 +1,9 @@
 {-# LANGUAGE DeriveGeneric #-}
 module Colors where
 
-import Data.Aeson
-import Data.Map hiding (foldl, foldr, map)
-import GHC.Generics
+import           Data.Aeson
+import           Data.Map     hiding (foldl, foldr, map)
+import           GHC.Generics
 
 -- 202.2a
 data Color = White | Blue | Black | Red | Green deriving (Eq, Generic, Ord)
@@ -38,13 +38,13 @@ instance Show Mana where
 instance Show Pip where
   show p = case p of
     HyPip p1 p2 -> show p1 ++ "/" ++ show p2
-    CSym c -> show c
-    XSym -> "X"
-    PhySym -> "P"
-    SnowSym -> "S"
-    GenSym i -> show i
+    CSym c      -> show c
+    XSym        -> "X"
+    PhySym      -> "P"
+    SnowSym     -> "S"
+    GenSym i    -> show i
 
-type PId = Int
+data PId = You | Opponent deriving (Eq, Ord, Show)
 
 type ManaPool = Map Mana Int
 

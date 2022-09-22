@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>README.html</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+</head>
+
+<body>
+
+<h1 id="hox">Hox</h1>
+<p>WIP GTK Haskell application implementation of Magic the Gathering’s first set.</p>
+<p>Decklists should be in the form of “4 AncestralRecall” and only cards from the Alpha set are recognized Alpha set of Magic: https://scryfall.com/sets/lea?as=grid&amp;order=set Magic Rules: https://magic.wizards.com/en/rules</p>
+<h2 id="installation">Installation</h2>
+<h3 id="debian">Debian</h3>
+<ol type="1">
+<li>Install stack</li>
+<li>stack run</li>
+<li>sudo apt-get install libglib2.0-dev libpango1.0-dev libgtk2.0-dev Find filepath with locate cairo | grep ‘.pc’ export PKG_CONFIG_PATH #filepath stack build stack run</li>
+</ol>
+<h3 id="macos">MacOS</h3>
+<ol type="1">
+<li>Install Stack</li>
+<li>Install gtk+3 : https://macappstore.org/gtk3/</li>
+<li>stack build</li>
+<li>stack run</li>
+</ol>
+
+</body>
+</html>
