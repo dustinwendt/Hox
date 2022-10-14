@@ -27,8 +27,8 @@ library
   exposed-modules:
       Card
       CardList
-      Lib
       Colors
+      Engine
       Player
       ScryfallParser
       Types

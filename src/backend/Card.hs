@@ -7,6 +7,7 @@ import           Colors
 import           Control.Exception
 import           Control.Lens      hiding (flipped)
 import           Data.Char
+-- import {-# SOURCE #-}           Engine
 import           GHC.Generics
 import           Types
 
@@ -58,9 +59,7 @@ data Properties = Properties
   , _power      :: Maybe PT
   , _toughness  :: Maybe PT
   , _loyalty    :: Maybe Int
-  -- , _legality   :: Legality
-  , _owner      :: PId
-  , _controller :: PId
+  -- , _function   :: Game ()
   } deriving (Eq)
 
 $(makeLenses ''Properties)
@@ -87,7 +86,9 @@ data ObjectType = Ability | Card | Spell (Maybe GameObject) | Permanent (Maybe G
 
 data GameObject =
   GameObject { _properties :: Properties
-             , _objType    :: ObjectType} deriving (Eq)
+             , _objType    :: ObjectType
+             , _owner      :: PId
+             , _controller :: PId} deriving (Eq)
 
 $(makeLenses ''GameObject)
 
@@ -112,6 +113,7 @@ copySpell s = assert (isSpell s) $ objType .~ Spell Nothing $ s
 --                            , vintage  = True
 --                            }
 
+
 defaultProperties :: Properties
 defaultProperties = Properties
   { _name = "DefaultCard"
@@ -125,13 +127,13 @@ defaultProperties = Properties
   , _toughness = Nothing
   , _loyalty = Nothing
   -- , _legality = defaultLegality
-  , _owner = You
-  , _controller = You
   }
 
 defaultCard =
   GameObject { _properties = defaultProperties
-             , _objType = Card}
+             , _objType = Card
+             , _owner = You
+             , _controller = You}
 
 -- 202.3
 pipValue :: Pip -> Int

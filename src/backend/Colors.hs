@@ -1,7 +1,6 @@
 {-# LANGUAGE DeriveGeneric #-}
 module Colors where
 
-import           Data.Aeson
 import           Data.Map     hiding (foldl, foldr, map)
 import           GHC.Generics
 
@@ -44,8 +43,8 @@ instance Show Pip where
     SnowSym     -> "S"
     GenSym i    -> show i
 
-data PId = You | Opponent deriving (Eq, Ord, Show)
 
+data PId = You | Opponent deriving (Eq, Ord, Show)
 type ManaPool = Map Mana Int
 
 emptyPool :: ManaPool

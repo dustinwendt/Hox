@@ -21,15 +21,6 @@ import           System.IO
 import           Text.Parsec.Char
 import           Types
 import           Util
--- (ArtifactType (..), CardType (..),
---                                           SubType (..), SuperType (..),
---                                           TypeLine (..))
-
-f :: Ord a => a -> [a] -> [a]
-f a xs = go ([],[]) a xs
-  where go (a, b) _ [] = a ++ b
-        go (a,b) x (y:ys) | y < x = go (a ++ [y], b) x ys
-                          | otherwise = go (a, b ++ [y]) x ys
 
 data ErrorObject = ErrorObject
   {_status :: Int, _code :: String, _details :: String, _errtype :: Maybe String, _warnings :: Maybe [String]}
@@ -656,13 +647,6 @@ parseTL s = go (TypeLine [] [] []) False (words s)
                                     Just x  -> go (add x tl) True ss
                                     Nothing -> go tl True ss
 
--- parseColor s = case s of
---   "W" -> White
---   "U" -> Blue
---   "B" -> Black
---   "R" -> Red
---   "G" -> Green
-
 parsePip :: [String] -> Pip
 parsePip [x] | x `elem` ["W", "U", "B", "R", "G"] = CSym (Colored (parseColor x))
              | x == "X" = XSym
@@ -708,9 +692,7 @@ instance FromJSON Properties where
             ,_power = power
             ,_toughness = toughness
             ,_keywords = keywords
-            ,_loyalty = loyalty
-            ,_owner = You
-            ,_controller = You})
+            ,_loyalty = loyalty})
 
 
 
