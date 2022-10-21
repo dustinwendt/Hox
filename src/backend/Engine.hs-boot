@@ -2,14 +2,35 @@
 {-# LANGUAGE KindSignatures #-}
 module Engine where
 
+import Card
 import Colors
 import Control.Monad.State
 import qualified Data.Map as M
 import Player
-import Zones
+
+data Zones = Library | Hand | Battlefield | Graveyard | Stack | Exile | Command
+
+type Library = [GameObject]
+type Hand = [GameObject]
+type Battlefield = [GameObject]
+type Graveyard = [GameObject]
+type Stack = [GameObject]
+type Exile = [GameObject]
+type Command = [GameObject]
+
 
 type SId = String
 type Id = String
+
+data Player = Player { _life        :: Int
+                     , _library     :: Library
+                     , _hand        :: Hand
+                     , _graveyard   :: Graveyard
+                     , _manaPool    :: ManaPool
+                     , _maxHandSize :: Int
+                     , _landsPlayed :: Int
+                     , _maxLand     :: Int
+                     }
 
 type Attack = [(Id, PId)]
 type Defend = [(Id, Id)]

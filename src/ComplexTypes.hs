@@ -1,21 +1,23 @@
+{-# LANGUAGE DeriveGeneric   #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Engine where
+module ComplexTypes where
 
-import           Card
-import           CardList
 import           Colors
+import           Control.Exception
 import           Control.Lens
 import           Control.Monad.State
 import qualified Data.Map            as M
-import           Player
-import           Zones
+import           GHC.Generics
+import           Types
 
+-- 208 Power/Toughness
+data PT = Star | StarPlus Int | PT Int deriving (Eq)
+
+-- 400.1
+data Zones = Library | Hand | Battlefield | Graveyard | Stack | Exile | Command
 
 type SId = String
 type Id = String
-
-initIds :: [Id]
-initIds = concat [ replicateM k (['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9']) | k <- [1..]]
 
 type Attack = [(Id, PId)]
 type Defend = [(Id, Id)]
@@ -32,14 +34,73 @@ noCombat = Combat
 data Phase = Untap | Upkeep | Draw | PreCombatMain | BegCom | DecAttack Combat | DecBlock Combat
            | FirstDamCom Combat | DamCom Combat | EndCom | PostCombatMain | End | Cleanup deriving (Eq, Show)
 
-
-combat :: [Phase]
-combat = [BegCom, DecAttack noCombat, DecBlock noCombat, FirstDamCom noCombat, DamCom noCombat, EndCom]
-
-phaseOrder :: [Phase]
-phaseOrder = cycle [Untap, Upkeep, Draw, PreCombatMain] ++ combat  ++ [PostCombatMain, End, Cleanup]
+data Keyword = Banding | Defender | FirstStrike | Fear | Flying | Haste | Indestructible | LandWalk | Protection | Reach | Regeneration | Trample | Vigilance deriving (Enum, Eq, Generic, Show)
 
 data Occurrences = DrawFromEmpty PId
+
+
+-- 109.3
+data Properties = Properties
+  { _name       :: String
+  , _manaCost   :: Maybe [Pip]
+  , _color      :: [Color]
+  , _identity   :: [Color]
+  , _keywords   :: [Keyword]
+  , _typeLine   :: TypeLine
+  , _oracleText :: String
+  , _power      :: Maybe PT
+  , _toughness  :: Maybe PT
+  , _loyalty    :: Maybe Int
+  , _function   :: Game ()
+  }
+
+instance Eq Properties where
+  p1 == p2 = _name p1 == _name p2
+          && _manaCost p1 == _manaCost p2
+          && _color p1 == _color p2
+          && _identity p1 == _identity p2
+          && _keywords p1 == _keywords p2
+          && _typeLine p1 == _typeLine p2
+          && _oracleText p1 == _oracleText p2
+          && _power p1 == _power p2
+          && _toughness p1 == _toughness p2
+          && _loyalty p1 == _loyalty p2
+
+-- 110.5
+data Status =
+  Status { _tapped  :: Bool
+         , _flipped :: Bool
+         , _faceUp  :: Bool
+         , _phased  :: Bool
+         , _sick    :: Bool} deriving (Eq, Show)
+
+-- 109.1
+-- Token | Copy are represented by Nothing being passed to Permanent and Spell respectively
+data ObjectType = Ability | Card | Spell (Maybe GameObject) | Permanent (Maybe GameObject) Status | Emblem deriving Eq
+
+data GameObject =
+  GameObject { _properties :: Properties
+             , _objType    :: ObjectType
+             , _owner      :: PId
+             , _controller :: PId} deriving Eq
+
+type Library = [GameObject]
+type Hand = [GameObject]
+type Battlefield = [GameObject]
+type Graveyard = [GameObject]
+type Stack = [GameObject]
+type Exile = [GameObject]
+type Command = [GameObject]
+
+data Player = Player { _life        :: Int
+                     , _library     :: Library
+                     , _hand        :: Hand
+                     , _graveyard   :: Graveyard
+                     , _manaPool    :: ManaPool
+                     , _maxHandSize :: Int
+                     , _landsPlayed :: Int
+                     , _maxLand     :: Int
+                     }
 
 data GameState = GameState
  {
@@ -59,14 +120,132 @@ data GameState = GameState
  , _ids          :: [Id]
  }
 
-$(makeLenses ''GameState)
+type Game a = State GameState a
+
+$(makeLenses ''Properties)
+
+-- instance Eq Properties where
+--   p1 == p2 = all [ p1 ^. x == p2 ^. x | x <- [name, manaCost, color] ]
 
 -- 104.1
 data GameOutcome = DrawGame | Win PId | Restart
 
 data PassSignal = NextPhase | Pass | Resolve deriving (Eq, Show)
 
-type Game a = State GameState a
+$(makeLenses ''GameObject)
+$(makeLenses ''GameState)
+$(makeLenses ''Player)
+
+$(makeLenses ''Status)
+
+instance Show PT where
+  show Star         = "*"
+  show (StarPlus i) = "*+" ++ show i
+  show (PT i)       = show i
+
+instance Show Properties where
+  show p = show (p^.name) ++ " " ++ mc (p^.manaCost) ++ "\n" ++
+           tl (p^.typeLine) ++
+           tb (p^.oracleText) ++
+           f (p^.power, p^.toughness)
+   where f (Just x, Just y) = show x ++ "/" ++ show y ++ "\n"
+         f _                = ""
+         g []     = ""
+         g (x:xs) = "{" ++ show x ++ "}" ++ g xs
+         tl (TypeLine [] [] []) = ""
+         tl typeline            = show typeline ++ "\n"
+         tb textbox = if null textbox then "" else textbox ++ "\n"
+         mc Nothing  = ""
+         mc (Just p) = g p
+
+instance Ord GameObject where
+  a <= b = a ^. (properties . name) <= b ^. (properties . name)
+
+instance Show GameObject where
+  show o = show $ o^.properties
+
+-- 110.5b
+defaultStatus =
+  Status { _tapped = False
+         , _flipped = False
+         , _faceUp = True
+         , _phased = False
+         , _sick = True }
+
+isCard o = o^.objType == Card
+
+isSpell o = case o^.objType of
+  Spell _ -> True
+  _       -> False
+
+copySpell :: GameObject -> GameObject
+copySpell s = assert (isSpell s) $ objType .~ Spell Nothing $ s
+
+-- defaultLegality = Legality { standard = True
+--                            , modern   = True
+--                            , legacy   = True
+--                            , vintage  = True
+--                            }
+
+
+defaultProperties :: Properties
+defaultProperties = Properties
+  { _name = "DefaultCard"
+  , _manaCost = Nothing
+  , _color = []
+  , _identity = []
+  , _keywords = []
+  , _typeLine = TypeLine [] [] []
+  , _oracleText = ""
+  , _power = Nothing
+  , _toughness = Nothing
+  , _loyalty = Nothing
+  , _function = doNothing
+  }
+
+defaultCard =
+  GameObject { _properties = defaultProperties
+             , _objType = Card
+             , _owner = You
+             , _controller = You}
+
+-- 202.3
+pipValue :: Pip -> Int
+pipValue x = case x of
+              HyPip a b -> if v a > v b then v a else v b
+              p         -> v p
+           where v XSym       = 0
+                 v (GenSym i) = i
+                 v _          = 1
+
+manaValue :: GameObject -> Int
+manaValue o = case o^.properties.manaCost of
+  Just pips -> foldr ((+) . pipValue) 0 pips
+
+isMonoColored :: GameObject -> Bool
+isMonoColored o = length (o^.properties.color) == 1
+
+isMultiColored :: GameObject -> Bool
+isMultiColored o = length (o^.properties.color) > 1
+
+isColorless :: GameObject -> Bool
+isColorless o = null (o^.properties.color)
+
+
+
+initIds :: [Id]
+initIds = concat [ replicateM k (['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9']) | k <- [1..]]
+
+
+
+combat :: [Phase]
+combat = [BegCom, DecAttack noCombat, DecBlock noCombat, FirstDamCom noCombat, DamCom noCombat, EndCom]
+
+phaseOrder :: [Phase]
+phaseOrder = cycle [Untap, Upkeep, Draw, PreCombatMain] ++ combat  ++ [PostCombatMain, End, Cleanup]
+
+
+
 
 defaultGameState = GameState
   { _players      = M.empty
@@ -265,4 +444,3 @@ draw n p = do
 
 play :: GameState -> GameState
 play _ = undefined
-

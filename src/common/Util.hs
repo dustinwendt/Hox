@@ -1,7 +1,7 @@
 module Util where
 
-import           Card
 import           Colors
+import           ComplexTypes
 import           Control.Lens
 import           Data.Char
 import           Types

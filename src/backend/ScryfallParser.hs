@@ -2,8 +2,8 @@
 {-# LANGUAGE TemplateHaskell   #-}
 module ScryfallParser where
 
-import           Card
 import           Colors
+import           ComplexTypes
 import           Control.Lens            hiding ((.=))
 import           Data.Aeson              hiding (encode)
 import           Data.Char               (isAlpha, toLower)
@@ -228,7 +228,7 @@ addCardToProject p = do
      cn = toLower (head fn) : tail fn
      moduleString = "module " ++ fn ++ " where"
      importString = unlines ["import " ++ x | x <- imports]
-     imports = ["Card", "Colors", "Control.Lens", "Data.Maybe", "Types"]
+     imports = ["Colors", "ComplexTypes", "Control.Lens", "Data.Maybe", "Types"]
 
 intercalate :: [a] -> [[a]] -> [a]
 intercalate _ []     = []
@@ -692,7 +692,8 @@ instance FromJSON Properties where
             ,_power = power
             ,_toughness = toughness
             ,_keywords = keywords
-            ,_loyalty = loyalty})
+            ,_loyalty = loyalty
+            ,_function = doNothing})
 
 
 

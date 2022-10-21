@@ -1,8 +1,8 @@
 module Main where
 
-import           Card
 import           CardList
 import           Colors
+import           ComplexTypes
 import           Control.Lens                hiding (set)
 import           Control.Monad
 import           Control.Monad.State
@@ -10,12 +10,10 @@ import qualified Data.Map                    as M
 import           Graphics.UI.Gtk             hiding (Stack, get)
 import           Graphics.UI.Gtk.Builder
 import           Graphics.UI.Gtk.Layout.Grid
-import           Player
 import           System.Directory
 import           System.IO
 import           Text.Read                   hiding (get)
 import           Util
-import           Zones
 
 data Format = Standard | Modern | Legacy | Vintage deriving Show
 

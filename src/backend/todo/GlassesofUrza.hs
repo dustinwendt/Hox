@@ -1,7 +1,7 @@
 module GlassesofUrza where
 
-import Card
 import Colors
+import ComplexTypes
 import Control.Lens
 import Data.Maybe
 import Types

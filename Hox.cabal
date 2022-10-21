@@ -25,14 +25,11 @@ source-repository head
 
 library
   exposed-modules:
-      Card
+      ComplexTypes
       CardList
       Colors
-      Engine
-      Player
       ScryfallParser
       Types
-      Zones
       AirElemental
       AncestralRecall
       AnimateArtifact

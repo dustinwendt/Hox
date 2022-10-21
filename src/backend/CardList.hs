@@ -28,7 +28,6 @@ import           BogWraith
 import           Braingeyser
 import           Burrowing
 import           Camouflage
-import           Card
 import           Castle
 import           CelestialPrism
 import           Channel
@@ -41,6 +40,7 @@ import           CircleofProtectionWhite
 import           ClockworkBeast
 import           Clone
 import           Cockatrice
+import           ComplexTypes
 import           ConsecrateLand
 import           Conservator
 import           ContractfromBelow
