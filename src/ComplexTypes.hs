@@ -14,7 +14,7 @@ import           Types
 data PT = Star | StarPlus Int | PT Int deriving (Eq)
 
 -- 400.1
-data Zones = Library | Hand | Battlefield | Graveyard | Stack | Exile | Command
+-- data Zones = Library | Hand | Battlefield | Graveyard | Stack | Exile | Command
 
 type SId = String
 type Id = String
@@ -23,7 +23,7 @@ type Attack = [(Id, PId)]
 type Defend = [(Id, Id)]
 data Combat = Combat
   { _attackers :: Attack
-  , _defenders :: Defend } deriving (Eq, Show)
+  , _defenders :: Defend } deriving (Eq, Ord, Show)
 
 noCombat :: Combat
 noCombat = Combat
@@ -32,7 +32,7 @@ noCombat = Combat
  }
 
 data Phase = Untap | Upkeep | Draw | PreCombatMain | BegCom | DecAttack Combat | DecBlock Combat
-           | FirstDamCom Combat | DamCom Combat | EndCom | PostCombatMain | End | Cleanup deriving (Eq, Show)
+           | FirstDamCom Combat | DamCom Combat | EndCom | PostCombatMain | End | Cleanup deriving (Eq, Ord, Show)
 
 data Keyword = Banding | Defender | FirstStrike | Fear | Flying | Haste | Indestructible | LandWalk | Protection | Reach | Regeneration | Trample | Vigilance deriving (Enum, Eq, Generic, Show)
 
@@ -92,14 +92,15 @@ type Stack = [GameObject]
 type Exile = [GameObject]
 type Command = [GameObject]
 
-data Player = Player { _life        :: Int
-                     , _library     :: Library
-                     , _hand        :: Hand
-                     , _graveyard   :: Graveyard
-                     , _manaPool    :: ManaPool
-                     , _maxHandSize :: Int
-                     , _landsPlayed :: Int
-                     , _maxLand     :: Int
+data Player = Player { _life         :: Int
+                     , _library      :: Library
+                     , _hand         :: Hand
+                     , _graveyard    :: Graveyard
+                     , _phaseActions :: M.Map Phase (Game ())
+                     , _manaPool     :: ManaPool
+                     , _maxHandSize  :: Int
+                     , _landsPlayed  :: Int
+                     , _maxLand      :: Int
                      }
 
 data GameState = GameState
@@ -244,9 +245,6 @@ combat = [BegCom, DecAttack noCombat, DecBlock noCombat, FirstDamCom noCombat, D
 phaseOrder :: [Phase]
 phaseOrder = cycle [Untap, Upkeep, Draw, PreCombatMain] ++ combat  ++ [PostCombatMain, End, Cleanup]
 
-
-
-
 defaultGameState = GameState
   { _players      = M.empty
   , _stack        = []
@@ -338,6 +336,8 @@ nextPlayer pid g = f pid (g ^. turnOrder) where
                | otherwise = f p xs
 
 advPhase = undefined
+  -- g <- get
+  -- case g ^. phases of undefined
 -- advPhase :: Game ()
 -- advPhase = do
 --   g <- get
@@ -382,8 +382,8 @@ pass = do
 doNothing :: Game ()
 doNothing = return ()
 
-untapPhaseAction :: PId -> Game ()
-untapPhaseAction p = do
+untapPhaseAction :: Game ()
+untapPhaseAction = do
   g <- get
   modify $ over battlefield $ id
 
@@ -392,10 +392,10 @@ untapPhaseAction p = do
                                       -- set sick False
                                    -- else x)
 
-defaultPhaseActions :: PId -> [(Phase, Game ())]
-defaultPhaseActions p = [(Untap, untapPhaseAction p),
+defaultPhaseActions :: M.Map Phase (Game ())
+defaultPhaseActions = M.fromList [(Untap, untapPhaseAction),
                   (Upkeep, doNothing),
-                  (Draw, draw 1 p),
+                  (Draw, drawPhaseAction),
                   (PreCombatMain, doNothing),
                   (BegCom, doNothing),
                   (DecAttack noCombat, doNothing),
@@ -416,15 +416,11 @@ draw n p = do
     then modify $ u . over occurrences (DrawFromEmpty p :)
     else modify u
 
--- pass :: GameState -> GameState
--- pass g = let g'  = over passes (+1) g in
---     case g ^. priority of
---     Just x -> if x == (g ^. activePlayer) && (g ^. passes) == length (keys (g ^. players))
---               then if null (g ^. stack)
---                    then advancePhase g
---                    else resolveStack g
---               else givePriority (nextPlayer x g) g'
---     Nothing -> advancePhase g
+
+drawPhaseAction :: Game ()
+drawPhaseAction = do
+  g <- get
+  draw 1 (g ^. activePlayer)
 
 -- state :: (s -> (a,s)) -> State s a
 -- state = State

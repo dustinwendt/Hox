@@ -1,18 +1,16 @@
+{-# LANGUAGE OverloadedLabels #-}
+
 module Main where
 
 import           CardList
-import           Colors
 import           ComplexTypes
-import           Control.Lens                hiding (set)
-import           Control.Monad
-import           Control.Monad.State
-import qualified Data.Map                    as M
-import           Graphics.UI.Gtk             hiding (Stack, get)
-import           Graphics.UI.Gtk.Builder
-import           Graphics.UI.Gtk.Layout.Grid
+import qualified Data.Map                   as M
+import           GI.Gdk.Objects.MotionEvent
+import           Graphics.UI.Gtk            hiding (Stack, get)
+import           System.Console.ANSI
 import           System.Directory
 import           System.IO
-import           Text.Read                   hiding (get)
+import           Text.Read                  hiding (get)
 import           Util
 
 data Format = Standard | Modern | Legacy | Vintage deriving Show
@@ -64,7 +62,19 @@ validDeck m = sum (M.elems m) >= 60 && f (M.toList m)
         f ((k,v):xs) | not (isBasic k) && v > 4 = False
                      | otherwise = f xs
 
+dragImage = undefined
+
 main = do
+  initGUI
+  builder <- builderNew
+  currDir <- getCurrentDirectory
+  builderAddFromFile builder (currDir ++ "/src/frontend/rectangle.glade")
+  mainWindow <- builderGetObject builder castToWindow "main_window"
+  on mainWindow objectDestroy mainQuit
+  widgetShowAll mainWindow
+  mainGUI
+
+main' = do
   initGUI
   home <- getHomeDirectory
 

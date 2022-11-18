@@ -331,10 +331,12 @@ library
   build-depends:
       aeson
     , aeson-better-errors
+    , ansi-terminal
     , base >=4.7 && <5
     , bytestring
     , containers ==0.6.*
     , directory
+    , gi-gdk ==4.0.3
     , gtk3
     , http-client
     , http-client-tls
@@ -364,10 +366,12 @@ executable Hox-exe
       Hox
     , aeson
     , aeson-better-errors
+    , ansi-terminal
     , base >=4.7 && <5
     , bytestring
     , containers ==0.6.*
     , directory
+    , gi-gdk ==4.0.3
     , gtk3
     , http-client
     , http-client-tls
@@ -398,10 +402,12 @@ test-suite Hox-test
       Hox
     , aeson
     , aeson-better-errors
+    , ansi-terminal
     , base >=4.7 && <5
     , bytestring
     , containers ==0.6.*
     , directory
+    , gi-gdk ==4.0.3
     , gtk3
     , http-client
     , http-client-tls

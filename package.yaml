@@ -20,6 +20,7 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/githubuser/Hox#readme>
 
 dependencies:
+- ansi-terminal
 - aeson
 - aeson-better-errors
 - base >= 4.7 && < 5
@@ -28,6 +29,7 @@ dependencies:
 - containers >= 0.6 && < 0.7
 # - dates
 - directory
+- gi-gdk == 4.0.3
 - gtk3
 - http-client
 - http-client-tls

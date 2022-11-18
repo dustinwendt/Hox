@@ -12,6 +12,13 @@ packages:
   original:
     hackage: cairo-0.13.8.2@sha256:ef1709c3c4d2c6d68a9a51d9f220dccc0745f6468d2d0868c15a7ecdf8f325a1,4078
 - completed:
+    hackage: gi-gdk-4.0.3@sha256:de4e750445727d94238da2d94714a60fd7c941ec7463e4f54ca5e633807cdaa5,8932
+    pantry-tree:
+      sha256: ff85fa6a5a44e3fc1b8450165ca9f2f8180258350c66511a1ccb5e10b3bedf60
+      size: 355
+  original:
+    hackage: gi-gdk-4.0.3@sha256:de4e750445727d94238da2d94714a60fd7c941ec7463e4f54ca5e633807cdaa5,8932
+- completed:
     hackage: gi-javascriptcore-4.0.23@sha256:aa2a800124e1dc173a4800a94d12a165bf823ecc3234b7a515c1ff37868fcd6d,4025
     pantry-tree:
       sha256: 70cf3a2cd801b9db8af4ce9c7f64c1980ea3b2016c97756285525a9fee4690ed
@@ -67,13 +74,6 @@ packages:
       size: 3588
   original:
     hackage: gtk2hs-buildtools-0.13.8.3@sha256:207229eee7abff12aba2740b32131522086275e46f2e72a0f5bbc3cb781e9d4d,5304
-- completed:
-    hackage: haskell-gi-0.25.0@sha256:9731d9d8fb214ff803e2fbd42b4d1187448975ca263a33ddcd873218de2cdda1,5184
-    pantry-tree:
-      sha256: a92da07779018635b36e3d4c9607d1ead023f567cea16070f98465227f49637c
-      size: 4269
-  original:
-    hackage: haskell-gi-0.25.0@sha256:9731d9d8fb214ff803e2fbd42b4d1187448975ca263a33ddcd873218de2cdda1,5184
 - completed:
     hackage: jsaddle-0.9.8.2@sha256:e8c003801eb9364fcd6b1e0cda34f072a537bcfa767e6eb8c626836dae77ba04,4419
     pantry-tree:
