@@ -342,12 +342,15 @@ library
     , http-client-tls
     , http-conduit
     , lens >=4.7 && <5
+    , linear
     , mtl
     , network-uri
     , parsec
     , reflex
     , reflex-vty
+    , sdl2
     , text
+    , transformers
     , unix
     , uri-encode
     , uuid
@@ -377,12 +380,15 @@ executable Hox-exe
     , http-client-tls
     , http-conduit
     , lens >=4.7 && <5
+    , linear
     , mtl
     , network-uri
     , parsec
     , reflex
     , reflex-vty
+    , sdl2
     , text
+    , transformers
     , unix
     , uri-encode
     , uuid
@@ -413,12 +419,15 @@ test-suite Hox-test
     , http-client-tls
     , http-conduit
     , lens >=4.7 && <5
+    , linear
     , mtl
     , network-uri
     , parsec
     , reflex
     , reflex-vty
+    , sdl2
     , text
+    , transformers
     , unix
     , uri-encode
     , uuid

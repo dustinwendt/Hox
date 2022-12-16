@@ -35,13 +35,16 @@ dependencies:
 - http-client-tls
 - http-conduit
 - lens >= 4.7 && < 5
+- linear
 - mtl
 - network-uri
 - parsec
 - reflex
   # - reflex-gi-gtk
 - reflex-vty
+- sdl2
 - text
+- transformers
 - unix
 - uri-encode
 - uuid

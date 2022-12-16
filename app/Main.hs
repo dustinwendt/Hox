@@ -4,13 +4,24 @@ module Main where
 
 import           CardList
 import           ComplexTypes
-import qualified Data.Map                   as M
+import           Control.Exception
+import           Control.Monad
+import           Control.Monad.IO.Class
+import           Control.Monad.Trans.Class
+import qualified Data.Map                        as M
+import           GI.Gdk.Flags
 import           GI.Gdk.Objects.MotionEvent
-import           Graphics.UI.Gtk            hiding (Stack, get)
+import           Graphics.UI.Gtk
+import           Graphics.UI.Gtk.Abstract.Widget
+import           Graphics.UI.Gtk.Gdk.Events
+import           Graphics.UI.Gtk.Layout.Fixed
+import           Graphics.UI.Gtk.Misc.EventBox
+import           Linear.Affine
+import           SDL.Input.Mouse
 import           System.Console.ANSI
 import           System.Directory
 import           System.IO
-import           Text.Read                  hiding (get)
+import           Text.Read                       hiding (get)
 import           Util
 
 data Format = Standard | Modern | Legacy | Vintage deriving Show
@@ -62,7 +73,60 @@ validDeck m = sum (M.elems m) >= 60 && f (M.toList m)
         f ((k,v):xs) | not (isBasic k) && v > 4 = False
                      | otherwise = f xs
 
-dragImage = undefined
+
+-- pointEnv = (uncurry Point) <$> UI.mousedown canvas
+
+-- handleMotionEvent :: Event -> IO Bool
+handleMotionEvent Motion {eventX = xMain, eventY = yMain, eventXRoot = xEvent, eventYRoot = yEvent} = do
+  -- (x, y) <- windowGetPosition mainWindow
+  print $ "Event at " ++ show xEvent ++ " " ++ show yEvent
+  return True
+handleMotionEvent _ = do
+  print "Here"
+  return True
+
+-- getMousePosition = do
+--   events <- pollEvents
+--   -- mousePos <- getAbsoluteMouseLocation
+--   print events
+
+-- type WidgetMotionNotifyEventCallback = EventMotion -> IO Bool
+
+-- data EventM a = EventMError | Running a
+
+-- instance Show a => Show (EventM a) where
+--   show EventMError = "EventMError"
+--   show (Running a) = "Running " ++ show a
+
+-- instance Functor EventM where
+--   fmap = liftM
+
+-- instance Applicative EventMT where
+--   pure = return
+--   (<*>) = ap
+
+-- instance Monad EventMT where
+--   return x = Running x
+--   m >>= g = case m of
+--               EventMError -> EventMError
+--               Running x   -> g x
+
+-- newtype EventMT m a = EventMT { runEventMT :: m (EventM a)}
+
+-- mapEventMT :: (m (EventM a) -> n (EventM b)) -> EventMT m a -> EventMT n b
+-- mapEventMT f = EventMT . f . runEventMT
+
+-- instance (Functor m) => Functor (EventMT m) where
+--   fmap f = mapEventMT (fmap  (fmap f))
+
+-- instance MonadTrans EventMT where
+--   lift = EventMT . liftM
+
+eventBoxCallback :: EventM EMotion Bool
+eventBoxCallback = do
+  (x,y) <- eventCoordinates
+  liftIO $ print (x,y)
+  return True
 
 main = do
   initGUI
@@ -70,6 +134,12 @@ main = do
   currDir <- getCurrentDirectory
   builderAddFromFile builder (currDir ++ "/src/frontend/rectangle.glade")
   mainWindow <- builderGetObject builder castToWindow "main_window"
+  evbox <- builderGetObject builder castToEventBox "event_box"
+  -- setCallback mainWindow handleMotionEvent
+  on evbox motionNotifyEvent eventBoxCallback
+
+  -- mainWindow `onMotionNotify` handleMotionEvent
+  widgetAddEvents evbox [PointerMotionMask]
   on mainWindow objectDestroy mainQuit
   widgetShowAll mainWindow
   mainGUI
