@@ -1,9 +1,9 @@
 name:                Hox
 version:             0.1.0.0
-github:              "githubuser/Hox"
+github:              "dustinwendt/Hox"
 license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
+author:              "Dustin Wendt"
+maintainer:          "dustinwendt95@gmail.com"
 copyright:           "2021 Author name here"
 
 extra-source-files:
@@ -20,37 +20,29 @@ extra-source-files:
 description:         Please see the README on GitHub at <https://github.com/githubuser/Hox#readme>
 
 dependencies:
-- ansi-terminal
 - aeson
 - aeson-better-errors
-- base >= 4.7 && < 5
-- bytestring
-# - cairo
-- containers >= 0.6 && < 0.7
-# - dates
+- base
+- containers
 - directory
-- gi-gdk == 4.0.3
+- gi-gtk
+# - gi-gtk-declarative
+# - gi-gtk-declarative-app-simple
 - gtk3
+- haskell-gi
+- haskell-gi-base
 - http-client
 - http-client-tls
 - http-conduit
-- lens >= 4.7 && < 5
-- linear
+- lens
 - mtl
 - network-uri
 - parsec
-- reflex
-  # - reflex-gi-gtk
-- reflex-vty
-- sdl2
+- reactive-banana
 - text
-- transformers
-- unix
 - uri-encode
 - uuid
 - vector
-- yaml
-  # - reflex-dom-core
 
 library:
   source-dirs:

@@ -1,4 +1,5 @@
-{-# LANGUAGE OverloadedLabels #-}
+{-# LANGUAGE OverloadedLabels  #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Main where
 
@@ -6,22 +7,30 @@ import           CardList
 import           ComplexTypes
 import           Control.Exception
 import           Control.Monad
-import           Control.Monad.IO.Class
-import           Control.Monad.Trans.Class
-import qualified Data.Map                        as M
-import           GI.Gdk.Flags
-import           GI.Gdk.Objects.MotionEvent
-import           Graphics.UI.Gtk
-import           Graphics.UI.Gtk.Abstract.Widget
+import           Control.Monad.IO.Class               (liftIO)
+import           Data.GI.Base.ManagedPtr              (castTo, unsafeCastTo)
+import           Data.GI.Base.Signals
+import qualified Data.Map                             as M
+import           Data.Maybe
+import qualified Data.Text                            as T
+import           GI.Gtk                               (EventBox (..),
+                                                       Label (..), Window (..),
+                                                       widgetShowAll)
+import qualified GI.Gtk                               as GI (init, main,
+                                                             mainQuit)
+import           GI.Gtk.Objects.Builder
+import           GI.Gtk.Objects.EventControllerMotion
+import           GI.Gtk.Objects.Label
+-- import           Graphics.UI.Gtk
+-- import           Graphics.UI.Gtk.Abstract.Widget
 import           Graphics.UI.Gtk.Gdk.Events
 import           Graphics.UI.Gtk.Layout.Fixed
 import           Graphics.UI.Gtk.Misc.EventBox
-import           Linear.Affine
-import           SDL.Input.Mouse
-import           System.Console.ANSI
+import           Reactive.Banana
+import           Reactive.Banana.Frameworks
 import           System.Directory
 import           System.IO
-import           Text.Read                       hiding (get)
+import           Text.Read                            hiding (get)
 import           Util
 
 data Format = Standard | Modern | Legacy | Vintage deriving Show
@@ -57,10 +66,6 @@ playersPrompt = do
                   playersPrompt
     Nothing -> playersPrompt
 
-isSpace :: Char -> Bool
-isSpace ' ' = True
-isSpace _   = False
-
 deckList :: String -> M.Map GameObject Int
 deckList s = foldr (uncurry (M.insertWith (+)) . pLine) M.empty (lines s)
   where
@@ -73,17 +78,14 @@ validDeck m = sum (M.elems m) >= 60 && f (M.toList m)
         f ((k,v):xs) | not (isBasic k) && v > 4 = False
                      | otherwise = f xs
 
-
--- pointEnv = (uncurry Point) <$> UI.mousedown canvas
-
 -- handleMotionEvent :: Event -> IO Bool
-handleMotionEvent Motion {eventX = xMain, eventY = yMain, eventXRoot = xEvent, eventYRoot = yEvent} = do
-  -- (x, y) <- windowGetPosition mainWindow
-  print $ "Event at " ++ show xEvent ++ " " ++ show yEvent
-  return True
-handleMotionEvent _ = do
-  print "Here"
-  return True
+-- handleMotionEvent Motion {eventX = xMain, eventY = yMain, eventXRoot = xEvent, eventYRoot = yEvent} = do
+--   -- (x, y) <- windowGetPosition mainWindow
+--   print $ "Event at " ++ show xEvent ++ " " ++ show yEvent
+--   return True
+-- handleMotionEvent _ = do
+--   print "Here"
+--   return True
 
 -- getMousePosition = do
 --   events <- pollEvents
@@ -94,133 +96,167 @@ handleMotionEvent _ = do
 
 -- data EventM a = EventMError | Running a
 
--- instance Show a => Show (EventM a) where
---   show EventMError = "EventMError"
---   show (Running a) = "Running " ++ show a
 
--- instance Functor EventM where
---   fmap = liftM
+makeSources = newAddHandler
 
--- instance Applicative EventMT where
---   pure = return
---   (<*>) = ap
+-- Reader Monad --
+-- newtype ReaderT r m a = ReaderT {runReaderT :: r -> m a}
 
--- instance Monad EventMT where
---   return x = Running x
---   m >>= g = case m of
---               EventMError -> EventMError
---               Running x   -> g x
+-- GTK --
+-- type EventM t a = ReaderT (Ptr t) IO a
+-- labelSetText :: self -> string -> IO ()
+-- motionNotifyEvent :: Signal self (EventM EMotion Bool)
 
--- newtype EventMT m a = EventMT { runEventMT :: m (EventM a)}
+-- Reactive-Banana --
+-- type Event a = [(Time, a)]
+-- type Handler a = a -> IO ()
+-- newtype AddHandler a = AddHandler { register :: Handler a -> IO (IO ())}
+-- fromAddHandler :: AddHandler a -> MomentIO (Event a)
+-- fromAddHandler :: a -> IO () -> IO (IO ()) -> MomentIO (Event a)
 
--- mapEventMT :: (m (EventM a) -> n (EventM b)) -> EventMT m a -> EventMT n b
--- mapEventMT f = EventMT . f . runEventMT
+type EventSource a = (AddHandler a, a -> IO ())
 
--- instance (Functor m) => Functor (EventMT m) where
---   fmap f = mapEventMT (fmap  (fmap f))
+addHandler :: EventSource a -> AddHandler a
+addHandler = fst
 
--- instance MonadTrans EventMT where
---   lift = EventMT . liftM
+fire :: EventSource a -> a -> IO ()
+fire = snd
 
-eventBoxCallback :: EventM EMotion Bool
-eventBoxCallback = do
-  (x,y) <- eventCoordinates
-  liftIO $ print (x,y)
-  return True
+-- eventBoxCallback :: EventM EMotion Bool
+-- eventBoxCallback = do
+--   modifiers <- eventModifierMouse
+--   when (Button1 `elem` modifiers) $ do
+--     (x,y) <- eventCoordinates
+--     liftIO $ print (x,y)
+--   return True
+
+data A = A {example1 :: Int}
 
 main = do
-  initGUI
+  GI.init Nothing
   builder <- builderNew
   currDir <- getCurrentDirectory
-  builderAddFromFile builder (currDir ++ "/src/frontend/rectangle.glade")
-  mainWindow <- builderGetObject builder castToWindow "main_window"
-  evbox <- builderGetObject builder castToEventBox "event_box"
-  -- setCallback mainWindow handleMotionEvent
-  on evbox motionNotifyEvent eventBoxCallback
+  builderAddFromFile builder (T.pack (currDir ++ "/src/frontend/gameUI.glade"))
+  mainWindow <- builderGetObject builder "main_window" >>= unsafeCastTo Window . fromJust
+
+  evbox <- builderGetObject builder "event_box" >>= unsafeCastTo EventBox . fromJust
+  -- prev:  on evbox motionNotifyEvent eventBoxCallback
+
+  -- presumably now: on evbox ----- eventBoxCallback
+
+  -- ecm <- eventControllerMotionNew
+  -- on ecm #motion eventBoxCallback
+  pName <- builderGetObject builder "p_name" >>= unsafeCastTo Label . fromJust
+  labelSetText pName "test"
+
+  pLife <- builderGetObject builder "p_life" >>= unsafeCastTo Label . fromJust
+  pHand <- builderGetObject builder "p_hand" >>= unsafeCastTo Label . fromJust
+  pLibrary <- builderGetObject builder "p_library" >>= unsafeCastTo Label . fromJust
+  pGraveyard <- builderGetObject builder "p_graveyard" >>= unsafeCastTo Label . fromJust
+  pExile <- builderGetObject builder "p_exile" >>= unsafeCastTo Label . fromJust
+  pWhite <- builderGetObject builder "p_white" >>= unsafeCastTo Label . fromJust
+  pBlue <- builderGetObject builder "p_blue" >>= unsafeCastTo Label . fromJust
+  pBlack <- builderGetObject builder "p_black" >>= unsafeCastTo Label . fromJust
+  pRed <- builderGetObject builder "p_red" >>= unsafeCastTo Label . fromJust
+  pGreen <- builderGetObject builder "p_green" >>= unsafeCastTo Label . fromJust
+  pColorless <- builderGetObject builder "p_colorless" >>= unsafeCastTo Label . fromJust
 
   -- mainWindow `onMotionNotify` handleMotionEvent
-  widgetAddEvents evbox [PointerMotionMask]
-  on mainWindow objectDestroy mainQuit
+  -- widgetAddEvents evbox [ButtonPressMask, PointerMotionMask]
+  -- on mainWindow (fromLabel @"destroy" :: String) GI.mainQuit
+
+  on mainWindow #destroy GI.mainQuit
+  -- on mainWindow objectDestroy mainQuit
+
+  -- let networkDescription :: MomentIO()
+  --     networkDescription = do
+  --       emouse <- fromAddHandler mainWindow
+
+
+
+  -- network <- compile networkDescription
+  -- actuate network
   widgetShowAll mainWindow
-  mainGUI
+  GI.main
+  return ()
 
-main' = do
-  initGUI
-  home <- getHomeDirectory
+-- main'' = do
+--   initGUI
+--   home <- getHomeDirectory
 
-  window1 <- windowNew
+--   window1 <- windowNew
 
-  -- Frames
-  frame1 <- frameNew
-  frame2 <- frameNew
+--   -- Frames
+--   frame1 <- frameNew
+--   frame2 <- frameNew
 
-  -- Windows
-  window1 <- windowNew
-  windowSetPosition window1 WinPosCenter
-  set window1 [ containerBorderWidth := 10
-              , windowTitle := "Hox"
-              , windowResizable := True
-              , windowDefaultWidth := 600
-              , windowDefaultHeight := 300]
+--   -- Windows
+--   window1 <- windowNew
+--   windowSetPosition window1 WinPosCenter
+--   set window1 [ containerBorderWidth := 10
+--               , windowTitle := "Hox"
+--               , windowResizable := True
+--               , windowDefaultWidth := 600
+--               , windowDefaultHeight := 300]
 
-  sandBoxWindow <- windowNew
-  windowSetPosition sandBoxWindow WinPosCenter
-  set sandBoxWindow [ containerBorderWidth := 10
-              , windowTitle := "Sandbox"
-              , windowResizable := True
-              , windowDefaultWidth := 600
-              , windowDefaultHeight := 300]
+--   sandBoxWindow <- windowNew
+--   windowSetPosition sandBoxWindow WinPosCenter
+--   set sandBoxWindow [ containerBorderWidth := 10
+--               , windowTitle := "Sandbox"
+--               , windowResizable := True
+--               , windowDefaultWidth := 600
+--               , windowDefaultHeight := 300]
 
-  on window1 objectDestroy mainQuit
-  on sandBoxWindow objectDestroy mainQuit
+--   on window1 objectDestroy mainQuit
+--   on sandBoxWindow objectDestroy mainQuit
 
-  -- Widgets
-  entry <- entryNew
-  fileChooser <- fileChooserButtonNew "Deck" FileChooserActionOpen
-  button <- buttonNew
-  set button [ buttonLabel := "Validate" ]
-  on button buttonActivated $ do
-    fn <- fileChooserGetFilename fileChooser
-    case fn of
-      Just x  -> do
-        putStrLn $ "Validating " ++ x
-        handle <- openFile x ReadMode
-        contents <- hGetContents handle
-        let d = deckList contents
+--   -- Widgets
+--   entry <- entryNew
+--   fileChooser <- fileChooserButtonNew "Deck" FileChooserActionOpen
+--   button <- buttonNew
+--   set button [ buttonLabel := "Validate" ]
+--   on button buttonActivated $ do
+--     fn <- fileChooserGetFilename fileChooser
+--     case fn of
+--       Just x  -> do
+--         putStrLn $ "Validating " ++ x
+--         handle <- openFile x ReadMode
+--         contents <- hGetContents handle
+--         let d = deckList contents
 
-        print $ "Deck size: " ++ show (sum (M.elems d))
-        hClose handle
-        if validDeck d
-        then do
-          widgetHide window1
-          builder <- builderNew
-          currDir <- getCurrentDirectory
-          builderAddFromFile builder (currDir ++ "/src/gameUI.glade")
-          sandBoxWindow <- builderGetObject builder castToWindow "sandbox_window"
+--         print $ "Deck size: " ++ show (sum (M.elems d))
+--         hClose handle
+--         if validDeck d
+--         then do
+--           widgetHide window1
+--           builder <- builderNew
+--           currDir <- getCurrentDirectory
+--           builderAddFromFile builder (currDir ++ "/src/gameUI.glade")
+--           sandBoxWindow <- builderGetObject builder castToWindow "sandbox_window"
 
-          widgetShowAll sandBoxWindow
-        else
-          putStrLn "Invalid Deck"
-      Nothing -> putStrLn "No file selected"
+--           widgetShowAll sandBoxWindow
+--         else
+--           putStrLn "Invalid Deck"
+--       Nothing -> putStrLn "No file selected"
 
-  on fileChooser fileChooserButtonFileSet $ do
-    Just fn <- fileChooserGetFilename fileChooser
-    putStrLn $ "Selected: " ++ fn
+--   on fileChooser fileChooserButtonFileSet $ do
+--     Just fn <- fileChooserGetFilename fileChooser
+--     putStrLn $ "Selected: " ++ fn
 
-  -- Grids
-  grid1 <- gridNew
-  gridSetColumnSpacing grid1 10
-  gridSetRowSpacing grid1 10
-  gridSetColumnHomogeneous grid1 True
+--   -- Grids
+--   grid1 <- gridNew
+--   gridSetColumnSpacing grid1 10
+--   gridSetRowSpacing grid1 10
+--   gridSetColumnHomogeneous grid1 True
 
-  gridAttach grid1 fileChooser 0 0 3 2
-  gridAttach grid1 button 6 0 1 1
+--   gridAttach grid1 fileChooser 0 0 3 2
+--   gridAttach grid1 button 6 0 1 1
 
-  -- Containers
-  containerAdd window1 frame1
-  containerAdd frame1 grid1
+--   -- Containers
+--   containerAdd window1 frame1
+--   containerAdd frame1 grid1
 
-  -- set window1 [ windowTitle := "Hox", containerChild := button ]
-  widgetShowAll window1
+--   -- set window1 [ windowTitle := "Hox", containerChild := button ]
+--   widgetShowAll window1
 
-  mainGUI
+--   mainGUI

@@ -7,5 +7,6 @@ import           Data.Maybe
 import           Types
 
 
-ancestralRecall = (properties.name .~ "Ancestral Recall") . (properties.manaCost ?~ [CSym (Colored Blue)]) . (properties.color .~ [Blue]) . (properties.identity .~ [Blue]) . (properties.keywords .~ []) . (properties.typeLine .~ TypeLine [] [Instant] []) . (properties.oracleText .~ "Target player draws three cards.")
+ancestralRecall = (properties.name .~ "Ancestral Recall") . (properties.manaCost ?~ [CSym (Colored Blue)]) . (properties.color .~ [Blue]) . (properties.identity .~ [Blue]) . (properties.keywords .~ []) . (properties.typeLine .~ TypeLine [] [Instant] []) . (properties.oracleText .~ "Target player draws three cards.") .
+                    (properties.function .~ (do doNothing))
                            $ defaultCard

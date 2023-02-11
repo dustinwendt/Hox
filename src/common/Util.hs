@@ -30,6 +30,10 @@ subTypes go = case go ^. (properties . typeLine) of
 isBasic :: GameObject -> Bool
 isBasic go = Basic `elem` superTypes go
 
+isSpace :: Char -> Bool
+isSpace ' ' = True
+isSpace _   = False
+
 -- pMC :: String -> [Pip]
 -- pMC ('{':'X':'}':xs) = VarPip : pMC xs
 -- pMC ('{':'S':'}':xs) = SnowPip : pMC xs
