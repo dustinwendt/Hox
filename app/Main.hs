@@ -1,37 +1,10 @@
-{-# LANGUAGE OverloadedLabels  #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Main where
 
-import           CardList
-import           ComplexTypes
-import           Control.Exception
-import           Control.Monad
-import           Control.Monad.IO.Class               (liftIO)
-import           Data.GI.Base.ManagedPtr              (castTo, unsafeCastTo)
-import           Data.GI.Base.Signals
-import qualified Data.Map                             as M
-import           Data.Maybe
-import qualified Data.Text                            as T
-import           GI.Gtk                               (EventBox (..),
-                                                       Label (..), Window (..),
-                                                       widgetShowAll)
-import qualified GI.Gtk                               as GI (init, main,
-                                                             mainQuit)
-import           GI.Gtk.Objects.Builder
-import           GI.Gtk.Objects.EventControllerMotion
-import           GI.Gtk.Objects.Label
--- import           Graphics.UI.Gtk
--- import           Graphics.UI.Gtk.Abstract.Widget
-import           Graphics.UI.Gtk.Gdk.Events
-import           Graphics.UI.Gtk.Layout.Fixed
-import           Graphics.UI.Gtk.Misc.EventBox
-import           Reactive.Banana
-import           Reactive.Banana.Frameworks
-import           System.Directory
-import           System.IO
-import           Text.Read                            hiding (get)
-import           Util
+import           Control.Event.Handler
+import           Game
+import           Text.Read             hiding (get)
 
 data Format = Standard | Modern | Legacy | Vintage deriving Show
 
@@ -66,55 +39,9 @@ playersPrompt = do
                   playersPrompt
     Nothing -> playersPrompt
 
-deckList :: String -> M.Map GameObject Int
-deckList s = foldr (uncurry (M.insertWith (+)) . pLine) M.empty (lines s)
-  where
-    pLine s = let (a,b) = break isSpace s in
-            (strToCard (stripCard b), read a :: Int)
-
-validDeck :: M.Map GameObject Int -> Bool
-validDeck m = sum (M.elems m) >= 60 && f (M.toList m)
-  where f [] = True
-        f ((k,v):xs) | not (isBasic k) && v > 4 = False
-                     | otherwise = f xs
-
--- handleMotionEvent :: Event -> IO Bool
--- handleMotionEvent Motion {eventX = xMain, eventY = yMain, eventXRoot = xEvent, eventYRoot = yEvent} = do
---   -- (x, y) <- windowGetPosition mainWindow
---   print $ "Event at " ++ show xEvent ++ " " ++ show yEvent
---   return True
--- handleMotionEvent _ = do
---   print "Here"
---   return True
-
--- getMousePosition = do
---   events <- pollEvents
---   -- mousePos <- getAbsoluteMouseLocation
---   print events
-
--- type WidgetMotionNotifyEventCallback = EventMotion -> IO Bool
-
--- data EventM a = EventMError | Running a
-
+type EventSource a = (AddHandler a, a -> IO ())
 
 makeSources = newAddHandler
-
--- Reader Monad --
--- newtype ReaderT r m a = ReaderT {runReaderT :: r -> m a}
-
--- GTK --
--- type EventM t a = ReaderT (Ptr t) IO a
--- labelSetText :: self -> string -> IO ()
--- motionNotifyEvent :: Signal self (EventM EMotion Bool)
-
--- Reactive-Banana --
--- type Event a = [(Time, a)]
--- type Handler a = a -> IO ()
--- newtype AddHandler a = AddHandler { register :: Handler a -> IO (IO ())}
--- fromAddHandler :: AddHandler a -> MomentIO (Event a)
--- fromAddHandler :: a -> IO () -> IO (IO ()) -> MomentIO (Event a)
-
-type EventSource a = (AddHandler a, a -> IO ())
 
 addHandler :: EventSource a -> AddHandler a
 addHandler = fst
@@ -130,55 +57,38 @@ fire = snd
 --     liftIO $ print (x,y)
 --   return True
 
-data A = A {example1 :: Int}
+main = buildUI
+ -- -- let networkDescription :: MomentIO ()
+ --  --     networkDescription = do
+ --  --       (event, eventSink) <- newEvent
+ --  --       -- let modifiers = fmap eventModifier event in
+ --  --       reactimate $
+ --  --         (\_ -> do
+ --  --                    -- (x,y) <- eventCoordinates
+ --  --            let (x,y) = (1,1)
+ --  --            liftIO $ labelSetText pName (T.pack (show (x,y)))) <$> (fmap eventModifier event)
+ --        -- _ <- evbox `on` buttonPressEvent $ liftIO $ eventSink =<< eventButton
+ --       -- return ()
 
-main = do
-  GI.init Nothing
-  builder <- builderNew
-  currDir <- getCurrentDirectory
-  builderAddFromFile builder (T.pack (currDir ++ "/src/frontend/gameUI.glade"))
-  mainWindow <- builderGetObject builder "main_window" >>= unsafeCastTo Window . fromJust
-
-  evbox <- builderGetObject builder "event_box" >>= unsafeCastTo EventBox . fromJust
-  -- prev:  on evbox motionNotifyEvent eventBoxCallback
-
-  -- presumably now: on evbox ----- eventBoxCallback
-
-  -- ecm <- eventControllerMotionNew
-  -- on ecm #motion eventBoxCallback
-  pName <- builderGetObject builder "p_name" >>= unsafeCastTo Label . fromJust
-  labelSetText pName "test"
-
-  pLife <- builderGetObject builder "p_life" >>= unsafeCastTo Label . fromJust
-  pHand <- builderGetObject builder "p_hand" >>= unsafeCastTo Label . fromJust
-  pLibrary <- builderGetObject builder "p_library" >>= unsafeCastTo Label . fromJust
-  pGraveyard <- builderGetObject builder "p_graveyard" >>= unsafeCastTo Label . fromJust
-  pExile <- builderGetObject builder "p_exile" >>= unsafeCastTo Label . fromJust
-  pWhite <- builderGetObject builder "p_white" >>= unsafeCastTo Label . fromJust
-  pBlue <- builderGetObject builder "p_blue" >>= unsafeCastTo Label . fromJust
-  pBlack <- builderGetObject builder "p_black" >>= unsafeCastTo Label . fromJust
-  pRed <- builderGetObject builder "p_red" >>= unsafeCastTo Label . fromJust
-  pGreen <- builderGetObject builder "p_green" >>= unsafeCastTo Label . fromJust
-  pColorless <- builderGetObject builder "p_colorless" >>= unsafeCastTo Label . fromJust
-
-  -- mainWindow `onMotionNotify` handleMotionEvent
-  -- widgetAddEvents evbox [ButtonPressMask, PointerMotionMask]
-  -- on mainWindow (fromLabel @"destroy" :: String) GI.mainQuit
-
-  on mainWindow #destroy GI.mainQuit
-  -- on mainWindow objectDestroy mainQuit
-
-  -- let networkDescription :: MomentIO()
-  --     networkDescription = do
-  --       emouse <- fromAddHandler mainWindow
+ --  -- let networkDescription :: MomentIO ()
+ --  --     networkDescription = do
+ --  --       (event, eventSink) <- newEvent
+ --  --       modifiers <- fmap eventModifier event
+ --  --       return ()
+ --  --       when (Button1 `elem` modifiers) $ do
 
 
+ --    -- motionEvent <- fromAddHandler $ eventM (toWidget evbox) MotionNotify
 
-  -- network <- compile networkDescription
-  -- actuate network
-  widgetShowAll mainWindow
-  GI.main
-  return ()
+ --    -- reactimate $ (\text -> labelSetText pName ) <$> textBehavior
+ --  -- mainWindow `onMotionNotify` handleMotionEvent
+ --  -- widgetAddEvents evbox [ButtonPressMask, PointerMotionMask]
+ --  -- on mainWindow (fromLabel @"destroy" :: String) GI.mainQuit
+
+ --  on mainWindow #destroy GI.mainQuit
+
+ --  -- network <- compile networkDescription
+ --  -- actuate network
 
 -- main'' = do
 --   initGUI

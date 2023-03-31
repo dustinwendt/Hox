@@ -68,19 +68,19 @@ packages:
   original:
     hackage: gtk2hs-buildtools-0.13.8.3@sha256:207229eee7abff12aba2740b32131522086275e46f2e72a0f5bbc3cb781e9d4d,5304
 - completed:
-    hackage: haskell-gi-0.26.2@sha256:61aacb01d14c7c6b302b01d4e92b7b0c4ed0e16c8848625026c6f1219f4b3c9d,5169
+    hackage: haskell-gi-0.25.0@sha256:9731d9d8fb214ff803e2fbd42b4d1187448975ca263a33ddcd873218de2cdda1,5184
     pantry-tree:
-      sha256: dd0fd5c97b42fe1673ca383423c0fd6f8d26b3b834ca747dca043d65f25be86e
+      sha256: a92da07779018635b36e3d4c9607d1ead023f567cea16070f98465227f49637c
       size: 4269
   original:
-    hackage: haskell-gi-0.26.2@sha256:61aacb01d14c7c6b302b01d4e92b7b0c4ed0e16c8848625026c6f1219f4b3c9d,5169
+    hackage: haskell-gi-0.25.0@sha256:9731d9d8fb214ff803e2fbd42b4d1187448975ca263a33ddcd873218de2cdda1,5184
 - completed:
-    hackage: haskell-gi-base-0.26.3@sha256:05a3d33c2faf9fbba3605ef25fec70d48247a22f1a9d2fdcf2126fa510b3395d,2448
+    hackage: haskell-gi-base-0.25.0@sha256:39bd0f4e6a295b60d626935157286efda5b905df520893ab9b7b5bdde4af82de,2513
     pantry-tree:
-      sha256: e5aada84e13bdcb300e4c2ad83bcacc7cde521a58926f627c26d8cb2396c36d9
-      size: 1941
+      sha256: 00ab3c246deb086b2fa92260b1fa55cb49c2cbfa6a91a165ade21120f7e5dcbc
+      size: 1937
   original:
-    hackage: haskell-gi-base-0.26.3@sha256:05a3d33c2faf9fbba3605ef25fec70d48247a22f1a9d2fdcf2126fa510b3395d,2448
+    hackage: haskell-gi-base-0.25.0@sha256:39bd0f4e6a295b60d626935157286efda5b905df520893ab9b7b5bdde4af82de,2513
 - completed:
     hackage: microlens-0.4.11.2@sha256:765ec5cdd12a459e65161f0e3cdbce84652bf634d62af3911ba24e4bf8d4d944,4455
     pantry-tree:
@@ -102,6 +102,13 @@ packages:
       size: 2523
   original:
     hackage: reactive-banana-1.3.0.0@sha256:e625c838ff5a1550cafacd6bd8e9934a57d8b6ba88611129db57081ff59fbb43,4223
+- completed:
+    hackage: Yampa-0.14.1@sha256:2d9b2b59d4d0d20cf0af9e31d9eebf4d47f1d94ad2270200e0f2dbdb7af496a9,6676
+    pantry-tree:
+      sha256: cddf2f95061654a9cead7bfc28ab28e913db2b41c2d1109a69fdb0cd05fa562a
+      size: 2168
+  original:
+    hackage: Yampa-0.14.1@sha256:2d9b2b59d4d0d20cf0af9e31d9eebf4d47f1d94ad2270200e0f2dbdb7af496a9,6676
 snapshots:
 - completed:
     sha256: cdead65fca0323144b346c94286186f4969bf85594d649c49c7557295675d8a5

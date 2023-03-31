@@ -4,6 +4,7 @@ import           Colors
 import           ComplexTypes
 import           Control.Lens
 import           Data.Char
+import qualified Data.Map     as M
 import           Types
 
 parseColor :: String -> Color
@@ -33,6 +34,12 @@ isBasic go = Basic `elem` superTypes go
 isSpace :: Char -> Bool
 isSpace ' ' = True
 isSpace _   = False
+
+validDeck :: M.Map GameObject Int -> Bool
+validDeck m = sum (M.elems m) >= 60 && f (M.toList m)
+  where f [] = True
+        f ((k,v):xs) | not (isBasic k) && v > 4 = False
+                     | otherwise = f xs
 
 -- pMC :: String -> [Pip]
 -- pMC ('{':'X':'}':xs) = VarPip : pMC xs

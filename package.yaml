@@ -39,10 +39,12 @@ dependencies:
 - network-uri
 - parsec
 - reactive-banana
+- sdl2
 - text
 - uri-encode
 - uuid
 - vector
+- Yampa
 
 library:
   source-dirs:
