@@ -5,6 +5,7 @@ import           ComplexTypes
 import           Control.Lens
 import           Data.Char
 import qualified Data.Map     as M
+import qualified Data.Text    as T
 import           Types
 
 parseColor :: String -> Color
@@ -40,6 +41,9 @@ validDeck m = sum (M.elems m) >= 60 && f (M.toList m)
   where f [] = True
         f ((k,v):xs) | not (isBasic k) && v > 4 = False
                      | otherwise = f xs
+
+showT :: Show a => a -> T.Text
+showT = T.pack . show
 
 -- pMC :: String -> [Pip]
 -- pMC ('{':'X':'}':xs) = VarPip : pMC xs

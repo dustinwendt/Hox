@@ -8,6 +8,8 @@ import           Control.Lens
 import           Control.Monad.State
 import qualified Data.Map            as M
 import           GHC.Generics
+import           GI.Gtk              (Button (..), EventBox (..), Label (..),
+                                      Window (..), on)
 import           Types
 
 -- 208 Power/Toughness
@@ -24,6 +26,25 @@ type Defend = [(Id, Id)]
 data Combat = Combat
   { _attackers :: Attack
   , _defenders :: Defend } deriving (Eq, Ord, Show)
+
+
+data GUI = GUI {
+  _mainWindow         :: Window
+  , _evbox            :: EventBox
+  , _pLife            :: Label
+  , _pGraveyard       :: Label
+  , _pExile           :: Label
+  , _pWhite           :: Label
+  , _pBlue            :: Label
+  , _pBlack           :: Label
+  , _pRed             :: Label
+  , _pGreen           :: Label
+  , _pColorless       :: Label
+  , _pGraveyardButton :: Button
+  , _pExileButton     :: Button
+               }
+
+$(makeLenses ''GUI)
 
 noCombat :: Combat
 noCombat = Combat
@@ -119,6 +140,7 @@ data GameState = GameState
  , _occurrences  :: [Occurrences]
  , _passes       :: Int
  , _ids          :: [Id]
+ , _gui          :: GUI
  }
 
 type Game a = State GameState a
@@ -260,6 +282,7 @@ defaultGameState = GameState
   , _occurrences  = []
   , _passes       = 0
   , _ids          = initIds
+  , _gui          = undefined
   }
 
 funCard :: GameObject -> Game ()

@@ -57,7 +57,7 @@ fire = snd
 --     liftIO $ print (x,y)
 --   return True
 
-main = buildUI
+main = gameLoop
  -- -- let networkDescription :: MomentIO ()
  --  --     networkDescription = do
  --  --       (event, eventSink) <- newEvent

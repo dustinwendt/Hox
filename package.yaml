@@ -21,14 +21,18 @@ description:         Please see the README on GitHub at <https://github.com/gith
 
 dependencies:
 - aeson
-- aeson-better-errors
+#- aeson-better-errors
 - base
 - containers
 - directory
+# - gi-gdk
+# - gi-gio
+- gi-gdk
 - gi-gtk
 # - gi-gtk-declarative
 # - gi-gtk-declarative-app-simple
-- gtk3
+# - glib
+# - gtk3
 - haskell-gi
 - haskell-gi-base
 - http-client
@@ -38,13 +42,13 @@ dependencies:
 - mtl
 - network-uri
 - parsec
+- random
 - reactive-banana
 - sdl2
 - text
 - uri-encode
 - uuid
 - vector
-- Yampa
 
 library:
   source-dirs:

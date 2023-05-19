@@ -319,6 +319,7 @@ library
       WordofCommand
       WrathofGod
       ZombieMaster
+      Gtk
       Util
       Game
   other-modules:
@@ -330,14 +331,12 @@ library
       src/common
       src/frontend
   build-depends:
-      Yampa
-    , aeson
-    , aeson-better-errors
+      aeson
     , base
     , containers
     , directory
+    , gi-gdk
     , gi-gtk
-    , gtk3
     , haskell-gi
     , haskell-gi-base
     , http-client
@@ -347,6 +346,7 @@ library
     , mtl
     , network-uri
     , parsec
+    , random
     , reactive-banana
     , sdl2
     , text
@@ -364,14 +364,12 @@ executable Hox-exe
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       Hox
-    , Yampa
     , aeson
-    , aeson-better-errors
     , base
     , containers
     , directory
+    , gi-gdk
     , gi-gtk
-    , gtk3
     , haskell-gi
     , haskell-gi-base
     , http-client
@@ -381,6 +379,7 @@ executable Hox-exe
     , mtl
     , network-uri
     , parsec
+    , random
     , reactive-banana
     , sdl2
     , text
@@ -399,14 +398,12 @@ test-suite Hox-test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       Hox
-    , Yampa
     , aeson
-    , aeson-better-errors
     , base
     , containers
     , directory
+    , gi-gdk
     , gi-gtk
-    , gtk3
     , haskell-gi
     , haskell-gi-base
     , http-client
@@ -416,6 +413,7 @@ test-suite Hox-test
     , mtl
     , network-uri
     , parsec
+    , random
     , reactive-banana
     , sdl2
     , text

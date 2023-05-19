@@ -81,11 +81,26 @@ signalE1 self signal = signalEN self signal id ()
   -- id :: a -> a
   -- signalEn self signal (() -> ())
 
-signalE2 :: (HaskellCallbackType info ~ ((a -> b) -> IO ()), SignalInfo info, GObject self)
+signalE2 :: (HaskellCallbackType info ~ ((a,b) -> IO ()), SignalInfo info, GObject self)
+  => self
+  -> SignalProxy self info
+  -> MomentIO (Event (a,b))
+signalE2 self signal = signalEN self signal id ()
+
+-- signalE2' :: (HaskellCallbackType info ~ (a -> b -> IO ()), SignalInfo info, GObject self)
+--   => self
+--   -> SignalProxy self info
+--   -> MomentIO (Event (a,b))
+-- signalE2' self signal = signalEN self signal id ()
+
+(-<) :: a -> b -> (a,b)
+a -< b = (a,b)
+
+signalE2' :: (HaskellCallbackType info ~ ((a -> b) -> IO ()), SignalInfo info, GObject self)
             => self
             -> SignalProxy self info
-            -> MomentIO (Event (a -> b))
-signalE2 self signal = signalEN self signal id ()
+            -> MomentIO (Event (a->b))
+signalE2' self signal = signalEN self signal id ()
 
 -- Get a 'Reactive.Banana.Event' from a 'Data.GI.Base.Attributes.AttrLabelProxy' that produces one argument
 attrE :: (GObject self, AttrGetC info self attr result, KnownSymbol (AttrLabel info))
@@ -94,7 +109,7 @@ attrE :: (GObject self, AttrGetC info self attr result, KnownSymbol (AttrLabel i
          -> MomentIO (Event result)
 attrE self attr = do
   e <- signalE1 self (PropertyNotify attr)
-  (const $ get self attr) `mapEventIO` e
+  const (get self attr) `mapEventIO` e
 
 -- stepper on 'attrE'
 attrB :: (GObject self, AttrGetC info self attr result, KnownSymbol (AttrLabel info))
