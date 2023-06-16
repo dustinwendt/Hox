@@ -57,6 +57,7 @@ packages:
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
 #
 # extra-deps: []
+
 extra-deps:
 - cairo-0.13.8.2@sha256:ef1709c3c4d2c6d68a9a51d9f220dccc0745f6468d2d0868c15a7ecdf8f325a1,4078
 # - gi-gtk-declarative-0.7.1@sha256:bb3095d875b788b53daa77a23af646782bc3420cf48e702440e74e780e027e44,4417
@@ -70,6 +71,7 @@ extra-deps:
 
 - haskell-gi-0.26.2@sha256:61aacb01d14c7c6b302b01d4e92b7b0c4ed0e16c8848625026c6f1219f4b3c9d,5169
 - haskell-gi-base-0.26.3@sha256:05a3d33c2faf9fbba3605ef25fec70d48247a22f1a9d2fdcf2126fa510b3395d,2448
+- gi-gtk-declarative-0.7.1@sha256:bb3095d875b788b53daa77a23af646782bc3420cf48e702440e74e780e027e44,4417
 
   #- haskell-gi-0.26.2@sha256:61aacb01d14c7c6b302b01d4e92b7b0c4ed0e16c8848625026c6f1219f4b3c9d,5169
   #- haskell-gi-base-0.26.3@sha256:05a3d33c2faf9fbba3605ef25fec70d48247a22f1a9d2fdcf2126fa510b3395d,2448

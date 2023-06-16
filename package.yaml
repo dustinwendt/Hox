@@ -21,13 +21,17 @@ description:         Please see the README on GitHub at <https://github.com/gith
 
 dependencies:
 - aeson
+- async
 #- aeson-better-errors
 - base
 - containers
+- data-default-class
 - directory
 # - gi-gdk
 # - gi-gio
 - gi-gdk
+- gi-glib
+- gi-gobject
 - gi-gtk
 # - gi-gtk-declarative
 # - gi-gtk-declarative-app-simple
@@ -42,10 +46,13 @@ dependencies:
 - mtl
 - network-uri
 - parsec
+- pipes
+- pipes-concurrency
 - random
 - reactive-banana
 - sdl2
 - text
+- unordered-containers
 - uri-encode
 - uuid
 - vector

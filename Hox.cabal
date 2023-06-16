@@ -26,6 +26,30 @@ source-repository head
 library
   exposed-modules:
       ComplexTypes
+      GI.Gtk.Declarative
+      GI.Gtk.Declarative.App.Simple
+      GI.Gtk.Declarative.Attributes
+      GI.Gtk.Declarative.Attributes.Collected
+      GI.Gtk.Declarative.Attributes.Internal
+      GI.Gtk.Declarative.Attributes.Internal.Conversions
+      GI.Gtk.Declarative.Attributes.Internal.EventHandler
+      GI.Gtk.Declarative.Bin
+      GI.Gtk.Declarative.Container
+      GI.Gtk.Declarative.Container.Box
+      GI.Gtk.Declarative.Container.Class
+      GI.Gtk.Declarative.Container.Grid
+      GI.Gtk.Declarative.Container.ListBox
+      GI.Gtk.Declarative.Container.MenuItem
+      GI.Gtk.Declarative.Container.Notebook
+      GI.Gtk.Declarative.Container.Paned
+      GI.Gtk.Declarative.Container.Patch
+      GI.Gtk.Declarative.CustomWidget
+      GI.Gtk.Declarative.EventSource
+      GI.Gtk.Declarative.Patch
+      GI.Gtk.Declarative.SingleWidget
+      GI.Gtk.Declarative.State
+      GI.Gtk.Declarative.Widget
+      GI.Gtk.Declarative.Widget.Conversions
       CardList
       Colors
       ScryfallParser
@@ -332,10 +356,14 @@ library
       src/frontend
   build-depends:
       aeson
+    , async
     , base
     , containers
+    , data-default-class
     , directory
     , gi-gdk
+    , gi-glib
+    , gi-gobject
     , gi-gtk
     , haskell-gi
     , haskell-gi-base
@@ -346,10 +374,13 @@ library
     , mtl
     , network-uri
     , parsec
+    , pipes
+    , pipes-concurrency
     , random
     , reactive-banana
     , sdl2
     , text
+    , unordered-containers
     , uri-encode
     , uuid
     , vector
@@ -365,10 +396,14 @@ executable Hox-exe
   build-depends:
       Hox
     , aeson
+    , async
     , base
     , containers
+    , data-default-class
     , directory
     , gi-gdk
+    , gi-glib
+    , gi-gobject
     , gi-gtk
     , haskell-gi
     , haskell-gi-base
@@ -379,10 +414,13 @@ executable Hox-exe
     , mtl
     , network-uri
     , parsec
+    , pipes
+    , pipes-concurrency
     , random
     , reactive-banana
     , sdl2
     , text
+    , unordered-containers
     , uri-encode
     , uuid
     , vector
@@ -399,10 +437,14 @@ test-suite Hox-test
   build-depends:
       Hox
     , aeson
+    , async
     , base
     , containers
+    , data-default-class
     , directory
     , gi-gdk
+    , gi-glib
+    , gi-gobject
     , gi-gtk
     , haskell-gi
     , haskell-gi-base
@@ -413,10 +455,13 @@ test-suite Hox-test
     , mtl
     , network-uri
     , parsec
+    , pipes
+    , pipes-concurrency
     , random
     , reactive-banana
     , sdl2
     , text
+    , unordered-containers
     , uri-encode
     , uuid
     , vector

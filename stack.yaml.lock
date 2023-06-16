@@ -33,6 +33,13 @@ packages:
   original:
     hackage: haskell-gi-base-0.26.3@sha256:05a3d33c2faf9fbba3605ef25fec70d48247a22f1a9d2fdcf2126fa510b3395d,2448
 - completed:
+    hackage: gi-gtk-declarative-0.7.1@sha256:bb3095d875b788b53daa77a23af646782bc3420cf48e702440e74e780e027e44,4417
+    pantry-tree:
+      sha256: 7f414b78ad02dd60ab429e35cacf7943c5facf583121dabcdc3007fe07d1becc
+      size: 2393
+  original:
+    hackage: gi-gtk-declarative-0.7.1@sha256:bb3095d875b788b53daa77a23af646782bc3420cf48e702440e74e780e027e44,4417
+- completed:
     hackage: microlens-0.4.11.2@sha256:765ec5cdd12a459e65161f0e3cdbce84652bf634d62af3911ba24e4bf8d4d944,4455
     pantry-tree:
       sha256: 98fdc52fe386eca8994832f7ce6daba584fcc6ccf4859b5e33b004ce25ddba11
