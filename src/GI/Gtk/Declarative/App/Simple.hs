@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE LambdaCase       #-}
+{-# LANGUAGE MonoLocalBinds   #-}
 {-# LANGUAGE RecordWildCards  #-}
 {-# LANGUAGE TypeApplications #-}
 
@@ -15,23 +16,20 @@ module GI.Gtk.Declarative.App.Simple
 where
 
 import           Control.Concurrent
-import qualified Control.Concurrent.Async      as Async
-import           Control.Exception              ( SomeException,
-                                                  Exception,
-                                                  catch,
-                                                  finally,
-                                                  throwIO)
+import qualified Control.Concurrent.Async       as Async
+import           Control.Exception              (Exception, SomeException,
+                                                 catch, finally, throwIO)
 import           Control.Monad
 import           Data.Typeable
-import qualified GI.Gdk                        as Gdk
-import qualified GI.GLib.Constants             as GLib
-import qualified GI.Gtk                        as Gtk
+import qualified GI.Gdk                         as Gdk
+import qualified GI.GLib.Constants              as GLib
+import qualified GI.Gtk                         as Gtk
 import           GI.Gtk.Declarative
 import           GI.Gtk.Declarative.EventSource
 import           GI.Gtk.Declarative.State
 import           Pipes
-import qualified Pipes.Prelude                 as Pipes
 import           Pipes.Concurrent
+import qualified Pipes.Prelude                  as Pipes
 import           System.Exit
 import           System.IO
 

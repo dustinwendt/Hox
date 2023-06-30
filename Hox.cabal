@@ -346,6 +346,7 @@ library
       Gtk
       Util
       Game
+      GameDecl
   other-modules:
       Paths_Hox
   hs-source-dirs:

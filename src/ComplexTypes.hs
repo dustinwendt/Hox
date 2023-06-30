@@ -29,19 +29,27 @@ data Combat = Combat
 
 
 data GUI = GUI {
-  _mainWindow         :: Window
-  , _evbox            :: EventBox
-  , _pLife            :: Label
-  , _pGraveyard       :: Label
-  , _pExile           :: Label
-  , _pWhite           :: Label
-  , _pBlue            :: Label
-  , _pBlack           :: Label
-  , _pRed             :: Label
-  , _pGreen           :: Label
-  , _pColorless       :: Label
-  , _pGraveyardButton :: Button
-  , _pExileButton     :: Button
+  _mainWindow          :: Window
+  , _evbox             :: EventBox
+  , _pLife             :: Label
+  , _pHand             :: Label
+  , _pLibrary          :: Label
+  , _pGraveyard        :: Label
+  , _pExile            :: Label
+  , _pWhite            :: Label
+  , _pBlue             :: Label
+  , _pBlack            :: Label
+  , _pRed              :: Label
+  , _pGreen            :: Label
+  , _pColorless        :: Label
+  , _pGraveyardLabel   :: Label
+  , _pGraveyardButton  :: Button
+  , _pExileLabel       :: Label
+  , _pExileButton      :: Button
+  , _passButton        :: Button
+  , _activePlayerLabel :: Label
+  , _passesLabel       :: Label
+  , _phaseLabel        :: Label
                }
 
 $(makeLenses ''GUI)
@@ -52,12 +60,15 @@ noCombat = Combat
  , _defenders = []
  }
 
-data Phase = Untap | Upkeep | Draw | PreCombatMain | BegCom | DecAttack Combat | DecBlock Combat
-           | FirstDamCom Combat | DamCom Combat | EndCom | PostCombatMain | End | Cleanup deriving (Eq, Ord, Show)
+data Phase = Untap | Upkeep | Draw | Main | BegCom | DecAttack Combat | DecBlock Combat
+           | FirstDamCom Combat | DamCom Combat | EndCom | End | Cleanup deriving (Eq, Ord, Show)
 
 data Keyword = Banding | Defender | FirstStrike | Fear | Flying | Haste | Indestructible | LandWalk | Protection | Reach | Regeneration | Trample | Vigilance deriving (Enum, Eq, Generic, Show)
 
 data Occurrences = DrawFromEmpty PId
+
+
+-- instance MonadIO Game where
 
 
 -- 109.3
@@ -153,7 +164,7 @@ $(makeLenses ''Properties)
 -- 104.1
 data GameOutcome = DrawGame | Win PId | Restart
 
-data PassSignal = NextPhase | Pass | Resolve deriving (Eq, Show)
+-- data PassSignal = NextPhase | Pass | Resolve deriving (Eq, Show)
 
 $(makeLenses ''GameObject)
 $(makeLenses ''GameState)
@@ -204,13 +215,6 @@ isSpell o = case o^.objType of
 copySpell :: GameObject -> GameObject
 copySpell s = assert (isSpell s) $ objType .~ Spell Nothing $ s
 
--- defaultLegality = Legality { standard = True
---                            , modern   = True
---                            , legacy   = True
---                            , vintage  = True
---                            }
-
-
 defaultProperties :: Properties
 defaultProperties = Properties
   { _name = "DefaultCard"
@@ -231,6 +235,19 @@ defaultCard =
              , _objType = Card
              , _owner = You
              , _controller = You}
+
+defaultCardWithOwner x = defaultCard { _owner = x }
+
+defaultPlayer x =
+  Player { _life = 20
+         , _library = replicate 60 (defaultCardWithOwner x)
+         , _hand = []
+         , _graveyard = []
+         , _phaseActions = M.empty
+         , _manaPool = emptyManaPool
+         , _maxHandSize = 7
+         , _landsPlayed = 0
+         , _maxLand = 1 }
 
 -- 202.3
 pipValue :: Pip -> Int
@@ -254,28 +271,24 @@ isMultiColored o = length (o^.properties.color) > 1
 isColorless :: GameObject -> Bool
 isColorless o = null (o^.properties.color)
 
-
-
 initIds :: [Id]
 initIds = concat [ replicateM k (['a'..'z'] ++ ['A'..'Z'] ++ ['0'..'9']) | k <- [1..]]
-
-
 
 combat :: [Phase]
 combat = [BegCom, DecAttack noCombat, DecBlock noCombat, FirstDamCom noCombat, DamCom noCombat, EndCom]
 
 phaseOrder :: [Phase]
-phaseOrder = cycle [Untap, Upkeep, Draw, PreCombatMain] ++ combat  ++ [PostCombatMain, End, Cleanup]
+phaseOrder = cycle [Untap, Upkeep, Draw, Main] ++ combat  ++ [Main, End, Cleanup]
 
 defaultGameState = GameState
-  { _players      = M.empty
+  { _players      = M.fromList [(You, defaultPlayer You), (Opponent, defaultPlayer Opponent)]
   , _stack        = []
   , _activePlayer = You
   , _exile        = []
   , _battlefield  = []
-  , _phases       = []
-  , _turnOrder    = []
-  , _turns        = []
+  , _phases       = phaseOrder
+  , _turnOrder    = [You, Opponent]
+  , _turns        = cycle [You, Opponent]
   , _stormCount   = 0
   , _priority     = Nothing
   , _precombat    = True
@@ -299,6 +312,29 @@ freshId = do
   let x = head $ g ^. ids
   modify $ over ids tail
   return x
+
+getPlayers :: Game (M.Map PId Player)
+getPlayers = do
+  g <- get
+  return $ g ^. players
+
+getStack :: Game Stack
+getStack = do
+  g <- get
+  return $ g ^. stack
+
+getActivePlayer :: Game PId
+getActivePlayer = do
+  g <- get
+  return $ g ^. activePlayer
+
+currPhase :: Game Phase
+currPhase = do
+  g <- get
+  return $ head (g ^. phases)
+
+swapPlayer You      = Opponent
+swapPlayer Opponent = You
 
 -- newtype State s a = State { runState :: s -> (a, s) }
 
@@ -341,6 +377,12 @@ leave p = do
 
 stateCheck = undefined
 
+-- emptyPool :: Game ()
+-- emptyPool = do
+--   ps <- getPlayers
+--   -- let ps' = (keys ps)
+--   modify $ set players ps'
+
 givePriority :: PId -> Game ()
 givePriority p = do
   stateCheck
@@ -358,7 +400,23 @@ nextPlayer pid g = f pid (g ^. turnOrder) where
     f p (x:xs) | p == x    = head xs
                | otherwise = f p xs
 
-advPhase = undefined
+advPhase :: Game ()
+advPhase = do
+  p <- currPhase
+  modify $ over phases tail
+  modify $ set passes 0
+  -- empty mana pools
+  case p of
+    Untap   -> do g <- get
+                  modify $ set priority (Just (g ^. activePlayer))
+    -- BegCom  -> do modify $ set precombat False
+    End     -> do modify $ set priority Nothing
+                  modify $ set stormCount 0
+    Cleanup -> do modify $ over turns tail
+                  g <- get
+                  modify $ set activePlayer (head (g ^. turns))
+
+    -- Cleanup -> do modify $ over
   -- g <- get
   -- case g ^. phases of undefined
 -- advPhase :: Game ()
@@ -413,18 +471,16 @@ untapPhaseAction = do
   -- (\x -> if x ^. controller == p
                                    -- then do x
                                       -- set sick False
-                                   -- else x)
 
 defaultPhaseActions :: M.Map Phase (Game ())
 defaultPhaseActions = M.fromList [(Untap, untapPhaseAction),
                   (Upkeep, doNothing),
                   (Draw, drawPhaseAction),
-                  (PreCombatMain, doNothing),
+                  (Main, doNothing),
                   (BegCom, doNothing),
                   (DecAttack noCombat, doNothing),
                   (DecBlock noCombat, doNothing),
                   (EndCom, doNothing),
-                  (PostCombatMain, doNothing),
                   (End, doNothing),
                   (Cleanup, doNothing)]
 
@@ -439,11 +495,15 @@ draw n p = do
     then modify $ u . over occurrences (DrawFromEmpty p :)
     else modify u
 
-
 drawPhaseAction :: Game ()
 drawPhaseAction = do
   g <- get
   draw 1 (g ^. activePlayer)
+
+isPrecombat :: Game Bool
+isPrecombat = do
+  g <- get
+  return (g ^. precombat)
 
 -- state :: (s -> (a,s)) -> State s a
 -- state = State

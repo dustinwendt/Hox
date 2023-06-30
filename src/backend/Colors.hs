@@ -47,5 +47,5 @@ instance Show Pip where
 data PId = You | Opponent deriving (Eq, Ord, Show)
 type ManaPool = Map Mana Int
 
-emptyPool :: ManaPool
-emptyPool = foldl (\ x p -> insert p 0 x) empty pools
+emptyManaPool :: ManaPool
+emptyManaPool = foldl (\ x p -> insert p 0 x) empty pools
